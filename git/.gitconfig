@@ -1,0 +1,33 @@
+[user]
+	name = crosleyzack
+	email = crosleyzack@gmail.com
+[alias]
+	tree = log --graph --decorate --pretty=oneline --abbrev-commit
+	unstage = reset HEAD --
+	co = checkout
+	br = branch
+	ci = commit
+	st = status
+	last = log -1 HEAD
+	a = add
+	d = diff
+	cim = commit -m
+	pl = pull
+	ps = push
+	changed = diff HEAD~1 HEAD
+	t = log --graph --decorate --pretty=oneline --abbrev-commit
+	aliases = config --get-regexp '^alias\\.'
+	cm = commit -m
+	f = fetch
+	ap = add -p
+	l = log
+	staged = diff --staged
+	s = diff --staged
+	r = rebase
+	ri = rebase -i
+	rc = rebase --continue
+	ca = commit --amend --no-edit
+	aware = add -N
+	yolo = push --force
+	upstream = push --set-upstream origin master
+	cae = commit --amend
