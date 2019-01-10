@@ -1,5 +1,5 @@
 favorites=exo-terminal-emulator.desktop,exo-file-manager.desktop,exo-web-browser.desktop,exo-mail-reader.desktop,pamac-manager.desktop
-recent=nm-connection-editor.desktop,xfce-keyboard-settings.desktop,xfce-ui-settings.desktop,xfce4-settings-editor.desktop,xfce-settings-manager.desktop,exo-web-browser.desktop,xfce-session-settings.desktop,exo-terminal-emulator.desktop,firefox.desktop,pamac-manager.desktop
+recent=xfce-ui-settings.desktop,nm-connection-editor.desktop,xfce-keyboard-settings.desktop,xfce4-settings-editor.desktop,xfce-settings-manager.desktop,exo-web-browser.desktop,xfce-session-settings.desktop,exo-terminal-emulator.desktop,firefox.desktop,pamac-manager.desktop
 button-title=Applications
 button-icon=/usr/share/icons/whiskermenu-manjaro.svg
 button-single-row=false

@@ -19,3 +19,15 @@ ScrollingLines=999999
 BackgroundMode=TERMINAL_BACKGROUND_TRANSPARENT
 BackgroundDarkness=0.750000
 ScrollingOnOutput=FALSE
+MiscBellUrgent=FALSE
+MiscMouseWheelZoom=TRUE
+MiscMiddleClickOpensUri=FALSE
+MiscCopyOnSelect=FALSE
+MiscShowRelaunchDialog=TRUE
+MiscRewrapOnResize=TRUE
+MiscUseShiftArrowsToScroll=FALSE
+MiscSlimTabs=FALSE
+MiscNewTabAdjacent=FALSE
+FontUseSystem=TRUE
+ColorBackground=#1f1f2e2e3434
+

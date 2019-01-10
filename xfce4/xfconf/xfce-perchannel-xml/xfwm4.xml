@@ -76,6 +76,7 @@
       <value type="string" value="Workspace 2"/>
       <value type="string" value="Workspace 3"/>
       <value type="string" value="Workspace 4"/>
+      <value type="string" value="Workspace 5"/>
     </property>
     <property name="tile_on_move" type="bool" value="true"/>
     <property name="titleless_maximize" type="bool" value="false"/>
