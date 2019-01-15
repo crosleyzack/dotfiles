@@ -1,0 +1,8 @@
+* New Computer Setup
+List of things to be done when setting up a new computer.
+NOTE - Emacs daemon depends on systemd.
+
+1. Install Packages in .config (alacritty, VSCode, i3, ggit, Slack, spotify, Thunar, vim)
+2. Install source-code-pro (adobe-source-code-pro-fonts in ARCH)
+3. Install emacs and pull .emacs.d from github.
+4. Create Symlink .bashrc to .bashrc in .config, .gitconfig to .gitconfig in .config
