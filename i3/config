@@ -171,3 +171,4 @@ bindsym $mod+semicolon exec xflock4
 #-old-#}
 exec --no-startup-id nitrogen --restore
 exec --no-startup-id synergy
+exec systemctl start --user emacs
