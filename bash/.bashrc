@@ -140,7 +140,20 @@ ex ()
 
 # better yaourt colors
 export YAOURT_COLORS="nb=1:pkg=1:ver=1;32:lver=1;45:installed=1;42:grp=1;34:od=1;41;5:votes=1;44:dsc=0:other=1;35"
+# vim keybindings
+set -o vi
+# load virtualenvwrapper for python (after custom PATHs)
+# NOTE: To install virtual envs, run:
+#    pacman -Ss python-virtualenv
+#    python -m pip install virtualenvwrapper
+venvwrap="virtualenvwrapper.sh"
+which $venvwrap
+if [ $? -eq 0 ]; then
+    venvwrap=`which $venvwrap`
+    source $venvwrap
+fi
+#  set editor and aliases.
 export EDITOR="emacsclient"
 alias e="emacsclient -nc"
-set -o vi
+alias g="git"
 alias profile="source ~/.bashrc"
