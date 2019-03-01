@@ -1,7 +1,6 @@
 #
 # ~/.bashrc
 #
-
 [[ $- != *i* ]] && return
 
 colors() {
@@ -32,16 +31,6 @@ colors() {
 }
 
 [ -r /usr/share/bash-completion/bash_completion ] && . /usr/share/bash-completion/bash_completion
-
-# Change the window title of X terminals
-case ${TERM} in
-	xterm*|rxvt*|Eterm*|aterm|kterm|gnome*|interix|konsole*)
-		PROMPT_COMMAND='echo -ne "\033]0;${USER}@${HOSTNAME%%.*}:${PWD/#$HOME/\~}\007"'
-		;;
-	screen*)
-		PROMPT_COMMAND='echo -ne "\033_${USER}@${HOSTNAME%%.*}:${PWD/#$HOME/\~}\033\\"'
-		;;
-esac
 
 use_color=true
 
@@ -90,14 +79,6 @@ fi
 
 unset use_color safe_term match_lhs sh
 
-alias cp="cp -i"                          # confirm before overwriting something
-alias df='df -h'                          # human-readable sizes
-alias free='free -m'                      # show sizes in MB
-alias np='nano -w PKGBUILD'
-alias more=less
-
-xhost +local:root > /dev/null 2>&1
-
 complete -cf sudo
 
 # Bash won't get SIGWINCH if another process is in the foreground.
@@ -107,8 +88,6 @@ complete -cf sudo
 shopt -s checkwinsize
 
 shopt -s expand_aliases
-
-# export QT_SELECT=4
 
 # Enable history appending instead of overwriting.  #139609
 shopt -s histappend
@@ -138,22 +117,47 @@ ex ()
   fi
 }
 
-# better yaourt colors
-export YAOURT_COLORS="nb=1:pkg=1:ver=1;32:lver=1;45:installed=1;42:grp=1;34:od=1;41;5:votes=1;44:dsc=0:other=1;35"
 # vim keybindings
-set -o vi
+# set -o vi
+
 # load virtualenvwrapper for python (after custom PATHs)
 # NOTE: To install virtual envs, run:
 #    pacman -Ss python-virtualenv
 #    python -m pip install virtualenvwrapper
-venvwrap="virtualenvwrapper.sh"
-which $venvwrap
-if [ $? -eq 0 ]; then
-    venvwrap=`which $venvwrap`
-    source $venvwrap
+venvwrap=`which "virtualenvwrapper.sh"`
+if [ "$TMUX" = "" ]; then
+	#if [ $? -eq 0 ]; then
+	source $venvwrap
+	#fi
 fi
-#  set editor and aliases.
+export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python
+export WORKON_HOME=~/.virtualenvs
+export PATH=$PATH:/usr/sbin/
+. $venvwrap
+# Activate the appropriate virtual environment.
+if [ -n "$VIRTUAL_ENV" ]; then
+	. "$VIRTUAL_ENV/bin/activate"
+  else
+	workon +
+fi
+
+# If tmux isn't defined, start a session.
+
+# set editor and alias.
 export EDITOR="emacsclient"
 alias e="emacsclient -nc"
+#  set up rakudobrew
+export PATH="$PATH:~/git/rakudobrew/bin"
+eval "$(/home/valorin/git/rakudobrew/bin/rakudobrew init -)"
+#  other aliases.
 alias g="git"
 alias profile="source ~/.bashrc"
+# Docker shortcuts
+#alias docker-list-all="docker ps -aq"
+alias docker-stop-all="docker stop $(docker ps -aq)"
+alias docker-rm-all="docker rm $(docker ps -aq)"
+alias docker-rmi-all="docker rmi -f $(docker images -aq)"
+
+if [ "$TMUX" = "" ]; then
+    session
+fi
