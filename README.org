@@ -1,0 +1,3 @@
+* Dotfiles
+
+Configuration files for my linux system, for everything except Emacs.
