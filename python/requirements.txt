@@ -1,0 +1,11 @@
+# Python packages required for development. Install onto python virtual environment.
+# install with `python -m pip install -r requirements.txt`
+virtualenv
+ipython
+ipdb
+rope
+flake8
+jedi
+autopep8
+epc
+importmagic
