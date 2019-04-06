@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TOOL_CONFIG CONFIG_NAME="NO_LONGER_USED">
+    <ICON LOCATION="view_detailed.png" />
+    <TOOL TOOL_NAME="Untitled" INSTANCE_NAME="">
+        <OPTIONS />
+        <ROOT_NODE X_POS="965" Y_POS="-2" WIDTH="950" HEIGHT="2114" EX_STATE="0" />
+        <PREFERENCES>
+            <PREFERENCE_STATE NAME="ghidra.framework.plugintool.dialog.KeyBindingsPanel$KeyBindingsTableModel:Action Name:KeyBinding:Plugin Name:">
+                <XML NAME="COLUMN_DATA">
+                    <Table_State>
+                        <COLUMN NAME="Action Name" WIDTH="62" VISIBLE="true" />
+                        <COLUMN NAME="KeyBinding" WIDTH="339" VISIBLE="true" />
+                        <COLUMN NAME="Plugin Name" WIDTH="339" VISIBLE="true" />
+                        <TABLE_SORT_STATE>
+                            <COLUMN_SORT_STATE COLUMN_MODEL_INDEX="0" SORT_DIRECTION="ascending" SORT_ORDER="1" />
+                        </TABLE_SORT_STATE>
+                    </Table_State>
+                </XML>
+            </PREFERENCE_STATE>
+            <PREFERENCE_STATE NAME="KNOWN_EXTENSIONS">
+                <ARRAY NAME="KNOWN_EXTENSIONS" TYPE="string" />
+            </PREFERENCE_STATE>
+        </PREFERENCES>
+    </TOOL>
+</TOOL_CONFIG>
+

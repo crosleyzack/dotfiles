@@ -1,0 +1,21 @@
+#User Preferences
+#Sat Apr 06 11:27:38 MST 2019
+ProjectDirectory=/home/valorin/workon
+G_FILE_CHOOSER.WIDTH.Select\ a\ Ghidra\ Project\ Directory=800
+G_FILE_CHOOSER.VIEW_STYLE.Select\ a\ Ghidra\ Project\ Directory=SimpleView
+LastNewProjectDirectory=/home/valorin/workon
+LastOpenedProject=/home/valorin/workon/gissa2
+TIP_INDEX=5
+G_FILE_CHOOSER.HEIGHT.Select\ a\ Ghidra\ Project\ Directory=600
+Importer.LastFile=/home/valorin/workon/gissa_igen
+G_FILE_CHOOSER.VIEW_STYLE.Select\ File\ to\ Import=SimpleView
+USER_AGREEMENT=ACCEPT
+SHOW_TIPS=true
+ViewedProjects=
+SHOW.HELP.NAVIGATION.AID=true
+G_FILE_CHOOSER.HEIGHT.Select\ File\ to\ Import=600
+RECENT_0=/home/valorin/workon
+GhidraShowWhatsNew=false
+RecentProjects=/home/valorin/workon/gissa2
+G_FILE_CHOOSER.WIDTH.Select\ File\ to\ Import=800
+HELP.WINDOW.FONT.SIZE.MODIFIER=8
