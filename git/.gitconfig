@@ -31,3 +31,4 @@
 	yolo = push --force
 	upstream = push --set-upstream origin master
 	cae = commit --amend
+	ta = log --all --graph --oneline --decorate --simplify-by-decoration --abbrev-commit
