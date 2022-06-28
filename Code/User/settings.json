@@ -1,0 +1,11 @@
+{
+    "workbench.colorTheme": "Default Dark+",
+    "extensions.experimental.affinity": {
+        "vscodevim.vim": 1,
+        "asvetliakov.vscode-neovim": 1
+    },
+    "python.defaultInterpreterPath": "python3",
+    "editor.minimap.enabled" : false,
+    "editor.fontFamily": "Source Code Pro",
+    "editor.fontSize": 14.5
+}
