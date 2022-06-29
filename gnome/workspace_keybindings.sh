@@ -16,7 +16,6 @@ gsettings set org.gnome.shell.keybindings switch-to-application-7 "['<Super>GRAV
 gsettings set org.gnome.shell.keybindings switch-to-application-8 "['<Super>GRAVE']"
 gsettings set org.gnome.shell.keybindings switch-to-application-9 "['<Super>GRAVE']"
 
-
 # Set super + num goes to workspace num.
 dconf write /org/gnome/desktop/wm/keybindings/switch-to-workspace-1 "['<Super>1']"
 dconf write /org/gnome/desktop/wm/keybindings/switch-to-workspace-2 "['<Super>2']"
@@ -40,3 +39,6 @@ dconf write /org/gnome/desktop/wm/keybindings/move-to-workspace-7  "['<Super><Sh
 dconf write /org/gnome/desktop/wm/keybindings/move-to-workspace-8  "['<Super><Shift>8']"
 dconf write /org/gnome/desktop/wm/keybindings/move-to-workspace-9  "['<Super><Shift>9']"
 dconf write /org/gnome/desktop/wm/keybindings/move-to-workspace-10 "['<Super><Shift>0']"
+
+# Set super + enter to open terminal
+gsettings set org.gnome.settings-daemon.plugins.media-keys terminal "['<Super>Return']"  
