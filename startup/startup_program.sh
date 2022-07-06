@@ -32,7 +32,7 @@ function launch {
 	fi
 }
 
-launch firefox 7 2 &
-launch spotify 8 1 &
-launch slack 8 1 &
+launch firefox 8 2 &
+launch spotify 9 1 &
+launch slack 9 1 &
 launch code 1 3 &
