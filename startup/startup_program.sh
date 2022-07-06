@@ -1,4 +1,8 @@
 #!/bin/bash
+
+# To use, set as a program to run on OS start. This can be done on Ubuntu
+#	in Applications > Statup Applications
+
 function launch {
 	# $1 indicates program to launch - must be name of executable in bash path
 	# $2 indicates workspace to put on (0 indexed)
