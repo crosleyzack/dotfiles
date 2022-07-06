@@ -1,6 +1,6 @@
 # We need to set a fixed number of workspaces for this to work.
 dconf write /org/gnome/mutter/dynamic-workspaces false
-dconf write /org/gnome/desktop/wm/preferences/num-workspaces 9
+dconf write /org/gnome/desktop/wm/preferences/num-workspaces 10
 
 # Remove the hotkeys already bound to super + num.
 #	set hotkeys to false
