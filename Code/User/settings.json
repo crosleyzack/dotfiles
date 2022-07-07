@@ -7,5 +7,9 @@
     "python.defaultInterpreterPath": "python3",
     "editor.minimap.enabled" : false,
     "editor.fontFamily": "Source Code Pro",
-    "editor.fontSize": 14.5
+    "editor.fontSize": 14.5,
+    "gopls": {
+	    "formatting.local": "github.com/censys"
+    },
+    "go.lintTool": "golint"
 }
