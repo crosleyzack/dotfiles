@@ -44,7 +44,7 @@ window:
   decorations: full
 
   # When true, alacritty starts maximized.
-  # start_maximized: false
+  start_maximized: true 
   startup_mode: Windowed
 
 scrolling:
@@ -315,9 +315,10 @@ live_config_reload: true
 #   - (Linux/macOS) /bin/bash --login
 #   - (Windows) powershell
 shell:
-  program: /bin/bash
+  program: /usr/bin/zsh
   args:
-    - --login
+    - -c
+    - tmux
 
 # Windows 10 ConPTY backend (Windows only)
 #
