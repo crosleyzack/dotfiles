@@ -39,7 +39,6 @@ sudo apt install tmux \
 	texlive-latex-extra \
 	texlive-fonts-extra \
 	vim \
-	zsh \
 	fonts-powerline
 
 
@@ -121,6 +120,29 @@ then
 	# 	Move to bin
 	sudo cp target/release/alacritty /usr/local/bin # or anywhere else in $PATH
 	sudo cp extra/logo/alacritty-term.svg /usr/share/pixmaps/Alacritty.svg
+	sudo update-alternatives --install /usr/bin/x-terminal-emulator x-terminal-emulator /usr/local/bin/alacritty 50
+	# We shouldn't need this line, but execute it if not the default for some reason.
+	# sudo update-alternatives --config x-terminal-emulator
 else
 	echo "alacritty already installed! Skipping..."
 fi
+
+
+# Install zsh / oh-my-zsh
+is_installed zsh
+if [ "true" = "$INSTALLED" ]
+then
+	# setup zsh
+	sudo apt install zsh
+	# setup oh my zsh
+	sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+	# Setup spaceship prompt
+	rm -rf ~/temp/zsh
+	mkdir ~/temp/zsh
+	cd ~/temp/zsh
+	zsh -c "$(git clone https://github.com/spaceship-prompt/spaceship-prompt.git '$ZSH_CUSTOM/themes/spaceship-prompt' --depth=1)"
+	zsh -c "$(ln -s '$ZSH_CUSTOM/themes/spaceship-prompt/spaceship.zsh-theme' '$ZSH_CUSTOM/themes/spaceship.zsh-theme')"
+	# Set default terminal in alacritty to zsh
+	alacritty -e chsh -s $(which zsh)	
+fi
+

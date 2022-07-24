@@ -1,16 +1,19 @@
 # Lines configured by zsh-newuser-install
 HISTFILE=~/.config/zsh/histfile
-HISTSIZE=1000
-SAVEHIST=1000
+HISTSIZE=10000
+SAVEHIST=10000
 setopt appendhistory autocd
 unsetopt beep
 bindkey -v
 # End of lines configured by zsh-newuser-install
+# Install spaceship prompt 
+# zplug "spaceship-prompt/spaceship-prompt", use:spaceship.zsh, from:github, as:theme
+zinit light spaceship-prompt/spaceship-prompt
+zgen load spaceship-prompt/spaceship-prompt spaceship
+autoload -U promptinit; promptinit
 # The following lines were added by compinstall
-zstyle :compinstall filename '/home/valorin/.zshrc'
+zstyle :compinstall filename '/home/crosley/.zshrc'
 
 autoload -Uz compinit
 compinit
 # End of lines added by compinstall
-autoload -U promptinit; promptinit
-prompt spaceship
