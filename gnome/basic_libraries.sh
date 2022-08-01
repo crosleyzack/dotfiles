@@ -130,7 +130,7 @@ fi
 
 # Install zsh / oh-my-zsh
 is_installed zsh
-if [ "true" = "$INSTALLED" ]
+if [ "false" = "$INSTALLED" ]
 then
 	# setup zsh
 	sudo apt install zsh
@@ -146,3 +146,22 @@ then
 	alacritty -e chsh -s $(which zsh)	
 fi
 
+# Install kubectl. See https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/
+is_installed kubectl
+if [ "false" = "$INSTALLED" ]
+then
+	sudo curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg
+	echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+	sudo apt-get update
+	sudo apt-get install -y kubectl
+fi
+
+# Install protobuf
+is_installed protobuf-compiler
+if [ "false" = "$INSTALLED" ]
+then
+	sudo apt install protobuf-compiler
+	go get google.golang.org/protobuf
+	go install google.golang.org/protobuf
+	export PATH="$PATH:$(go env GOPATH)/bin"
+fi
