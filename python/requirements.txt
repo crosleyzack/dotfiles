@@ -9,3 +9,4 @@ jedi
 autopep8
 epc
 importmagic
+grpcio-tools

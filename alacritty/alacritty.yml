@@ -316,9 +316,10 @@ live_config_reload: true
 #   - (Windows) powershell
 shell:
   program: /usr/bin/zsh
-  args:
-    - -c
-    - tmux
+    #  args:
+    #- -c
+    #- tmux
+    #- list-sessions
 
 # Windows 10 ConPTY backend (Windows only)
 #
