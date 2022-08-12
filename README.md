@@ -11,6 +11,7 @@ To setup on new computer:
     3. Run `workspace_keybindings.sh` third.
 3. Setup desired program settings:
     1. Run `sym_links.sh` to use config files in dotfiles repo.
+    2. Copy `git/.gitconfig` to `$HOME/.gitconfig` (Not done in a script, as name and email may require updating).
 4. To setup default launch programs:
     1. In `Startup Applications`, add `startup/startup_program.sh`
 5. If emacs is desired:
