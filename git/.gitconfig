@@ -9,7 +9,11 @@
 	aware = add -N
 	aliases = config --get-regexp '^alias\\.'
 	yolo = push --force
+	upstream = push -u origin HEAD
 	ta = log --all --graph --oneline --decorate --simplify-by-decoration --abbrev-commit
+	main = !git symbolic-ref refs/remotes/origin/HEAD | cut -d'/' -f4
+	checkout-m = !git checkout $(git main)
+	rebase-m = !git rebase $(git main)
 	# co = checkout
 	# br = branch
 	# ci = commit
@@ -30,5 +34,4 @@
 	# ri = rebase -i
 	# rc = rebase --continue
 	# ca = commit --amend --no-edit
-	# upstream = push --set-upstream origin master
 	# cae = commit --amend
