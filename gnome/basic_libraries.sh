@@ -39,8 +39,33 @@ sudo apt install tmux \
 	texlive-latex-extra \
 	texlive-fonts-extra \
 	vim \
-	fonts-powerline
+	fonts-powerline \
+	postgresql-client \
+	python-is-python3 \
+	pipenv \
+	python3.10-venv \
+	libssl-dev \ # pyenv stuff
+	zlib1g-dev \
+	libbz2-dev \
+	libreadline-dev \
+	libsqlite3-dev \
+	wget \
+	llvm \
+	libncursesw5-dev \
+	xz-utils \
+	tk-dev \
+	libxml2-dev \
+	libxmlsec1-dev \
+	libffi-dev \
+	liblzma-dev
 
+# Setup poetry.
+curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
+
+# Setup pyenv
+git clone https://github.com/pyenv/pyenv.git ~/.pyenv
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PATH:$PYENV_ROOT/bin"
 
 # Setup docker. See https://docs.docker.com/engine/install/ubuntu/
 is_installed docker-ce
@@ -164,4 +189,13 @@ then
 	go get google.golang.org/protobuf
 	go install google.golang.org/protobuf
 	export PATH="$PATH:$(go env GOPATH)/bin"
+fi
+
+# Install cloud_sql_poroxy
+is_installed protobuf-compiler
+if [ "false" = "$INSTALLED" ]
+then
+	wget https://dl.google.com/cloudsql/cloud_sql_proxy.linux.amd64 -O cloud_sql_proxy
+	chmod +x cloud_sql_proxy
+	sudo mv cloud_sql_proxy /usr/bin/
 fi

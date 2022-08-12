@@ -101,6 +101,14 @@ source $ZSH/oh-my-zsh.sh
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 export SSH_AUTH_SOCK="${XDG_RUNTIME_DIR}/yubikey-agent/yubikey-agent.sock"
 
+#setup poetry and pyenv
+export PATH="$PATH:$HOME/.poetry/bin"
+export PYENV_ROOT="$HOME/.pyenv"
+command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init -)"
+
+# Reattach tmux sessions.
+# tmux attach
 # Automatically list tmux sessions.
 echo "Available TMUX Sessions:"
 tmux ls
