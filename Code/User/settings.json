@@ -1,15 +1,51 @@
 {
-    "workbench.colorTheme": "Default Dark+",
-    "extensions.experimental.affinity": {
-        "vscodevim.vim": 1,
-        "asvetliakov.vscode-neovim": 1
-    },
-    "python.defaultInterpreterPath": "python3",
-    "editor.minimap.enabled" : false,
-    "editor.fontFamily": "Source Code Pro",
-    "editor.fontSize": 14.5,
-    "gopls": {
-	    "formatting.local": "github.com/censys"
-    },
-    "go.lintTool": "golint"
+  "workbench.colorTheme": "Default Dark+",
+  "extensions.experimental.affinity": {
+    "vscodevim.vim": 1,
+    "asvetliakov.vscode-neovim": 1
+  },
+  "editor.experimental.stickyScroll.enabled": true,
+  "workbench.experimental.settingsProfiles.enabled": true,
+  "python.defaultInterpreterPath": "python3",
+  "editor.minimap.enabled": false,
+  "editor.fontFamily": "Source Code Pro",
+  "editor.fontSize": 14.5,
+  "gopls": {
+    "formatting.local": "github.com/censys"
+  },
+  "go.lintTool": "golint",
+  "debug.openDebug": "openOnSessionStart",
+  "go.delveConfig": {},
+  "go.toolsManagement.autoUpdate": true,
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "editor.inlineSuggest.enabled": true,
+  "[javascript]": {
+    "editor.maxTokenizationLineLength": 2500,
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "editor.codeActionsOnSave": {
+    "source.fixAll": true,
+    "organizeImports": true
+  },
+  "editor.formatOnSave": true,
+  /* "github.copilot.enable": {
+    "*": true,
+    "yaml": true,
+    "plaintext": true,
+    "markdown": true
+  },*/
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "window.zoomLevel": 1,
+  "editor.bracketPairColorization.enabled": true,
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
 }
