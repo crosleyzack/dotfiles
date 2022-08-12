@@ -15,7 +15,9 @@ To setup on new computer:
     2. Copy `git/.gitconfig` to `$HOME/.gitconfig` (Not done in a script, as name and email may require updating).
 5. To setup default launch programs in Ubuntu:
     1. In `Startup Applications`, add `startup/startup_program.sh`
-6. If emacs is desired:
+6. Install programming language libraries.
+    1. Setup libraries in Python from `python/requirements.txt` via `python -m pip install -r ./python/requirements.txt`
+7. If emacs is desired:
     1. Install emacs
     2. Pull emacs config from https://github.com/CrosleyZack/emacs_config.git
 
