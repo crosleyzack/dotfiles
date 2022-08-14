@@ -81,7 +81,6 @@ else
 	echo "docker-ce already installed! Skipping"
 fi
 
-
 # Setup google cloud CLI. See https://cloud.google.com/sdk/docs/install
 is_installed google-cloud-cli
 if [ "false" = "$INSTALLED" ]
@@ -94,7 +93,6 @@ else
 	echo "google-cloud-cli already installed! Skipping..."
 fi
 
-
 # Install rust. See https://www.rust-lang.org/tools/install
 is_installed rustup
 if [ "false" = "$INSTALLED" ]
@@ -104,71 +102,6 @@ then
 	rustup update stable
 else
 	echo "rustup already installed! Skipping..."
-fi
-
-
-# Install Brew. See https://brew.sh
-is_installed brew
-if [ "false" = "$INSTALLED" ]
-then
-	/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-	echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> ~/$USER/.zprofile
-	eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-else
-	echo "Brew already installed! Skipping..."
-fi
-
-
-# Use brew to install fontconfig. This is unfortunately required for alacritty to work.
-# 	See https://github.com/alacritty/alacritty/issues/5564
-is_installed fontconfig
-if [ "false" = "$INSTALLED" ]
-then
-	brew install fontconfig
-else
-	echo "fontconfig already installed! Skipping..."
-fi
-
-
-# Install alacritty. See https://github.com/alacritty/alacritty/blob/master/INSTALL.md
-is_installed alacritty
-if [ "false" = "$INSTALLED" ]
-then
-	rm -rf ~/temp/alacritty
-	mkdir ~/temp/alacritty
-	cd ~/temp/alacritty
-	git clone https://github.com/alacritty/alacritty.git
-	cd alacritty
-	#	Install requirements
-	sudo apt-get install cmake pkg-config libfreetype6-dev libfontconfig1-dev libxcb-xfixes0-dev libxkbcommon-dev python3
-	cargo build --release
-	# 	Move to bin
-	sudo cp target/release/alacritty /usr/local/bin # or anywhere else in $PATH
-	sudo cp extra/logo/alacritty-term.svg /usr/share/pixmaps/Alacritty.svg
-	sudo update-alternatives --install /usr/bin/x-terminal-emulator x-terminal-emulator /usr/local/bin/alacritty 50
-	# We shouldn't need this line, but execute it if not the default for some reason.
-	# sudo update-alternatives --config x-terminal-emulator
-else
-	echo "alacritty already installed! Skipping..."
-fi
-
-
-# Install zsh / oh-my-zsh
-is_installed zsh
-if [ "false" = "$INSTALLED" ]
-then
-	# setup zsh
-	sudo apt install zsh
-	# setup oh my zsh
-	sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-	# Setup spaceship prompt
-	rm -rf ~/temp/zsh
-	mkdir ~/temp/zsh
-	cd ~/temp/zsh
-	zsh -c "$(git clone https://github.com/spaceship-prompt/spaceship-prompt.git '$ZSH_CUSTOM/themes/spaceship-prompt' --depth=1)"
-	zsh -c "$(ln -s '$ZSH_CUSTOM/themes/spaceship-prompt/spaceship.zsh-theme' '$ZSH_CUSTOM/themes/spaceship.zsh-theme')"
-	# Set default terminal in alacritty to zsh
-	alacritty -e chsh -s $(which zsh)	
 fi
 
 # Install kubectl. See https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/
@@ -192,7 +125,7 @@ then
 fi
 
 # Install cloud_sql_poroxy
-is_installed protobuf-compiler
+is_installed cloud_sql_proxy
 if [ "false" = "$INSTALLED" ]
 then
 	wget https://dl.google.com/cloudsql/cloud_sql_proxy.linux.amd64 -O cloud_sql_proxy
