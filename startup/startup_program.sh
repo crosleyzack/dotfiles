@@ -2,6 +2,7 @@
 
 # To use, set as a program to run on OS start. This can be done on Ubuntu
 #	in Applications > Statup Applications
+# Note: This script should work on any X Window Manager system.
 
 function launch {
 	# $1 indicates program to launch - must be name of executable in bash path
