@@ -59,3 +59,5 @@ launch firefox 8 2 false &
 launch spotify 9 1 false &
 launch slack 9 1 false &
 launch code 1 3 true &
+# Launch alacritty - cannot move via code above, as it doesn't show up in wmcrtl
+alacritty -e tmux
