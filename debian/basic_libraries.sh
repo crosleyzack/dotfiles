@@ -121,7 +121,7 @@ fi
 
 # Use brew to install fontconfig. This is unfortunately required for alacritty to work.
 # 	See https://github.com/alacritty/alacritty/issues/5564
-is_installed brew
+is_installed fontconfig
 if [ "false" = "$INSTALLED" ]
 then
 	brew install fontconfig
