@@ -57,7 +57,8 @@ sudo apt install tmux \
 	libxml2-dev \
 	libxmlsec1-dev \
 	libffi-dev \
-	liblzma-dev
+	liblzma-dev \
+	libpcsclite-dev
 
 # Setup poetry.
 curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
@@ -66,6 +67,24 @@ curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poet
 git clone https://github.com/pyenv/pyenv.git ~/.pyenv
 export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PATH:$PYENV_ROOT/bin"
+
+# Install yubikey agent.
+is_installed yubikey-agent
+if [ "false" = "$INSTALLED" ]
+then
+	mkdir ~/temp
+	cd ~/temp
+	git clone https://filippo.io/yubikey-agent && cd yubikey-agent
+	go build && sudo cp yubikey-agent /usr/local/bin/
+	yubikey-agent -setup
+	curl https://raw.githubusercontent.com/FiloSottile/yubikey-agent/main/contrib/systemd/user/yubikey-agent.service > ~/.config/systemd/user/yubikey-agent.service
+	systemctl daemon-reload --user
+	sudo systemctl enable --now pcscd.socket
+	systemctl --user enable --now yubikey-agent
+	export SSH_AUTH_SOCK="${XDG_RUNTIME_DIR}/yubikey-agent/yubikey-agent.sock"
+else
+	echo "yubikey-agent already installed! Skipping"
+fi
 
 # Setup docker. See https://docs.docker.com/engine/install/ubuntu/
 is_installed docker-ce
@@ -132,3 +151,4 @@ then
 	chmod +x cloud_sql_proxy
 	sudo mv cloud_sql_proxy /usr/bin/
 fi
+
