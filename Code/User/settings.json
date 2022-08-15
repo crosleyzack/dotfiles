@@ -4,8 +4,6 @@
     "vscodevim.vim": 1,
     "asvetliakov.vscode-neovim": 1
   },
-  "editor.experimental.stickyScroll.enabled": true,
-  "workbench.experimental.settingsProfiles.enabled": true,
   "python.defaultInterpreterPath": "python3",
   "editor.minimap.enabled": false,
   "editor.fontFamily": "Source Code Pro",
@@ -36,6 +34,8 @@
     "organizeImports": true
   },
   "editor.formatOnSave": true,
+  "editor.insertSpaces": true,
+  "editor.renderWhitespace": "all",
   /* "github.copilot.enable": {
     "*": true,
     "yaml": true,
@@ -47,5 +47,7 @@
   "editor.bracketPairColorization.enabled": true,
   "[jsonc]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
-  }
+  },
+  "editor.experimental.stickyScroll.enabled": true
+  // "workbench.experimental.settingsProfiles.enabled": true
 }
