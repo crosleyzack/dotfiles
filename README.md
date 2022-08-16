@@ -21,4 +21,6 @@ To setup on new computer:
     1. Install emacs
     2. Pull emacs config from https://github.com/CrosleyZack/emacs_config.git
 
+To keep everything updated, run `update.sh`.
+
 <img alt="gitleaks badge" src="https://img.shields.io/badge/protected%20by-gitleaks-blue">

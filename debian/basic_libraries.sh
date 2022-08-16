@@ -44,7 +44,7 @@ sudo apt install tmux \
 	python-is-python3 \
 	pipenv \
 	python3.10-venv \
-	libssl-dev \ # pyenv stuff
+	libssl-dev \
 	zlib1g-dev \
 	libbz2-dev \
 	libreadline-dev \
@@ -61,12 +61,21 @@ sudo apt install tmux \
 	libpcsclite-dev
 
 # Setup poetry.
-curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
+# curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
+
+# Update python
+python -m pip install --upgrade pip wheel
 
 # Setup pyenv
-git clone https://github.com/pyenv/pyenv.git ~/.pyenv
-export PYENV_ROOT="$HOME/.pyenv"
-export PATH="$PATH:$PYENV_ROOT/bin"
+is_installed pyenv
+if [ "false" = "$INSTALLED" ]
+then
+	git clone https://github.com/pyenv/pyenv.git ~/.pyenv
+	export PYENV_ROOT="$HOME/.pyenv"
+	export PATH="$PATH:$PYENV_ROOT/bin"
+	# NOTE make sure to regularly `git pull` to update.
+	# TODO better to brew install?
+fi
 
 # Install yubikey agent.
 is_installed yubikey-agent
