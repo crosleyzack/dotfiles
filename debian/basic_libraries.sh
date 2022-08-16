@@ -65,7 +65,7 @@ sudo apt install tmux \
 # curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
 
 # Update python
-python -m pip install --upgrade pip wheel
+python -m pip install --upgrade pip wheel setuptools virtualenv
 
 # Setup pyenv
 is_installed pyenv
