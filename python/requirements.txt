@@ -10,3 +10,4 @@ autopep8
 epc
 importmagic
 grpcio-tools
+setuptool
