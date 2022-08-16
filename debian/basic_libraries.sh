@@ -58,7 +58,8 @@ sudo apt install tmux \
 	libxmlsec1-dev \
 	libffi-dev \
 	liblzma-dev \
-	libpcsclite-dev
+	libpcsclite-dev \
+	xsel
 
 # Setup poetry.
 # curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
