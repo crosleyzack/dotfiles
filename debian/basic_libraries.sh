@@ -137,7 +137,7 @@ fi
 is_installed protobuf-compiler
 if [ "false" = "$INSTALLED" ]
 then
-	sudo apt install protobuf-compiler
+	sudo apt install protobuf-compiler golang-goprotobuf-dev
 	go get google.golang.org/protobuf
 	go install google.golang.org/protobuf
 	export PATH="$PATH:$(go env GOPATH)/bin"
