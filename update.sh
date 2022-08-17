@@ -15,3 +15,5 @@ brew update
 brew upgrade
 # Update important python libs
 python -m pip install --upgrade wheel pip setuptools virtualenv
+# Update pyenv - should this be in brew?
+cd ~/.pyenv && git pull
