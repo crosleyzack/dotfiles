@@ -110,5 +110,5 @@ eval "$(pyenv init -)"
 # Reattach tmux sessions.
 # tmux attach
 # Automatically list tmux sessions.
-echo "Available TMUX Sessions:"
-tmux ls
+# echo "Available TMUX Sessions:"
+# tmux ls
