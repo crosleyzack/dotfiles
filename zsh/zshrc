@@ -107,6 +107,11 @@ export PYENV_ROOT="$HOME/.pyenv"
 command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init -)"
 
+# Set history by session
+unsetopt inc_append_history
+unsetopt share_history
+setopt APPEND_HISTORY
+
 # Reattach tmux sessions.
 # tmux attach
 # Automatically list tmux sessions.

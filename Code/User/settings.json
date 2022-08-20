@@ -48,6 +48,7 @@
   "[jsonc]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "editor.experimental.stickyScroll.enabled": true
+  "editor.experimental.stickyScroll.enabled": true,
+  "python.formatting.provider": "black"
   // "workbench.experimental.settingsProfiles.enabled": true
 }
