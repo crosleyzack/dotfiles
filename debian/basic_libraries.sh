@@ -162,3 +162,12 @@ then
 	sudo mv cloud_sql_proxy /usr/bin/
 fi
 
+# Install nodejs
+is_installed node
+if [ "false" = "$INSTALLED" ]
+then
+	curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+	sudo apt-get install -y nodejs
+	# install node packages
+	npm install jest
+fi
