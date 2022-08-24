@@ -107,6 +107,11 @@ export PYENV_ROOT="$HOME/.pyenv"
 command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init -)"
 
+# setup golang locations
+export GO_PATH="$HOME/go"
+export GOPATH="$HOME/go"
+export PATH="$PATH:$GO_PATH/bin"
+
 # Set history by session
 unsetopt inc_append_history
 unsetopt share_history

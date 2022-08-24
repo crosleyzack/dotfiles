@@ -67,6 +67,15 @@ sudo apt install tmux \
 # Update python
 python -m pip install --upgrade pip wheel setuptools virtualenv
 
+# Setup golang
+is_installed golang
+if [ "false" = "$INSTALLED" ]
+then
+	sudo apt install golang-go 
+	export GOPATH="$HOME/go"
+	export PATH="$PATH:$GO_PATH/bin"
+fi
+
 # Setup pyenv
 is_installed pyenv
 if [ "false" = "$INSTALLED" ]
@@ -117,7 +126,7 @@ then
 	echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
 	curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key --keyring /usr/share/keyrings/cloud.google.gpg add -
 	sudo apt-get update
-	sudo apt-get install google-cloud-cli
+	sudo apt-get install google-cloud-cli google-cloud-sdk-gke-gcloud-auth-plugin
 else
 	echo "google-cloud-cli already installed! Skipping..."
 fi
@@ -147,9 +156,25 @@ fi
 is_installed protobuf-compiler
 if [ "false" = "$INSTALLED" ]
 then
-	sudo apt install protobuf-compiler golang-goprotobuf-dev
-	go get google.golang.org/protobuf
-	go install google.golang.org/protobuf
+	sudo apt install protobuf-compiler
+	# NOTE: DO NOT INSTALL golang-goprotobuf-dev
+	#	this interferes with go installed stuff below
+	# NOTE: use pipeline make file to install below, instead of manually
+	# install protoc-gen-go version ---
+	# go get github.com/golang/protobuf/protoc-gen-go@latest
+	# go install github.com/golang/protobuf/protoc-gen-go@latest
+	# install protoc-gen-bq-schema version ---
+	# go get github.com/GoogleCloudPlatform/protoc-gen-bq-schema@latest
+	# go install github.com/GoogleCloudPlatform/protoc-gen-bq-schema@latest
+	# install protoc-gen-go-grpc version ---
+	# go get google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
+	# go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
+	# install protoc-gen-grpc-gateway version ---
+    	# go get github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-grpc-gateway@latest
+    	# go install github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-grpc-gateway@latest
+	# install protoc-gen-openapiv2 version ---
+    	# go get github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2
+    	# go install github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2
 	export PATH="$PATH:$(go env GOPATH)/bin"
 fi
 
@@ -166,8 +191,10 @@ fi
 is_installed node
 if [ "false" = "$INSTALLED" ]
 then
+	# TODO install via NVM to prevent permissions issues
 	curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
 	sudo apt-get install -y nodejs
 	# install node packages
+	npm install yarn
 	npm install jest
 fi
