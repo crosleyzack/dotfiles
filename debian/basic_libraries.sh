@@ -72,8 +72,9 @@ is_installed golang
 if [ "false" = "$INSTALLED" ]
 then
 	sudo apt install golang-go 
+	export GO_PATH="$HOME/go"
 	export GOPATH="$HOME/go"
-	export PATH="$PATH:$GO_PATH/bin"
+	export PATH="$PATH:$GOPATH/bin"
 fi
 
 # Setup pyenv
