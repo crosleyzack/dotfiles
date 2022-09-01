@@ -126,4 +126,21 @@ then
         zsh -c "$(ln -s '$ZSH_CUSTOM/themes/spaceship-prompt/spaceship.zsh-theme' '$ZSH_CUSTOM/themes/spaceship.zsh-theme')"
         # Set default terminal in alacritty to zsh
         alacritty -e chsh -s $(which zsh)
+else
+	echo "Zsh already installed, skipping..."
 fi
+
+
+# Install redis-cli
+is_installed redis-cli
+if [ "false" = "$INSTALLED" ]
+then
+	curl -fsSL https://packages.redis.io/gpg | sudo gpg --dearmor -o /usr/share/keyrings/redis-archive-keyring.gpg
+	echo "deb [signed-by=/usr/share/keyrings/redis-archive-keyring.gpg] https://packages.redis.io/deb $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/redis.list
+	sudo apt-get update
+	sudo apt-get install redis
+else
+	echo "Redis already installed, skipping..."
+fi
+
+

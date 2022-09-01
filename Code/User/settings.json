@@ -49,6 +49,9 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "editor.experimental.stickyScroll.enabled": true,
-  "python.formatting.provider": "black"
+  "python.formatting.provider": "black",
+  "[yaml]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
   // "workbench.experimental.settingsProfiles.enabled": true
 }
