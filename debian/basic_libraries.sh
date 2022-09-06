@@ -159,24 +159,9 @@ if [ "false" = "$INSTALLED" ]
 then
 	sudo apt install protobuf-compiler
 	# NOTE: DO NOT INSTALL golang-goprotobuf-dev
-	#	this interferes with go installed stuff below
-	# NOTE: use pipeline make file to install below, instead of manually
-	# install protoc-gen-go version ---
-	# go get github.com/golang/protobuf/protoc-gen-go@latest
-	# go install github.com/golang/protobuf/protoc-gen-go@latest
-	# install protoc-gen-bq-schema version ---
-	# go get github.com/GoogleCloudPlatform/protoc-gen-bq-schema@latest
-	# go install github.com/GoogleCloudPlatform/protoc-gen-bq-schema@latest
-	# install protoc-gen-go-grpc version ---
-	# go get google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
-	# go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
-	# install protoc-gen-grpc-gateway version ---
-    	# go get github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-grpc-gateway@latest
-    	# go install github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-grpc-gateway@latest
-	# install protoc-gen-openapiv2 version ---
-    	# go get github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2
-    	# go install github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2
-	export PATH="$PATH:$(go env GOPATH)/bin"
+	#	instead, install libraries via:
+	#		go get <your library name>
+	# HINT: most projects will install necessary things in their make file
 fi
 
 # Install cloud_sql_poroxy
