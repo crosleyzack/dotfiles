@@ -17,3 +17,5 @@ brew upgrade
 python -m pip install --upgrade wheel pip setuptools virtualenv
 # Update pyenv - should this be in brew?
 cd ~/.pyenv && git pull
+# update snap
+sudo snap refresh
