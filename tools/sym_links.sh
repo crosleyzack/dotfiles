@@ -35,3 +35,11 @@ ln -s $1/zsh/zshrc $HOME/.zshrc
 sudo rm /etc/docker/daemon.json
 echo "Linking /etc/docker/deamon.json to $1/docker/daemon.json"
 sudo ln -s $1/docker/daemon.json /etc/docker/daemon.json
+
+# Tmux
+mkdir $CONFIG/tmux
+rm $CONFIG/tmux/tmux.conf
+echo "Linking $HOME/.ghc/ghci.conf to $1/haskell/ghci.conf"
+ln -s $1/haskell/ghci.conf $HOME/.ghc/ghci.conf
+chmod go-w $HOME/.ghc
+chmod go-w $1/haskell/ghci.conf
