@@ -43,3 +43,9 @@ echo "Linking $HOME/.ghc/ghci.conf to $1/haskell/ghci.conf"
 ln -s $1/haskell/ghci.conf $HOME/.ghc/ghci.conf
 chmod go-w $HOME/.ghc
 chmod go-w $1/haskell/ghci.conf
+
+# Proxychains
+mkdir $HOME/.proxychains/
+rm $HOME/.proxychains/proxychains.conf
+echo "Linking $HOME/.proxychains/proxychains.conf to $1/proxychains/proxychains.conf"
+ln -s $1/proxychains/proxychains.conf $HOME/.proxychains/proxychains.conf
