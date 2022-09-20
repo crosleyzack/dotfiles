@@ -101,6 +101,9 @@ source $ZSH/oh-my-zsh.sh
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 export SSH_AUTH_SOCK="${XDG_RUNTIME_DIR}/yubikey-agent/yubikey-agent.sock"
 
+# add alias shortcut for proxychains
+alias pc="proxychains"
+
 #setup poetry, pyenv, pyenv-virtualenv
 export PATH="$PATH:$HOME/.poetry/bin"
 export PYENV_ROOT="$HOME/.pyenv"
