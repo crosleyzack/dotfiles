@@ -101,16 +101,19 @@ source $ZSH/oh-my-zsh.sh
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 export SSH_AUTH_SOCK="${XDG_RUNTIME_DIR}/yubikey-agent/yubikey-agent.sock"
 
-#setup poetry and pyenv
+#setup poetry, pyenv, pyenv-virtualenv
 export PATH="$PATH:$HOME/.poetry/bin"
 export PYENV_ROOT="$HOME/.pyenv"
 command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"
 
 # setup golang locations
 export GO_PATH="$HOME/go"
 export GOPATH="$HOME/go"
 export PATH="$PATH:$GO_PATH/bin"
+
+# setup py
 
 # Set history by session
 unsetopt inc_append_history
@@ -122,3 +125,5 @@ setopt APPEND_HISTORY
 # Automatically list tmux sessions.
 # echo "Available TMUX Sessions:"
 # tmux ls
+
+[ -f "/home/crosley/.ghcup/env" ] && source "/home/crosley/.ghcup/env" # ghcup-env

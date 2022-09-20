@@ -81,11 +81,13 @@ fi
 is_installed pyenv
 if [ "false" = "$INSTALLED" ]
 then
+	# TODO better to brew install?
 	git clone https://github.com/pyenv/pyenv.git ~/.pyenv
 	export PYENV_ROOT="$HOME/.pyenv"
 	export PATH="$PATH:$PYENV_ROOT/bin"
 	# NOTE make sure to regularly `git pull` to update.
-	# TODO better to brew install?
+	# Install pyenv-virtualenv
+	git clone https://github.com/pyenv/pyenv-virtualenv.git $(pyenv root)/plugins/pyenv-virtualenv
 fi
 
 # Install yubikey agent.
