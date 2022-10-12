@@ -21,5 +21,10 @@
     "key": "q",
     "command": "editor.action.inlineSuggest.hide",
     "when": "inlineSuggestionVisible"
+  },
+  {
+    "key": "ctrl+shift+j",
+    "command": "editor.action.joinLines",
+    "when": "editorFocus && editorHasSelection"
   }
 ]
