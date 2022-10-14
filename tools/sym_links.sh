@@ -49,3 +49,9 @@ mkdir $HOME/.proxychains/
 rm $HOME/.proxychains/proxychains.conf
 echo "Linking $HOME/.proxychains/proxychains.conf to $1/proxychains/proxychains.conf"
 ln -s $1/proxychains/proxychains.conf $HOME/.proxychains/proxychains.conf
+
+# PulseAudio
+mkdir $HOME/.config/pulse/
+rm $HOME/.config/pulse/default.pa
+echo "Linking $HOME/.config/pulse/default.pa to $1/pulse/default.pa"
+ln -s $1/pulse/default.pa $HOME/.config/pulse/default.pa
