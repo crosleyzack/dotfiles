@@ -2,25 +2,7 @@
 sudo apt update
 sudo apt install snapd
 
-# Function to check if a package or command is installed.
-# Will set $INSTALLED to "true" if found, "false" if not.
-# $1 package name
-function is_installed {
-        if [ "install ok installed" = "$(dpkg-query -W --showformat='${Status}\n' $1 | grep 'install ok installed')" ]
-        then
-                # If we find the name in dpkg, then it is installed.
-                echo "Package $1 is installed!"
-                INSTALLED="true"
-        elif [ "" != $(command -v $1) ]
-        then
-                # If a command of this name exists, then it is installed.
-                echo "Package $1 is installed!"
-                INSTALLED="true"
-        else
-                echo "Package $1 NOT installed!"
-                INSTALLED="false"
-        fi
-}
+source "${BASH_SOURCE%/*}/../tools/install_tools.sh"
 
 # Install spotify.
 is_installed spotify
@@ -71,7 +53,8 @@ is_installed brew
 if [ "false" = "$INSTALLED" ]
 then
         /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-        echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> ~/$USER/.zprofile
+	touch $HOME/.zprofile
+        echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> $HOME/.zprofile
         eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 else
         echo "Brew already installed! Skipping..."

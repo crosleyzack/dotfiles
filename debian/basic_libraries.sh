@@ -1,30 +1,9 @@
 #!/bin/bash
 
-# Function to check if a package or command is installed.
-# Will set $INSTALLED to "true" if found, "false" if not.
-# $1 package name
-function is_installed {
-	if [ "install ok installed" = "$(dpkg-query -W --showformat='${Status}\n' $1 | grep 'install ok installed')" ]
-	then
-		# If we find the name in dpkg, then it is installed.
-		echo "Package $1 is installed!"
-		INSTALLED="true"
-	elif [ "" != $(command -v $1) ]
-	then
-		# If a command of this name exists, then it is installed.
-		echo "Package $1 is installed!"
-		INSTALLED="true"
-	else
-		echo "Package $1 NOT installed!"
-		INSTALLED="false"
-	fi
-}
-
-
 # Install some apt packages
 sudo apt update
 sudo apt upgrade
-sudo apt install tmux \
+sudo apt install -y tmux \
 	gcc \
 	cmake \
 	make \
@@ -59,13 +38,17 @@ sudo apt install tmux \
 	libffi-dev \
 	liblzma-dev \
 	libpcsclite-dev \
-	xsel
+	xsel \
+	miniupnpc \
+	net-tools
 
 # Setup poetry.
 # curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
 
 # Update python
 python -m pip install --upgrade pip wheel setuptools virtualenv
+
+source "${BASH_SOURCE%/*}/../tools/install_tools.sh"
 
 # Setup golang
 is_installed golang
