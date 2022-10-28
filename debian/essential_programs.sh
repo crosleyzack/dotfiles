@@ -2,7 +2,8 @@
 sudo apt update
 sudo apt install snapd
 
-source "${BASH_SOURCE%/*}/../tools/install_tools.sh"
+CONFIG="${BASH_SOURCE%/*}../"
+source "$CONFIG/tools/install_tools.sh"
 
 # Install spotify.
 is_installed spotify
@@ -44,6 +45,9 @@ then
 	rm -f packages.microsoft.gpg
 	sudo apt update
 	sudo apt install code
+	# install extensions
+	cd "${CONFIG}" && ./Code/extensions/install-extensions.sh
+
 else
         echo "VS Code already installed! Skipping..."
 fi
