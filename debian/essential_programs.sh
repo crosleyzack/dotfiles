@@ -47,7 +47,6 @@ then
 	sudo apt install code
 	# install extensions
 	cd "${CONFIG}" && ./Code/extensions/install-extensions.sh
-
 else
         echo "VS Code already installed! Skipping..."
 fi
