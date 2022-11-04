@@ -14,6 +14,7 @@ sudo apt install -y tmux \
 	lsb-release \
 	jq \
 	git \
+	git-gui \
 	apt-transport-https \
 	texlive-latex-extra \
 	texlive-fonts-extra \
