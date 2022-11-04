@@ -69,10 +69,13 @@
     "python": true
   },
   "github.copilot.advanced": {},
-  "window.zoomLevel": 1,
   "vs-kubernetes": {
     "vs-kubernetes.crd-code-completion": "disabled",
     "vscode-kubernetes.helm-path.linux": "$HOME/.local/state/vs-kubernetes/tools/helm/linux-amd64/helm"
+  },
+  "window.zoomLevel": 1,
+  "protoc": {
+    "options": ["--proto_path=$HOME/dev/pipeline/proto"]
   }
   // "workbench.experimental.settingsProfiles.enabled": true
 }
