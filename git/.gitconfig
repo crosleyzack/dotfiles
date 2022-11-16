@@ -1,6 +1,12 @@
 [user]
 	name = crosleyzack
 	email = crosleyzack@gmail.com
+[init]
+	defaultBranch = main
+[core]
+	editor = vim
+[color]
+	ui = auto
 [alias]
 	tree = log --graph --decorate --pretty=oneline --abbrev-commit
 	unstage = reset HEAD --
@@ -9,7 +15,7 @@
 	aware = add -N
 	aliases = config --get-regexp '^alias\\.'
 	yolo = push --force
-	recent-branches = for-each-ref --count=10 --sort=-committerdate refs/heads/ --format="%(refname:short)"
+	recent = for-each-ref --count=10 --sort=-committerdate refs/heads/ --format="%(refname:short)"
 	upstream = push -u origin HEAD
 	ta = log --all --graph --oneline --decorate --simplify-by-decoration --abbrev-commit
 	main = !git symbolic-ref refs/remotes/origin/HEAD | cut -d'/' -f4
@@ -18,24 +24,3 @@
 	rc = rebase --continue
 	checkout-m = !git checkout $(git main)
 	rebase-m = !git rebase $(git main)
-	# co = checkout
-	# br = branch
-	# ci = commit
-	# st = status
-	# a = add
-	# d = diff
-	# cim = commit -m
-	# pl = pull
-	# ps = push
-	# changed = diff HEAD~1 HEAD
-	# t = log --graph --decorate --pretty=oneline --abbrev-commit
-	# cm = commit -m
-	# f = fetch
-	# ap = add -p
-	# l = log
-	# s = diff --staged
-	# r = rebase
-	# ri = rebase -i
-	# rc = rebase --continue
-	# ca = commit --amend --no-edit
-	# cae = commit --amend

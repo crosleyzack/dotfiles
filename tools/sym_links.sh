@@ -55,3 +55,8 @@ mkdir $HOME/.config/pulse/
 rm $HOME/.config/pulse/default.pa
 echo "Linking $HOME/.config/pulse/default.pa to $1/pulse/default.pa"
 ln -s $1/pulse/default.pa $HOME/.config/pulse/default.pa
+
+# Gitconfig
+rm $HOME/.gitconfig
+echo "Linking $HOME/.gitconfig to $1/git/.gitconfig"
+ln -s $1/git/.gitconfig $HOME/.gitconfig
