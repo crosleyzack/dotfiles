@@ -21,6 +21,8 @@
 	ta = log --all --graph --oneline --decorate --simplify-by-decoration --abbrev-commit
 	amend = !git log -n 1 --pretty=tformat:%s%n%n%b | git commit -F - --amend
 	details = log -n1 -p --format=fuller
+	# Checks all commits to check all lines to get total number you committed. This gets _REALLY_ slow for large projects.
+	lines-committed = !git ls-files | xargs -n1 git blame --line-porcelain | sed -n 's/^author //p' | uniq -ic | grep -iF "crosley" | awk '{s+=$1} END {print s}'
 	main = !git symbolic-ref refs/remotes/origin/HEAD | cut -d'/' -f4
 	# get commits from origin, rebase main, rebase current branch off of main.
 	update = !BRANCH=$(git branch --show-current) && git checkout-m && git fetch && git rebase && git checkout $BRANCH && git rebase-m
