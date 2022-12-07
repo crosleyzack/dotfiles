@@ -1,4 +1,6 @@
 // Place your key bindings in this file to override the defaults
+// For all available commands, do:
+//  [Ctrl+P] > Open Default Keyboard Shortcuts(JSON) _or_ [Ctrl+F1] as defined below.
 [
   {
     "key": "ctrl+;",
@@ -26,5 +28,13 @@
     "key": "ctrl+shift+j",
     "command": "editor.action.joinLines",
     "when": "editorFocus && editorHasSelection"
+  }, 
+  {
+    "key": "ctrl+f1",
+    "command": "workbench.action.openDefaultKeybindingsFile"
+  },
+  {
+    "key": "ctrl+shift+n",
+    "command": "workbench.action.files.newUntitledFile"
   }
 ]
