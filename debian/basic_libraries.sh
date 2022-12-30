@@ -170,3 +170,28 @@ then
 	npm install yarn
 	npm install jest
 fi
+
+# Install grpcurl
+is_installed grpcurl
+if [ "false" = "$INSTALLED" ]
+then
+	go install github.com/fullstorydev/grpcurl/cmd/grpcurl@latest
+fi
+
+# Install spanner-cli
+is_installed spanner-cli
+if [ "false" = "$INSTALLED" ]
+then
+	go install github.com/cloudspannerecosystem/spanner-cli@latest
+fi
+
+# Install gitlab-runner
+is_installed gitlab-runner
+if [ "false" = "$INSTALLED" ]
+then
+	curl -L "https://packages.gitlab.com/install/repositories/runner/gitlab-runner/script.deb.sh" | sudo bash
+	sudo apt-get update
+	sudo apt-get install gitlab-runner
+fi
+
+
