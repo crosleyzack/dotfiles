@@ -4,6 +4,10 @@
 #	in Applications > Statup Applications
 # Note: This script should work on any X Window Manager system.
 
+# Get desktop size. See https://askubuntu.com/questions/584688/how-can-i-get-the-monitor-resolution-using-the-command-line
+X=$(xrandr --current | grep '*' | uniq | awk '{print $1}' | cut -d 'x' -f1)
+Y=$(xrandr --current | grep '*' | uniq | awk '{print $1}' | cut -d 'x' -f2)
+
 function launch {
 	# $1 indicates program to launch - must be name of executable in bash path
 	# $2 indicates workspace to put on (0 indexed)
@@ -12,6 +16,8 @@ function launch {
 	#	- 2 -> vertically and horizontally maxed
 	#	- 3 -> fullscreen
 	# $4 indicates if multiple windows should be placed on successive desktops.
+	# $5 if $3==1, proportion of horizontal space to use ($X/$5)
+	# $6 if $3==1, X placement of window 
 
 	# Startup program and wait for launch.
 	$1 &
@@ -36,29 +42,24 @@ function launch {
 		sleep 1s
 		# change window size based on arguments
 		#	if 3, make full screen
-		if [[ $3 -eq 3 ]]
-       		then
+		if [[ $3 -eq 3 ]]; then
 			echo "changing $1 to fullscreen"
 			wmctrl -i -r $WINID -b toggle,fullscreen
-			sleep 1s
-		else
-			# if 2, make horizontally maxed
-			if [[ $3 -eq 2 ]]
-			then
-				echo "changing $1 to maximized horz"
-				wmctrl -i -r $WINID -b toggle,maximized_horz
-				sleep 1s
-			fi
-			# if 1 or 2, make vertically maxed
+		elif [[ $3 -eq 2 ]]; then
+			echo "changing $1 to maximized horz"
+			wmctrl -i -r $WINID -e 0,0,0,$X,$Y
+		elif [[ $3 -eq 1 ]]; then
+			# if 1 make vertically maxed
 			echo "changing $1 to maximized vert"
-			wmctrl -i -r $WINID -b toggle,maximized_vert
+			wmctrl -i -r $WINID -e 0,$6,0,$(expr $X / $5),$Y
 		fi
+		sleep 1s
 	done
 }
 
 launch firefox 8 2 false &
-launch spotify 9 1 false &
-launch slack 9 1 false &
+launch spotify 9 1 false 3 0 &
+launch slack 9 1 false 2 $(expr $X / 2) &
 launch code 1 3 true &
 # Launch alacritty - cannot move via code above, as it doesn't show up in wmcrtl
 alacritty -e tmux
