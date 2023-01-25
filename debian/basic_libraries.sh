@@ -43,11 +43,11 @@ sudo apt install -y tmux \
 	miniupnpc \
 	net-tools
 
-# Setup poetry.
-# curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
-
 # Update python
 python -m pip install --upgrade pip wheel setuptools virtualenv
+
+# Setup poetry.
+# curl -sSL https://install.python-poetry.org | POETRY_HOME=$HOME/.poetry python - --git https://github.com/python-poetry/poetry.git@master
 
 source "${BASH_SOURCE%/*}/../tools/install_tools.sh"
 
