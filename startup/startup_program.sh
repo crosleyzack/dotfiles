@@ -16,7 +16,7 @@ function launch {
 	#	- 2 -> vertically and horizontally maxed
 	#	- 3 -> fullscreen
 	# $4 indicates if multiple windows should be placed on successive desktops.
-	# $5 if $3==1, proportion of horizontal space to use ($X/$5)
+	# $5 if $3==1, horizontal space for window to use
 	# $6 if $3==1, X placement of window 
 
 	# Startup program and wait for launch.
@@ -51,15 +51,16 @@ function launch {
 		elif [[ $3 -eq 1 ]]; then
 			# if 1 make vertically maxed
 			echo "changing $1 to maximized vert"
-			wmctrl -i -r $WINID -e 0,$6,0,$(expr $X / $5),$Y
+			wmctrl -i -r $WINID -e 0,$6,0,$5,$Y
 		fi
 		sleep 1s
 	done
 }
 
 launch firefox 8 2 false &
-launch spotify 9 1 false 3 0 &
-launch slack 9 1 false 2 $(expr $X / 2) &
+THIRD=$(( $X / 3 ))
+launch spotify 9 1 false $THIRD 0 &
+launch slack 9 1 false $(( $X - $THIRD )) $THIRD &
 launch code 1 3 true &
 # Launch alacritty - cannot move via code above, as it doesn't show up in wmcrtl
 alacritty -e tmux
