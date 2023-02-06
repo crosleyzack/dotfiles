@@ -16,7 +16,7 @@
 	aware = add -N
 	aliases = config --get-regexp '^alias\\.'
 	yolo = push --force
-	recent = for-each-ref --count=10 --sort=-committerdate refs/heads/ --format="%(refname:short)"
+	recent = for-each-ref --count=10 --sort=-committerdate refs/heads/ --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(contents:subject) (%(color:green)%(committerdate:short)%(color:reset))'
 	upstream = push -u origin HEAD
 	ta = log --all --graph --oneline --decorate --simplify-by-decoration --abbrev-commit
 	amend = !git log -n 1 --pretty=tformat:%s%n%n%b | git commit -F - --amend
