@@ -103,6 +103,9 @@ fi
 # add alias shortcut for proxychains
 alias pc="proxychains"
 
+# alias for easy tmux cleanup
+alias tmux-cleanup='for x in $(tmux list-sessions | grep -E -i "^[[:digit:]]" | awk -F ":" "{print \$1}"); do tmux kill-session -t $x; done'
+
 # Set yubikey agent.
 export SSH_AUTH_SOCK="${XDG_RUNTIME_DIR}/yubikey-agent/yubikey-agent.sock"
 
