@@ -194,4 +194,21 @@ then
 	sudo apt-get install gitlab-runner
 fi
 
+# Install Kubernetes kind
+is_installed kind
+if [ "false" = "$INSTALLED" ]
+then
+	go install sigs.k8s.io/kind@v0.17.0	
+	# Make sure go in path. Should already be true
+	# export PATH=$PATH:$($(go env GOPATH)/bin)
+fi
+
+# Install Kubernetes ctlptl
+is_installed ctlptl
+if [ "false" = "$INSTALLED" ]
+then
+	go install github.com/tilt-dev/ctlptl/cmd/ctlptl@latest
+	# Make sure go in path. Should already be true
+	# export PATH=$PATH:$($(go env GOPATH)/bin)
+fi
 
