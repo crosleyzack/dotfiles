@@ -92,19 +92,7 @@ else
 	echo "yubikey-agent already installed! Skipping"
 fi
 
-# Setup docker. See https://docs.docker.com/engine/install/ubuntu/
-is_installed docker-ce
-if [ "false" = "$INSTALLED" ]
-then
-	sudo mkdir -p /etc/apt/keyrings
-	curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
-	echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
-	$(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-	sudo apt-get update
-	sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin
-else
-	echo "docker-ce already installed! Skipping"
-fi
+
 
 # Setup google cloud CLI. See https://cloud.google.com/sdk/docs/install
 is_installed google-cloud-cli
@@ -129,28 +117,7 @@ else
 	echo "rustup already installed! Skipping..."
 fi
 
-# Install kubectl. See https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/
-is_installed kubectl
-if [ "false" = "$INSTALLED" ]
-then
-	sudo curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg
-	echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
-	sudo apt-get update
-	sudo apt-get install -y kubectl
-fi
-
-# Install protobuf
-is_installed protobuf-compiler
-if [ "false" = "$INSTALLED" ]
-then
-	sudo apt install protobuf-compiler
-	# NOTE: DO NOT INSTALL golang-goprotobuf-dev
-	#	instead, install libraries via:
-	#		go get <your library name>
-	# HINT: most projects will install necessary things in their make file
-fi
-
-# Install cloud_sql_poroxy
+# Install cloud_sql_proxy. See https://cloud.google.com/sql/docs/mysql/connect-auth-proxy#install
 is_installed cloud_sql_proxy
 if [ "false" = "$INSTALLED" ]
 then
@@ -159,7 +126,7 @@ then
 	sudo mv cloud_sql_proxy /usr/bin/
 fi
 
-# Install nodejs
+# Install nodejs. See https://nodejs.org/en/download/package-manager/
 is_installed node
 if [ "false" = "$INSTALLED" ]
 then
@@ -171,21 +138,14 @@ then
 	npm install jest
 fi
 
-# Install grpcurl
-is_installed grpcurl
-if [ "false" = "$INSTALLED" ]
-then
-	go install github.com/fullstorydev/grpcurl/cmd/grpcurl@latest
-fi
-
-# Install spanner-cli
+# Install spanner-cli. See https://github.com/cloudspannerecosystem/spanner-cli#install
 is_installed spanner-cli
 if [ "false" = "$INSTALLED" ]
 then
 	go install github.com/cloudspannerecosystem/spanner-cli@latest
 fi
 
-# Install gitlab-runner
+# Install gitlab-runner. See https://docs.gitlab.com/runner/install/
 is_installed gitlab-runner
 if [ "false" = "$INSTALLED" ]
 then
@@ -201,6 +161,47 @@ then
 	sudo git clone https://github.com/ahmetb/kubectx /usr/local/kubectx
 	sudo ln -s /usr/local/kubectx/kubectx /usr/local/bin/kubectx
 	sudo ln -s /usr/local/kubectx/kubens /usr/local/bin/kubens
+
+# Install grpcurl. See https://github.com/fullstorydev/grpcurl#installation
+is_installed grpcurl
+if [ "false" = "$INSTALLED" ]
+then
+	go install github.com/fullstorydev/grpcurl/cmd/grpcurl@latest
+fi
+
+# Install protobuf. See https://grpc.io/docs/protoc-installation/
+is_installed protobuf-compiler
+if [ "false" = "$INSTALLED" ]
+then
+	sudo apt install protobuf-compiler
+	# NOTE: DO NOT INSTALL golang-goprotobuf-dev
+	#	instead, install libraries via:
+	#		go get <your library name>
+	# HINT: most projects will install necessary things in their make file
+fi
+
+# Setup docker. See https://docs.docker.com/engine/install/ubuntu/
+is_installed docker-ce
+if [ "false" = "$INSTALLED" ]
+then
+	sudo mkdir -p /etc/apt/keyrings
+	curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+	echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+	$(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+	sudo apt-get update
+	sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin
+else
+	echo "docker-ce already installed! Skipping"
+fi
+
+# Install Kubernetes kubectl. See https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/
+is_installed kubectl
+if [ "false" = "$INSTALLED" ]
+then
+	sudo curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg
+	echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+	sudo apt-get update
+	sudo apt-get install -y kubectl
 fi
 
 # Install Kubernetes kind. See https://kind.sigs.k8s.io/
@@ -212,7 +213,7 @@ then
 	# export PATH=$PATH:$($(go env GOPATH)/bin)
 fi
 
-# Install Kubernetes ctlptl
+# Install Kubernetes ctlptl. See https://github.com/tilt-dev/ctlptl/blob/main/INSTALL.md
 is_installed ctlptl
 if [ "false" = "$INSTALLED" ]
 then
