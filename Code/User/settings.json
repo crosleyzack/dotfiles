@@ -4,6 +4,7 @@
     "vscodevim.vim": 1,
     "asvetliakov.vscode-neovim": 1
   },
+  "search.collapseResults": "alwaysCollapse",
   "editor.minimap.enabled": false,
   "editor.fontFamily": "Source Code Pro",
   "editor.fontSize": 14.5,
