@@ -194,7 +194,16 @@ then
 	sudo apt-get install gitlab-runner
 fi
 
-# Install Kubernetes kind
+# Install Kubernetes kubectx. https://github.com/ahmetb/kubectx
+is_installed kubectx
+if [ "false" = "$INSTALLED" ]
+then
+	sudo git clone https://github.com/ahmetb/kubectx /usr/local/kubectx
+	sudo ln -s /usr/local/kubectx/kubectx /usr/local/bin/kubectx
+	sudo ln -s /usr/local/kubectx/kubens /usr/local/bin/kubens
+fi
+
+# Install Kubernetes kind. See https://kind.sigs.k8s.io/
 is_installed kind
 if [ "false" = "$INSTALLED" ]
 then
@@ -212,3 +221,13 @@ then
 	# export PATH=$PATH:$($(go env GOPATH)/bin)
 fi
 
+# Install Kubernetes helm. See https://helm.sh/docs/intro/install/
+is_installed helm
+if [ "false" = "$INSTALLED" ]
+then
+	curl https://baltocdn.com/helm/signing.asc | gpg --dearmor | sudo tee /usr/share/keyrings/helm.gpg > /dev/null
+	sudo apt-get install apt-transport-https --yes
+	echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/helm.gpg] https://baltocdn.com/helm/stable/debian/ all main" | sudo tee /etc/apt/sources.list.d/helm-stable-debian.list
+	sudo apt-get update
+	sudo apt-get install helm
+fi
