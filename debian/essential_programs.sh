@@ -20,18 +20,18 @@ fi
 
 
 # Install slack.
-is_installed slack
-if [ "false" = "$INSTALLED" ]
-then
-	sudo snap install slack
-	# NOTE non-snap version has issues: https://github.com/Foundry376/Mailspring/issues/2154
-        # mkdir ~/temp
-        # cd ~/temp
-        # wget https://downloads.slack-edge.com/linux_releases/slack-desktop-4.0.2-amd64.deb
-	# sudo apt install ./slack-desktop-*.deb
-else
-        echo "Slack already installed! Skipping..."
-fi
+# is_installed slack
+# if [ "false" = "$INSTALLED" ]
+# then
+# 	sudo snap install slack
+# 	# NOTE non-snap version has issues: https://github.com/Foundry376/Mailspring/issues/2154
+#         # mkdir ~/temp
+#         # cd ~/temp
+#         # wget https://downloads.slack-edge.com/linux_releases/slack-desktop-4.0.2-amd64.deb
+# 	# sudo apt install ./slack-desktop-*.deb
+# else
+#         echo "Slack already installed! Skipping..."
+# fi
 
 
 # Install VS code.
