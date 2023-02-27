@@ -58,9 +58,10 @@ function launch {
 }
 
 launch firefox 8 2 false &
-THIRD=$(( $X / 3 ))
-launch spotify 9 1 false $THIRD 0 &
-launch slack 9 1 false $(( $X - $THIRD )) $THIRD &
+#THIRD=$(( $X / 3 ))
+HALF=$(( $X / 2 ))
+launch spotify 9 1 false $HALF 0 &
+# launch slack 9 1 false $(( $X - $THIRD )) $THIRD &
 launch code 1 3 true &
 # Launch alacritty - cannot move via code above, as it doesn't show up in wmcrtl
 alacritty -e tmux
