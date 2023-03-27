@@ -28,10 +28,10 @@ echo "Linking $CONFIG/Code/User/settings.json to $1/Code/User/settings.json"
 ln -s $1/Code/User/settings.json $CONFIG/Code/User/settings.json
 
 # Tmux
-mkdir -p $CONFIG/tmux
-rm $CONFIG/tmux/tmux.conf
-echo "Linking $CONFIG/tmux/tmux.conf to $1/tmux/tmux.conf"
-ln -s $1/tmux/tmux.conf $CONFIG/tmux/tmux.conf
+mkdir -p $HOME/.tmux
+rm $HOME/.tmux/tmux.conf
+echo "Linking $HOME/.tmux/tmux.conf to $1/tmux/tmux.conf"
+ln -s $1/tmux/tmux.conf $HOME/.tmux/tmux.conf
 
 #Zsh
 rm $HOME/.zshrc
@@ -43,9 +43,9 @@ sudo rm /etc/docker/daemon.json
 echo "Linking /etc/docker/deamon.json to $1/docker/daemon.json"
 sudo ln -s $1/docker/daemon.json /etc/docker/daemon.json
 
-# Tmux
-mkdir -p $CONFIG/tmux
-rm $CONFIG/tmux/tmux.conf
+# GHC
+mkdir -p $HOME/.ghc
+rm $HOME/.ghc/ghci.conf
 echo "Linking $HOME/.ghc/ghci.conf to $1/haskell/ghci.conf"
 ln -s $1/haskell/ghci.conf $HOME/.ghc/ghci.conf
 chmod go-w $HOME/.ghc
