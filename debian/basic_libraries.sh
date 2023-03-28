@@ -55,7 +55,7 @@ source "${BASH_SOURCE%/*}/../tools/install_tools.sh"
 is_installed golang
 if [ "false" = "$INSTALLED" ]
 then
-	sudo apt install golang-go 
+	sudo apt install golang-go
 	export GO_PATH="$HOME/go"
 	export GOPATH="$HOME/go"
 	export PATH="$PATH:$GOPATH/bin"
@@ -208,7 +208,7 @@ fi
 is_installed kind
 if [ "false" = "$INSTALLED" ]
 then
-	go install sigs.k8s.io/kind@v0.17.0	
+	go install sigs.k8s.io/kind@v0.17.0
 	# Make sure go in path. Should already be true
 	# export PATH=$PATH:$($(go env GOPATH)/bin)
 fi
@@ -231,4 +231,13 @@ then
 	echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/helm.gpg] https://baltocdn.com/helm/stable/debian/ all main" | sudo tee /etc/apt/sources.list.d/helm-stable-debian.list
 	sudo apt-get update
 	sudo apt-get install helm
+fi
+
+# Install Yubikey Manager. See https://docs.yubico.com/software/yubikey/tools/ykman/Install_ykman.html
+is_installed ykman
+if [ "false" = "$INSTALLED" ]
+then
+    sudo apt-add-repository ppa:yubico/stable
+    sudo apt update
+    sudo apt install yubikey-manager
 fi
