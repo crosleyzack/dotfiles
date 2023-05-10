@@ -70,8 +70,15 @@ ZSH_THEME="spaceship"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git)
+plugins=(
+    git
+    spaceship-vi-mode
+)
 
+# Reset for vi mode spaceship. See https://github.com/spaceship-prompt/spaceship-vi-mode
+export RPS1="%{$reset_color%}"
+
+# Load OhMyZsh
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
@@ -87,6 +94,9 @@ if [[ -n $SSH_CONNECTION ]]; then
 else
   export EDITOR='mvim'
 fi
+
+# Set vim keybindings
+bindkey -v
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
@@ -142,4 +152,9 @@ setopt APPEND_HISTORY
 # echo "Available TMUX Sessions:"
 # tmux ls
 
-[ -f "/home/crosley/.ghcup/env" ] && source "/home/crosley/.ghcup/env" # ghcup-env
+# Configure spaceship vi extension
+spaceship add --after line_sep vi_mode
+# spaceship add --before char vi_mode
+spaceship_vi_mode_enable
+
+[ -f "$HOME/.ghcup/env" ] && source "$HOME/.ghcup/env" # ghcup-env
