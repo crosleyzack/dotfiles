@@ -41,7 +41,8 @@ sudo apt install -y tmux \
 	libpcsclite-dev \
 	xsel \
 	miniupnpc \
-	net-tools
+	net-tools \
+    ranger
 
 # Update python
 python -m pip install --upgrade pip wheel setuptools virtualenv
