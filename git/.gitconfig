@@ -15,7 +15,7 @@
 	last = log -1 HEAD
 	aware = add -N
 	aliases = config --get-regexp '^alias\\.'
-	yolo = push --force
+	yolo = push --force-with-lease
 	recent = for-each-ref --count=10 --sort=-committerdate refs/heads/ --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(contents:subject) (%(color:green)%(committerdate:short)%(color:reset))'
 	upstream = push -u origin HEAD
 	ta = log --all --graph --oneline --decorate --simplify-by-decoration --abbrev-commit
