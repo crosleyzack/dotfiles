@@ -98,6 +98,9 @@ fi
 # Set vim keybindings
 bindkey -v
 
+# Set other keybindings
+# bindkey -M emacs "${terminfo[knp]}" down-line-or-history
+
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
 
