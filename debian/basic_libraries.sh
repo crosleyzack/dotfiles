@@ -42,7 +42,9 @@ sudo apt install -y tmux \
 	xsel \
 	miniupnpc \
 	net-tools \
-    ranger
+    ranger \
+    simple-scan \
+    whois
 
 # Update python
 python -m pip install --upgrade pip wheel setuptools virtualenv
