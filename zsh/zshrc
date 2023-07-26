@@ -149,6 +149,13 @@ unsetopt inc_append_history
 unsetopt share_history
 setopt APPEND_HISTORY
 
+# if a .env file exists, source it
+ENV_FILE=$HOME/.env
+if test -f "$ENV_FILE"; then
+    set -a; source $ENV_FILE; set +a
+fi
+
+
 # Reattach tmux sessions.
 # tmux attach
 # Automatically list tmux sessions.
