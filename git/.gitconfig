@@ -33,4 +33,4 @@
 	checkout-m = !git checkout $(git main)
     rebase-m = !git rebase $(git main)
     # diff a file with its version on main branch. Accepts file argument after.
-    main-diff = diff ..main --
+    main-diff = !diff ..$(git main) --
