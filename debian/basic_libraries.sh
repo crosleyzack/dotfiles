@@ -44,7 +44,11 @@ sudo apt install -y tmux \
 	net-tools \
     ranger \
     simple-scan \
-    whois
+    whois \
+    rdesktop \
+    libtool \
+    libtool-bin \
+    gettext
 
 # Update python
 python -m pip install --upgrade pip wheel setuptools virtualenv

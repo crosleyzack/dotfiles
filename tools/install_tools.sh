@@ -9,7 +9,7 @@ function is_installed {
                 # If we find the name in dpkg, then it is installed.
                 echo "Package $1 is installed!"
                 INSTALLED="true"
-        elif [ "" != $(command -v $1) ]
+        elif [ "" != "$(command -v $1)" ]
         then
                 # If a command of this name exists, then it is installed.
                 echo "Package $1 is installed!"

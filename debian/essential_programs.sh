@@ -2,7 +2,7 @@
 sudo apt update
 sudo apt install snapd
 
-CONFIG="${BASH_SOURCE%/*}../"
+CONFIG="${BASH_SOURCE%/*}/../"
 source "$CONFIG/tools/install_tools.sh"
 
 # Install spotify.
@@ -129,4 +129,15 @@ else
 	echo "Redis already installed, skipping..."
 fi
 
-
+# Install neovim
+is_installed nvim
+if [ "false" = "$INSTALLED" ]
+then
+    # Build nvim from source so we can get exact version we want
+    mkdir -p $HOME/programs
+    sudo rm -rf $HOME/programs/neovim
+    git clone https://github.com/neovim/neovim $HOME/programs/neovim
+    cd $HOME/programs/neovim && git checkout 'release-0.8' && sudo make install
+else
+    echo "Nvim already installed, skipping"
+fi
