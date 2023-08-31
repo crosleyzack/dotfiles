@@ -76,3 +76,9 @@ mkdir -p $HOME/.vim
 rm -rf $HOME/.vim/colors
 echo "Linking $HOME/.vim/colors to $1/vim/colors"
 ln -s $1/vim/colors $HOME/.vim/colors
+
+# Nvim
+rm -f $HOME/.config/nvim/init.vim
+echo "Linking $HOME/.config/nvim/init.vim to $1/nvim/init.vim"
+mkdir -p $HOME/.config/nvim
+ln -s $1/nvim/init.vim $HOME/.config/nvim/init.vim
