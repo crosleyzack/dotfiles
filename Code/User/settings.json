@@ -4,6 +4,8 @@
     "vscodevim.vim": 1,
     "asvetliakov.vscode-neovim": 1
   },
+  "vim.neovimPath": "/bin/nvim",
+  "vim.enableNeovim": true,
   "search.collapseResults": "alwaysCollapse",
   "editor.minimap.enabled": false,
   "editor.fontFamily": "Source Code Pro",
@@ -82,6 +84,14 @@
     "[Default Dark+]": {
       "editorWhitespace.foreground": "#555"
     }
-  }
+  },
+  "window.zoomLevel": 1
+  // "workbench.editor": {
+  //   "splitSizing": "auto"
+  // },
+  // "files": {
+  //   "trimTrailingWhitespace": true,
+  //   "dialog.defaultPath": "~/dev"
+  // },
   // "workbench.experimental.settingsProfiles.enabled": true
 }
