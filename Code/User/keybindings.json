@@ -12,12 +12,47 @@
     "command": "workbench.action.focusActiveEditorGroup",
     "when": "terminalFocus"
   },
-  { "key": "ctrl+h", "command": "workbench.action.focusPreviousGroup" },
-  { "key": "ctrl+l", "command": "workbench.action.focusNextGroup" },
-  { "key": "ctrl+w 3", "command": "workbench.action.splitEditor" },
+  { "key": "ctrl+w h", "command": "workbench.action.focusLeftGroup" },
+  { "key": "ctrl+w j", "command": "workbench.action.focusBelowGroup" },
+  { "key": "ctrl+w k", "command": "workbench.action.focusAbove" },
+  { "key": "ctrl+w l", "command": "workbench.action.focusRightGroup" },
+  { "key": "ctrl+w s", "command": "workbench.action.splitEditorRight" },
+  { "key": "ctrl+w v", "command": "workbench.action.splitEditorDown" },
   {
-    "key": "ctrl+w 0",
+    "key": "ctrl+w q",
     "command": "workbench.action.closeActiveEditor"
+  },
+  { "key": "ctrl+w w", "command": "workbench.action.focusNextGroup" },
+  { "key": "ctrl+w shift+w", "command": "workbench.action.focusPreviousGroup" },
+  { "key": "ctrl+w t", "command": "workbench.action.focusFirstEditorGroup" },
+  { "key": "ctrl+w b", "command": "workbench.action.focusLastEditorGroup" },
+  {
+    "key": "ctrl+w =",
+    "command": "workbench.action.evenEditorWidths",
+    "when": "editorTextFocus"
+  },
+  { "key": "ctrl+w r", "command": "workbench.action.moveEditorToNextGroup" },
+  {
+    "key": "ctrl+w shift+r",
+    "command": "workbench.action.moveEditorToPreviousGroup"
+  },
+  {
+    "key": "ctrl+w ctrl+n",
+    "command": "workbench.action.files.newUntitledFile"
+  },
+  // { "key": "ctrl+w shift+k", "command": "current window to top full width" },
+  // { "key": "ctrl+w shift+j", "command": "current window to bottom full width" },
+  // { "key": "ctrl+w shift+h", "command": "current window to left full height" },
+  // { "key": "ctrl+w shift+l", "command": "current window to right full height" },
+  // { "key": "ctrl+w -", "command": "decrease current window height" },
+  // { "key": "ctrl+w +", "command": "increase current window height" },
+  // { "key": "ctrl+w _", "command": "maximize current window height" },
+  // { "key": "ctrl+w <", "command": "decrease current window width" },
+  // { "key": "ctrl+w >", "command": "increase current window width" },
+  // { "key": "ctrl+w |", "command": "maximize current window width" },
+  {
+    "key": "ctrl+alt+down",
+    "command": "-workbench.action.files.newUntitledFile"
   },
   {
     "key": "q",
@@ -32,9 +67,5 @@
   {
     "key": "ctrl+f1",
     "command": "workbench.action.openDefaultKeybindingsFile"
-  },
-  {
-    "key": "ctrl+shift+n",
-    "command": "workbench.action.files.newUntitledFile"
   }
 ]
