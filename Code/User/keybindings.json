@@ -22,6 +22,10 @@
     "key": "ctrl+w q",
     "command": "workbench.action.closeActiveEditor"
   },
+  {
+    "key": "ctrl+w o",
+    "command": "workbench.action.closeEditorsInOtherGroups"
+  },
   { "key": "ctrl+w w", "command": "workbench.action.focusNextGroup" },
   { "key": "ctrl+w shift+w", "command": "workbench.action.focusPreviousGroup" },
   { "key": "ctrl+w t", "command": "workbench.action.focusFirstEditorGroup" },
@@ -36,19 +40,23 @@
     "key": "ctrl+w shift+r",
     "command": "workbench.action.moveEditorToPreviousGroup"
   },
+  { "key": "ctrl+w z", "command": "workbench.action.maximizeEditor" },
+  { "key": "ctrl+w shift+,", "command": "workbench.action.decreaseViewWidth" },
+  { "key": "ctrl+w shift+.", "command": "workbench.action.increaseViewWidth" },
+  { "key": "ctrl+w -", "command": "workbench.action.decreaseViewHeight" },
+  { "key": "ctrl+w shift+=", "command": "workbench.action.increaseViewHeight" },
   {
     "key": "ctrl+w ctrl+n",
     "command": "workbench.action.files.newUntitledFile"
   },
+  // { "key": "ctrl+w p", "command": "last used editor group" },
+  // {"key": "ctrl+w x", "command": "swap with next group" },
+  // {"key": "ctrl+w n", "command": "New empty window?" },
   // { "key": "ctrl+w shift+k", "command": "current window to top full width" },
   // { "key": "ctrl+w shift+j", "command": "current window to bottom full width" },
   // { "key": "ctrl+w shift+h", "command": "current window to left full height" },
   // { "key": "ctrl+w shift+l", "command": "current window to right full height" },
-  // { "key": "ctrl+w -", "command": "decrease current window height" },
-  // { "key": "ctrl+w +", "command": "increase current window height" },
   // { "key": "ctrl+w _", "command": "maximize current window height" },
-  // { "key": "ctrl+w <", "command": "decrease current window width" },
-  // { "key": "ctrl+w >", "command": "increase current window width" },
   // { "key": "ctrl+w |", "command": "maximize current window width" },
   {
     "key": "ctrl+alt+down",
