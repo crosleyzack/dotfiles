@@ -49,6 +49,10 @@
     "key": "ctrl+w ctrl+n",
     "command": "workbench.action.files.newUntitledFile"
   },
+  {
+    "key": "ctrl+w \\",
+    "command": "workbench.action.showAllEditorsByMostRecentlyUsed"
+  },
   // { "key": "ctrl+w p", "command": "last used editor group" },
   // {"key": "ctrl+w x", "command": "swap with next group" },
   // {"key": "ctrl+w n", "command": "New empty window?" },
