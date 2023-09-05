@@ -3,19 +3,50 @@
 //  [Ctrl+P] > Open Default Keyboard Shortcuts(JSON) _or_ [Ctrl+F1] as defined below.
 [
   {
-    "key": "ctrl+;",
+    "key": "ctrl+w ;",
     "command": "workbench.action.terminal.focus",
     "when": "editorFocus"
   },
   {
-    "key": "ctrl+;",
+    "key": "ctrl+w ;",
     "command": "workbench.action.focusActiveEditorGroup",
     "when": "terminalFocus"
   },
-  { "key": "ctrl+w h", "command": "workbench.action.focusLeftGroup" },
-  { "key": "ctrl+w j", "command": "workbench.action.focusBelowGroup" },
-  { "key": "ctrl+w k", "command": "workbench.action.focusAbove" },
-  { "key": "ctrl+w l", "command": "workbench.action.focusRightGroup" },
+  {
+    "key": "ctrl+w h",
+    "command": "workbench.action.focusLeftGroup",
+    "when": "editorFocus"
+  },
+  {
+    "key": "ctrl+w j",
+    "command": "workbench.action.focusBelowGroup",
+    "when": "editorFocus"
+  },
+  {
+    "key": "ctrl+w k",
+    "command": "workbench.action.focusAbove",
+    "when": "editorFocus"
+  },
+  {
+    "key": "ctrl+w l",
+    "command": "workbench.action.focusRightGroup",
+    "when": "editorFocus"
+  },
+  {
+    "key": "ctrl+w l",
+    "command": "workbench.action.focusActiveEditorGroup",
+    "when": "sideBarFocus"
+  },
+  {
+    "key": "ctrl+w j",
+    "command": "workbench.action.nextSideBarView",
+    "when": "sideBarFocus"
+  },
+  {
+    "key": "ctrl+w k",
+    "command": "workbench.action.previousSideBarView",
+    "when": "sideBarFocus"
+  },
   { "key": "ctrl+w s", "command": "workbench.action.splitEditorRight" },
   { "key": "ctrl+w v", "command": "workbench.action.splitEditorDown" },
   {
@@ -53,6 +84,11 @@
     "key": "ctrl+w \\",
     "command": "workbench.action.showAllEditorsByMostRecentlyUsed"
   },
+  {
+    "key": "tab",
+    "command": "editor.action.inlineSuggest.commit",
+    "when": "textInputFocus && inlineSuggestionHasIndentationLessThanTabSize && inlineSuggestionVisible && !editorTabMovesFocus"
+  }
   // { "key": "ctrl+w p", "command": "last used editor group" },
   // {"key": "ctrl+w x", "command": "swap with next group" },
   // {"key": "ctrl+w n", "command": "New empty window?" },

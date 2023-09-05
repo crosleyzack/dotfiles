@@ -59,9 +59,10 @@
   "github.copilot.inlineSuggest.enable": true,
   "github.copilot.enable": {
     "*": true,
-    "yaml": false,
     "plaintext": false,
     "markdown": true,
+    "scminput": false,
+    "yaml": false,
     "dockerfile": true,
     "go": true,
     "json": true,
@@ -84,8 +85,7 @@
     "[Default Dark+]": {
       "editorWhitespace.foreground": "#555"
     }
-  },
-  "window.zoomLevel": 1
+  }
   // "workbench.editor": {
   //   "splitSizing": "auto"
   // },
