@@ -84,3 +84,9 @@ rm -f $HOME/.config/nvim/init.vim
 echo "Linking $HOME/.config/nvim/init.vim to $BASE_DIR/nvim/init.vim"
 mkdir -p $HOME/.config/nvim
 ln -s $BASE_DIR/nvim/init.vim $HOME/.config/nvim/init.vim
+
+# Nix
+sudo rm -f /etc/nix/nix.conf
+echo "Linking /etc/nix/nix.conf to $BASE_DIR/nix/nix.conf"
+sudo mkdir -p /etc/nix/
+sudo ln -s $BASE_DIR/nix/nix.conf /etc/nix/nix.conf
