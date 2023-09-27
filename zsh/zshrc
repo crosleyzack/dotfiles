@@ -167,4 +167,5 @@ spaceship add --after line_sep vi_mode
 # spaceship add --before char vi_mode
 spaceship_vi_mode_enable
 
+[ -f "/etc/profile.d/nix.sh" ] && source "/etc/profile.d/nix.sh"
 [ -f "$HOME/.ghcup/env" ] && source "$HOME/.ghcup/env" # ghcup-env
