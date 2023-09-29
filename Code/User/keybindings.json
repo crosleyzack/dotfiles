@@ -178,5 +178,15 @@
   {
     "key": "ctrl+f1",
     "command": "workbench.action.openDefaultKeybindingsFile"
+  },
+  {
+    "key": "ctrl+w ]",
+    "command": "editor.action.revealDefinitionAside",
+    "when": "editorFocus"
+  },
+  {
+    "key": "ctrl+w shift+]",
+    "command": "editor.action.peekTypeDefinition",
+    "when": "editorFocus"
   }
 ]
