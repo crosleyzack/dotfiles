@@ -18,6 +18,14 @@
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
+
+  # allow certain packages to be unfree
+  # builtins.elem (lib.getName pkg) [
+  #   # Add additional package names here
+  #   "slack"
+  # ];
+
+  home-manager.useGlobalPkgs = true;
       
   home.packages = [
     coreutils
@@ -83,6 +91,7 @@
   };
 
   programs.vscode = {
+    # See https://github.com/mjstewart/nix-home-manager/tree/master/apps/vscode
     enable = true;
     package = pkgs.vscode;
     extensions = with pkgs.vscode-extensions; [
