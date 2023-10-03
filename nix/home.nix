@@ -60,6 +60,7 @@
     pkgs.texlive.combined.scheme-medium
     pkgs.postgresql
     pkgs.protobuf
+    pkgs.grpcurl
     pkgs.simple-scan
     pkgs.go
     pkgs.docker
