@@ -96,3 +96,9 @@ sudo rm -f $HOME/.config/nixpkgs/config.nix
 echo "Linking $HOME/.config/nixpkgs/config.nix to $BASE_DIR/nix/config.nix"
 sudo mkdir -p $HOME/.config/nixpkgs
 sudo ln -s $BASE_DIR/nix/config.nix $HOME/.config/nixpkgs/config.nix
+
+# nix home manager
+sudo rm -f $HOME/.config/home-manager/home.nix
+echo "Linking $HOME/.config/home-manager/home.nix to $BASE_DIR/nix/home.nix"
+sudo mkdir -p $HOME/.config/home-manager
+sudo ln -s $BASE_DIR/nix/home.nix $HOME/.config/home-manager/home.nix
