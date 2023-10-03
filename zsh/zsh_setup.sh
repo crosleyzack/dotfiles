@@ -2,12 +2,18 @@
 # Runs even if Zsh isn't already installed
 
 # Install zsh, if it isn't already.
-sudo apt install zsh
+source "${BASH_SOURCE%/*}/../tools/install_tools.sh"
+is_installed zsh
+if [ "false" = "$INSTALLED" ]
+then
+    sudo apt install zsh
+fi
 
 # If ZSH isn't set, use default
 if [[ -z "${ZSH}" ]]; then
-    SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
-    ZSH="$SCRIPT_DIR/oh-my-zsh"
+    # SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+    # ZSH="$SCRIPT_DIR/oh-my-zsh"
+    ZSH="$HOME/.oh-my-zsh"
 fi
 mkdir -p "$ZSH"
 if [[ -z "${ZSH_CUSTOM}" ]]; then
@@ -34,3 +40,7 @@ ln -sf "$ZSH_CUSTOM/themes/spaceship-prompt/spaceship.zsh-theme" "$ZSH_CUSTOM/th
 # Install spaceship vi
 rm -rf "$ZSH_CUSTOM/plugins/spaceship-vi-mode"
 git clone https://github.com/spaceship-prompt/spaceship-vi-mode.git "$ZSH_CUSTOM/plugins/spaceship-vi-mode"
+
+# sym link
+# mkdir -p $HOME/.oh-my-zsh
+# ln -s $ZSH/oh-my-zsh.sh $HOME/.oh-my-zsh/oh-my-zsh.sh
