@@ -66,6 +66,7 @@
     pkgs.yubikey-manager
     pkgs.gimp
     pkgs.imagemagick
+    pkgs.bitwarden
     pkgs.firefox
     pkgs.vscode
     pkgs.spotify
