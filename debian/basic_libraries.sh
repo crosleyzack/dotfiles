@@ -48,7 +48,11 @@ sudo apt install -y tmux \
     rdesktop \
     libtool \
     libtool-bin \
-    gettext
+    gettext \
+    binwalk \
+    unar \
+    miniupnpc \
+    net-tools
 
 # Update python
 python -m pip install --upgrade pip wheel setuptools virtualenv
