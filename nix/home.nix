@@ -63,6 +63,7 @@
     pkgs.simple-scan
     pkgs.go
     pkgs.docker
+    pkgs.alacritty
     pkgs.yubikey-manager
     pkgs.gimp
     pkgs.imagemagick
