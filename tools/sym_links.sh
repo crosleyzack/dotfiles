@@ -90,3 +90,9 @@ sudo rm -f /etc/nix/nix.conf
 echo "Linking /etc/nix/nix.conf to $BASE_DIR/nix/nix.conf"
 sudo mkdir -p /etc/nix/
 sudo ln -s $BASE_DIR/nix/nix.conf /etc/nix/nix.conf
+
+# Nixpkgs
+sudo rm -f $HOME/.config/nixpkgs/config.nix
+echo "Linking $HOME/.config/nixpkgs/config.nix to $BASE_DIR/nix/config.nix"
+sudo mkdir -p $HOME/.config/nixpkgs
+sudo ln -s $BASE_DIR/nix/config.nix $HOME/.config/nixpkgs/config.nix
