@@ -62,6 +62,8 @@
     pkgs.protobuf
     pkgs.grpcurl
     pkgs.simple-scan
+    pkgs.proxychains
+    pkgs.neovim
     pkgs.go
     pkgs.docker
     pkgs.alacritty
