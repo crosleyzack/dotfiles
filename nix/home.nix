@@ -19,91 +19,57 @@
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 
-  # allow certain packages to be unfree
-  # builtins.elem (lib.getName pkg) [
-  #   # Add additional package names here
-  #   "slack"
-  # ];
-
-  home-manager.useGlobalPkgs = true;
-      
   home.packages = [
-    coreutils
+    pkgs.coreutils
     pkgs.gcc
     pkgs.cmake
     pkgs.gnumake
-    pkgs.build-essential
-    pkgs.ca-certificates
     pkgs.curl
+    pkgs.nmap
+    pkgs.man
     pkgs.gnupg
+    pkgs.gdb
+    pkgs.binutils
+    pkgs.diffutils
+    pkgs.findutils
+    pkgs.tcpdump
     pkgs.jq
-    pkgs.git 
-    pkgs.texlive-latex-extra
-    pkgs.texlive-fonts-extra
-    pkgs.vim
-    pkgs.fonts-powerline
-    pkgs.postgresql-client
-    pks.pipenv
-    pkgs.python3
-    pkgs.libssl-dev 
-    pkgs.libbz2-dev
-    pkgs.libsqlite3-dev
     pkgs.wget
     pkgs.llvm
-    pkgs.libncursesw5-dev
-    pkgs.tk-dev
+    pkgs.ncurses
     pkgs.xsel
-    pkgs.net-tools
-    pkgs.ranger
-    pkgs.simple-scan
-    pkgs.whois
-    pkgs.rdesktop
+    pkgs.inetutils
+    pkgs.less
     pkgs.libtool
-    pkgs.libtool-bin
     pkgs.gettext
-    pkgs.unzip
-    pkgs.vscode
-    zoom-us
-    pkgs.slack
-    pkgs.firefox
-    pkgs.gimp
-    pkgs.imagemagick
     pkgs.gdb
+    pkgs.zip
+    pkgs.gzip
+    pkgs.unzip
+    pkgs.gnugrep
+    pkgs.gnused
+    pkgs.pipenv
+    pkgs.python3
+    pkgs.tmux
+    pkgs.git-lfs
     pkgs.clips
     pkgs.tor
+    pkgs.rdesktop
+    pkgs.ranger
+    pkgs.zsh
+    pkgs.texlive.combined.scheme-medium
+    pkgs.postgresql
+    pkgs.protobuf
+    pkgs.simple-scan
+    pkgs.go
+    pkgs.docker
+    pkgs.yubikey-manager
+    pkgs.gimp
+    pkgs.imagemagick
+    pkgs.firefox
+    pkgs.vscode
+    pkgs.spotify
+    pkgs.slack
+    pkgs.zoom-us
   ];
-
-  programs.git = {
-    package = pkgs.gitAndTools.gitFull;
-    enable = true;
-    userName = "crosleyzack";
-    userEmail = "mail@crosleyzack.com";
-  };
-
-  programs.vim = {
-    enable = true;
-    extraConfig = builtins.readFile vim/vimrc;
-    settings = {
-       relativenumber = true;
-       number = true;
-    };
-    plugins = with pkgs.vimPlugins; [];
-  };
-
-  programs.vscode = {
-    # See https://github.com/mjstewart/nix-home-manager/tree/master/apps/vscode
-    enable = true;
-    package = pkgs.vscode;
-    extensions = with pkgs.vscode-extensions; [
-      vscode-extension-github-copilot
-      vscode-extension-golang-Go
-      vscode-extension-ms-python-python
-      vscode-extension-ms-vscode-cmake-tools
-      vscode-extension-ms-vscode-makefile-tools
-      vscode-extension-GraphQL-vscode-graphql-syntax
-    ];
-    userSettings = {
-      "terminal.integrated.fontFamily" = "Hack";
-    };
-  };
 }
