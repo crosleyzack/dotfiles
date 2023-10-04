@@ -12,7 +12,7 @@ echo "[Desktop Entry]
 Type=Application
 Name=StartupScript
 Exec=$DIR_PATH/startup_program.sh
-OnlyShowIn=GNOME;" >> $DESKTOP_FILE
+OnlyShowIn=GNOME;" > $DESKTOP_FILE
 
 # link to generated startup script.
 mkdir -p $HOME/.config/autostart
