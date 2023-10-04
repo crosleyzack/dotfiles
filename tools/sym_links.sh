@@ -42,6 +42,7 @@ ln -s $BASE_DIR/zsh/zshrc $HOME/.zshrc
 
 # Docker
 sudo rm -f /etc/docker/daemon.json
+sudo mkdir -p /etc/docker
 echo "Linking /etc/docker/deamon.json to $BASE_DIR/docker/daemon.json"
 sudo ln -s $BASE_DIR/docker/daemon.json /etc/docker/daemon.json
 
