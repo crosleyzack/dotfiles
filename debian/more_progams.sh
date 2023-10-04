@@ -95,3 +95,39 @@ else
     echo "alacritty already installed! Skipping..."
 fi
 
+# Setup docker. See https://docs.docker.com/engine/install/ubuntu/
+is_installed docker-ce
+if [ "false" = "$INSTALLED" ]
+then
+    # Add Docker's official GPG key:
+    sudo apt-get update
+    sudo apt-get install ca-certificates curl gnupg
+    sudo install -m 0755 -d /etc/apt/keyrings
+    curl -fsSL https://download.docker.com/linux/debian/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+    sudo chmod a+r /etc/apt/keyrings/docker.gpg
+
+    # Add the repository to Apt sources:
+    echo \
+      "deb [arch="$(dpkg --print-architecture)" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian \
+      "$(. /etc/os-release && echo "$VERSION_CODENAME")" stable" | \
+      sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+    sudo apt-get update
+    sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+else
+    echo "docker-ce already installed! Skipping"
+fi
+
+# Setup firefox. See https://support.mozilla.org/en-US/kb/install-firefox-linux
+is_installed firefox
+if [ "false" = "$INSTALLED" ]
+then
+    sudo rm -rf /opt/firefox
+    sudo mkdir -p /opt
+    mkdir -p $HOME/temp
+    curl -L -o $HOME/temp/firefox.bz2 "https://download.mozilla.org/?product=firefox-latest&os=linux64&lang=en-US"
+    cd $HOME/temp && tar xjf firefox.bz2
+    sudo cp -r $HOME/temp/firefox /opt
+    sudo ln -s /opt/firefox/firefox /usr/local/bin/firefox
+else
+    echo "firefox already installed! Skipping"
+fi
