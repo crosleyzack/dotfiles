@@ -34,12 +34,8 @@
     # (pkgs.writeShellScriptBin "my-hello" ''
     #   echo "Hello, ${config.home.username}!"
     # '')
-    pkgs.cmake
     pkgs.nmap
-    pkgs.gdb
     pkgs.tcpdump
-    pkgs.wget
-    pkgs.zip
     pkgs.vim
     pkgs.tmux
     pkgs.tor
@@ -66,7 +62,6 @@
     pkgs.gimp
     pkgs.imagemagick
     pkgs.bitwarden
-    pkgs.firefox
     pkgs.vscode
     pkgs.spotify
     pkgs.slack
