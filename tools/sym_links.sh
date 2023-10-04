@@ -16,9 +16,9 @@ BASE_DIR=$(realpath $1)
 
 # Alacritty
 mkdir -p $CONFIG/alacritty
-rm -f $CONFIG/alacritty/alacritty.yml
-echo "Linking $CONFIG/alacritty/alacritty.yml to $BASE_DIR/alacritty/alacritty.yml"
-ln -s $BASE_DIR/alacritty/alacritty.yml $CONFIG/alacritty/alacritty.yml
+rm -f $CONFIG/alacritty/alacritty.toml
+echo "Linking $CONFIG/alacritty/alacritty.toml to $BASE_DIR/alacritty/alacritty.toml"
+ln -s $BASE_DIR/alacritty/alacritty.toml $CONFIG/alacritty/alacritty.toml
 
 # VS Code
 mkdir -p $CONFIG/Code/User
