@@ -1,7 +1,7 @@
+asvetliakov.vscode-neovim
 dbaeumer.vscode-eslint
 esbenp.prettier-vscode
 forbeslindesay.vscode-sql-template-literal
-GitHub.copilot
 golang.go
 googlecloudtools.cloudcode
 hashicorp.terraform
@@ -12,15 +12,10 @@ ms-azuretools.vscode-docker
 ms-kubernetes-tools.vscode-kubernetes-tools
 ms-python.python
 ms-python.vscode-pylance
-ms-toolsai.jupyter
-ms-toolsai.jupyter-keymap
-ms-toolsai.vscode-jupyter-cell-tags
-ms-toolsai.vscode-jupyter-slideshow
 ms-vscode-remote.remote-containers
 ms-vscode.cpptools
 ms-vscode.makefile-tools
 redhat.vscode-xml
 redhat.vscode-yaml
 scala-lang.scala
-vscodevim.vim
 zxh404.vscode-proto3
