@@ -11,7 +11,7 @@ mkdir -p $TEMP
 rm -rf "$BAZECOR/bazecor"
 mkdir -p $BAZECOR
 #   Download to Temp
-curl -L https://github.com/Dygmalab/Bazecor/releases/download/bazecor-1.0.0/Bazecor-1.0.0.AppImage -o $IMAGE
+curl -L https://github.com/Dygmalab/Bazecor/releases/download/bazecor-1.3.2/Bazecor-1.3.2-x64.AppImage -o $IMAGE
 chmod a+x $IMAGE
 #   Extract image
 cd $TEMP && ./image --appimage-extract
