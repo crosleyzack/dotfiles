@@ -6,7 +6,6 @@ sudo apt install -y \
     python3 \
     python-is-python3 \
     pipenv \
-    python3.10-venv \
     python3-pip
 
 python -m pip install --upgrade pip wheel setuptools virtualenv
@@ -113,6 +112,9 @@ then
       sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
     sudo apt-get update
     sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+    sudo groupadd -f docker
+    sudo usermod -aG docker $USER
+    newgrp docker
 else
     echo "docker-ce already installed! Skipping"
 fi
