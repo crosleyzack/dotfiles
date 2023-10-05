@@ -1,4 +1,9 @@
 #!/bin/bash
+sudo apt install -y \
+    wget \
+    unzip \
+    fonts-gnutypewriter
+
 #	Move to ~/.fonts/ so fonts will be seen by system
 mkdir -p ~/.fonts/
 cd ~/.fonts/
