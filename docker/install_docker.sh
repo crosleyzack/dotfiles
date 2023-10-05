@@ -34,21 +34,33 @@ else
      echo "docker-ce already installed! Skipping"
 fi
 
-# Setup docker. https://docs.docker.com/desktop/install/debian/
 is_installed docker-compose
 if [ "false" = "$INSTALLED" ]
 then
-    # install curl if not already
-    sudo apt-get update
-    sudo apt-get install curl
-    # get new copy of deb file
-    mkdir -p $HOME/temp
-    rm -f $HOME/temp/docker-desktop.deb
-    curl -SL -o $HOME/temp/docker-desktop.deb https://desktop.docker.com/linux/main/amd64/docker-desktop-4.24.0-amd64.deb
-    # install deb file
-    sudo apt-get install -y $HOME/temp/docker-desktop.deb
-    # set to run at startup
-    systemctl --user enable docker-desktop
+    # Create a symbolic link
+    sudo rm -f /usr/local/bin/docker-compose
+    sudo ln -f -s /usr/libexec/docker/cli-plugins/docker-compose /usr/local/bin/docker-compose
+    # sudo touch /usr/bin/docker-compose
+    # echo "docker compose \"$@\"" > /usr/bin/docker-compose
 else
-    echo "docker-compose already installed! Skipping"
+     echo "docker-compose already installed! Skipping"
 fi
+
+# Setup docker desktop. https://docs.docker.com/desktop/install/debian/
+# is_installed docker-compose
+# if [ "false" = "$INSTALLED" ]
+# then
+    # # install curl if not already
+    # sudo apt-get update
+    # sudo apt-get install curl
+    # # get new copy of deb file
+    # mkdir -p $HOME/temp
+    # rm -f $HOME/temp/docker-desktop.deb
+    # curl -SL -o $HOME/temp/docker-desktop.deb https://desktop.docker.com/linux/main/amd64/docker-desktop-4.24.0-amd64.deb
+    # # install deb file
+    # sudo apt-get install -y $HOME/temp/docker-desktop.deb
+    # # set to run at startup
+    # systemctl --user enable docker-desktop
+# else
+    # echo "docker-compose already installed! Skipping"
+# fi
