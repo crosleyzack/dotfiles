@@ -3,50 +3,57 @@
 # Install some apt packages
 sudo apt update
 sudo apt upgrade
-sudo apt install -y tmux \
-	gcc \
-	cmake \
-	make \
-	build-essential \
-	ca-certificates \
-	curl \
-	gnupg \
-	lsb-release \
-	jq \
-	git \
-	git-gui \
-	apt-transport-https \
-	vim \
-	fonts-powerline \
-    python3 \
-	python-is-python3 \
-	pipenv \
-	libssl-dev \
-	zlib1g-dev \
-	libbz2-dev \
-	libreadline-dev \
-	libsqlite3-dev \
-	wget \
-	llvm \
-	libncursesw5-dev \
-	xz-utils \
-	tk-dev \
-	libxml2-dev \
-	libxmlsec1-dev \
-	libffi-dev \
-	liblzma-dev \
-	libpcsclite-dev \
-	xsel \
-	miniupnpc \
-	net-tools \
-    whois \
+sudo apt install -y \
+    apt-transport-https \
+    binutils \
+    binwalk \
+    build-essential \
+    ca-certificates \
+    cmake \
+    curl \
+    curl \
+    diffutils \
+    gcc \
+    gdb \
+    gettext \
+    git \
+    gnupg \
+    gzip \
+    jq \
+    libbz2-dev \
+    libffi-dev \
+    liblzma-dev \
+    libncursesw5-dev \
+    libpcsclite-dev \
+    libreadline-dev \
+    libsqlite3-dev \
+    libssl-dev \
     libtool \
     libtool-bin \
-    gettext \
-    binwalk \
-    unar \
+    libxml2-dev \
+    libxmlsec1-dev \
+    llvm \
+    lsb-release \
+    make \
     miniupnpc \
-    net-tools
+    ncurses-base \
+    net-tools \
+    nmap \
+    openssl \
+    pipenv \
+    python-is-python3 \
+    python3 \
+    tcpdump \
+    tmux \
+    unar \
+    unzip \
+    vim \
+    wget \
+    whois \
+    wmctrl \
+    xsel \
+    xz-utils \
+    zlib1g-dev \
 
 # Update python
 python -m pip install --upgrade pip wheel setuptools virtualenv
