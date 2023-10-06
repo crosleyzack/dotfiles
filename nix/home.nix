@@ -34,22 +34,17 @@
     # (pkgs.writeShellScriptBin "my-hello" ''
     #   echo "Hello, ${config.home.username}!"
     # '')
-    pkgs.nmap
-    pkgs.tcpdump
-    pkgs.vim
-    pkgs.tmux
+    pkgs.sops
     pkgs.tor
-    pkgs.rdesktop
-    pkgs.ranger
-    pkgs.zsh
     pkgs.texlive.combined.scheme-medium
     pkgs.postgresql
+    pkgs.google-cloud-sdk
+    pkgs.docker-credential-gcr
     pkgs.protobuf
     pkgs.grpcurl
     pkgs.proxychains
     pkgs.neovim
     pkgs.go
-    pkgs.docker
     pkgs.kubectx
     pkgs.kubectl
     pkgs.kind
@@ -65,7 +60,6 @@
     pkgs.vscode
     pkgs.spotify
     pkgs.slack
-    pkgs.zoom-us
   ];
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
