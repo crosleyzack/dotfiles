@@ -54,6 +54,7 @@ function position {
 	done
 }
 
+position zoom 6 2 false &
 position firefox 8 2 false &
 THIRD=$(( $X / 3 ))
 HALF=$(( $X / 2 ))
