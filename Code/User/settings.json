@@ -85,7 +85,9 @@
     "[Default Dark+]": {
       "editorWhitespace.foreground": "#555"
     }
-  }
+  },
+  "explorer.autoReveal": false,
+  "window.menuBarVisibility": "compact"
   // "workbench.editor": {
   //   "splitSizing": "auto"
   // },
