@@ -2,20 +2,53 @@
 
 # Script to update machine fully
 
-# Apt packages 
-sudo apt update
-sudo apt upgrade
-sudo apt autoremove
-sudo apt autoclean
-sudo apt clean
+source "${BASH_SOURCE%/*}/../tools/install_tools.sh"
+
+# Apt packages
+is_installed apt
+if [ "true" = "$INSTALLED" ]
+then
+    sudo apt update
+    sudo apt upgrade
+    sudo apt autoremove
+    sudo apt autoclean
+    sudo apt clean
+fi
+
 # Update rust
-rustup update
+is_installed rustup
+if [ "true" = "$INSTALLED" ]
+then
+    rustup update
+fi
+
 # Update brew
-brew update
-brew upgrade
+is_installed brew
+if [ "true" = "$INSTALLED" ]
+then
+    brew update
+    brew upgrade
+fi
+
 # Update important python libs
-python -m pip install --upgrade wheel pip setuptools virtualenv
-# Update pyenv - should this be in brew?
-cd ~/.pyenv && git pull
+is_installed python
+if [ "true" = "$INSTALLED" ]
+then
+    python -m pip install --upgrade wheel pip setuptools virtualenv
+    cd ~/.pyenv && git pull
+fi
+
 # update snap
-sudo snap refresh
+is_installed snap
+if [ "true" = "$INSTALLED" ]
+then
+    sudo snap refresh
+fi
+
+# update nix
+is_installed home-manager
+if [ "true" = "$INSTALLED" ]
+then
+    nix-channel --update
+    home-manager switch
+fi
