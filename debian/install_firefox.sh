@@ -6,6 +6,8 @@ source "${BASH_SOURCE%/*}/../tools/install_tools.sh"
 is_installed firefox
 if [ "true" = "$INSTALLED" ]
 then
+    sudo apt update
+    sudo apt install -y --reinstall libdbus-glib-1-2
     sudo rm -rf /opt/firefox
     sudo mkdir -p /opt
     mkdir -p $HOME/temp
