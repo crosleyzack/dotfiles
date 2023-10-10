@@ -7,7 +7,10 @@ is_installed firefox
 if [ "true" = "$INSTALLED" ]
 then
     sudo apt update
+    # install dependency and prevent it from being removed
     sudo apt install -y --reinstall libdbus-glib-1-2
+    sudo apt-mark hold libdbus-glib-1-2
+    # install firefox
     sudo rm -rf /opt/firefox
     sudo mkdir -p /opt
     mkdir -p $HOME/temp
