@@ -116,7 +116,7 @@
   },
   {
     "key": "ctrl+w z",
-    "command": "workbench.action.maximizeEditor",
+    "command": "workbench.action.toggleEditorWidths",
     "when": "editorFocus"
   },
   {
