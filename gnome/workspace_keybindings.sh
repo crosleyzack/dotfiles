@@ -6,15 +6,16 @@ dconf write /org/gnome/desktop/wm/preferences/num-workspaces 10
 #	set hotkeys to false
 gsettings set org.gnome.shell.extensions.dash-to-dock hot-keys false
 #	remove mapping
-gsettings set org.gnome.shell.keybindings switch-to-application-1 "['<Super>GRAVE']"
-gsettings set org.gnome.shell.keybindings switch-to-application-2 "['<Super>GRAVE']"
-gsettings set org.gnome.shell.keybindings switch-to-application-3 "['<Super>GRAVE']"
-gsettings set org.gnome.shell.keybindings switch-to-application-4 "['<Super>GRAVE']"
-gsettings set org.gnome.shell.keybindings switch-to-application-5 "['<Super>GRAVE']"
-gsettings set org.gnome.shell.keybindings switch-to-application-6 "['<Super>GRAVE']"
-gsettings set org.gnome.shell.keybindings switch-to-application-7 "['<Super>GRAVE']"
-gsettings set org.gnome.shell.keybindings switch-to-application-8 "['<Super>GRAVE']"
-gsettings set org.gnome.shell.keybindings switch-to-application-9 "['<Super>GRAVE']"
+dconf reset /org/gnome/desktop/wm/keybindings/switch-to-application-1
+dconf reset /org/gnome/desktop/wm/keybindings/switch-to-application-2
+dconf reset /org/gnome/desktop/wm/keybindings/switch-to-application-3
+dconf reset /org/gnome/desktop/wm/keybindings/switch-to-application-4
+dconf reset /org/gnome/desktop/wm/keybindings/switch-to-application-5
+dconf reset /org/gnome/desktop/wm/keybindings/switch-to-application-6
+dconf reset /org/gnome/desktop/wm/keybindings/switch-to-application-7
+dconf reset /org/gnome/desktop/wm/keybindings/switch-to-application-8
+dconf reset /org/gnome/desktop/wm/keybindings/switch-to-application-9
+dconf reset /org/gnome/desktop/wm/keybindings/switch-to-application-10
 
 # Set super + num goes to workspace num.
 dconf write /org/gnome/desktop/wm/keybindings/switch-to-workspace-1 "['<Super>1']"
@@ -40,5 +41,25 @@ dconf write /org/gnome/desktop/wm/keybindings/move-to-workspace-8  "['<Super><Sh
 dconf write /org/gnome/desktop/wm/keybindings/move-to-workspace-9  "['<Super><Shift>9']"
 dconf write /org/gnome/desktop/wm/keybindings/move-to-workspace-10 "['<Super><Shift>0']"
 
-# Set super + enter to open terminal
-gsettings set org.gnome.settings-daemon.plugins.media-keys terminal "['<Super>Return']"  
+# Use vim bindings for maximize too
+dconf write /org/gnome/desktop/wm/keybindings/maximize "['<Super>Up','<Super>k']"
+dconf write /org/gnome/desktop/wm/keybindings/minimize "['<Super><Shift>Down','<Super><Shift>j']"
+dconf write /org/gnome/desktop/wm/keybindings/unmaximize "['<Super>Down', '<Super>j']"
+dconf write /org/gnome/desktop/wm/keybindings/toggle-fullscreen "['<Super>z']"
+
+# Unbind move monitor
+dconf reset /org/gnome/desktop/wm/keybindings/move-to-monitor-left
+dconf reset /org/gnome/desktop/wm/keybindings/move-to-monitor-right
+# Move to adjacent workspaces
+dconf write /org/gnome/desktop/wm/keybindings/switch-to-workspace-left "['<Super><Shift>h','<Super><Shift>Left']"
+dconf write /org/gnome/desktop/wm/keybindings/switch-to-workspace-right "['<Super><Shift>l','<Super><Shift>Right']"
+dconf write /org/gnome/desktop/wm/keybindings/move-to-workspace-left "['<Super><Shift><Alt>h','<Super><Shift><Alt>Left']"
+dconf write /org/gnome/desktop/wm/keybindings/move-to-workspace-right "['<Super><Shift><Alt>l','<Super><Shift><Alt>Right']"
+
+# TODO Set super + enter to open terminal.
+gsettings set org.gnome.settings-daemon.plugins.media-keys terminal "['<Super>Return']"
+gsettings set org.gnome.settings-daemon.plugins.media-keys custom-keybindings "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/terminal']"
+gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/terminal/ name terminal
+gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/terminal/ command alacritty
+gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/terminal/ binding '<Super>Return'
+
