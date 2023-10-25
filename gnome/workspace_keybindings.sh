@@ -4,7 +4,8 @@ dconf write /org/gnome/desktop/wm/preferences/num-workspaces 10
 
 # Remove the hotkeys already bound to super + num.
 #	set hotkeys to false
-gsettings set org.gnome.shell.extensions.dash-to-dock hot-keys false
+dconf reset /org/gnome/shell/extensions/dash-to-dock/hot-keys
+# gsettings set org.gnome.shell.extensions.dash-to-dock hot-keys false
 #	remove mapping
 dconf reset /org/gnome/desktop/wm/keybindings/switch-to-application-1
 dconf reset /org/gnome/desktop/wm/keybindings/switch-to-application-2
@@ -57,9 +58,12 @@ dconf write /org/gnome/desktop/wm/keybindings/move-to-workspace-left "['<Super><
 dconf write /org/gnome/desktop/wm/keybindings/move-to-workspace-right "['<Super><Shift><Alt>l','<Super><Shift><Alt>Right']"
 
 # TODO Set super + enter to open terminal.
+gsettings reset org.gnome.settings-daemon.plugins.media-keys terminal
+gsettings reset org.gnome.settings-daemon.plugins.media-keys custom-keybindings
+# NOTE: currently, this results in errors in Settings-Daemon mediaKeys at startup
 gsettings set org.gnome.settings-daemon.plugins.media-keys terminal "['<Super>Return']"
-gsettings set org.gnome.settings-daemon.plugins.media-keys custom-keybindings "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/terminal']"
-gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/terminal/ name terminal
-gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/terminal/ command alacritty
-gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/terminal/ binding '<Super>Return'
+gsettings set org.gnome.settings-daemon.plugins.media-keys custom-keybindings "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom']"
+gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom/ name terminal
+gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom/ command alacritty
+gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom/ binding '<Super>Return'
 

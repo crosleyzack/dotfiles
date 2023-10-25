@@ -7,16 +7,31 @@
   "vim.neovimPath": "/bin/nvim",
   "vim.enableNeovim": true,
   "search.collapseResults": "alwaysCollapse",
+  // Editor settings
   "editor.minimap.enabled": false,
   "editor.fontFamily": "Source Code Pro",
   "editor.fontSize": 14.5,
+  "editor.formatOnSave": true,
+  "editor.insertSpaces": true,
+  "editor.renderWhitespace": "all",
+  "editor.trimAutoWhitespace": true,
+  "editor.stickyScroll.enabled": true,
+  "editor.inlineSuggest.enabled": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll": true,
+    "organizeImports": true
+  },
+  // Go settings
   "gopls": {
     "formatting.local": "github.com/censys"
   },
   "go.lintTool": "golint",
-  "debug.openDebug": "openOnSessionStart",
   "go.delveConfig": {},
   "go.toolsManagement.autoUpdate": true,
+  "go.goroot": "/nix/store/hiqm2sg34wrjb7i9h8ac666vnd8aa5gh-go-1.20.8/share/go",
+  // Debug settings
+  "debug.openDebug": "openOnSessionStart",
+  // language settings
   "[json]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
@@ -30,14 +45,6 @@
   "[typescriptreact]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "editor.codeActionsOnSave": {
-    "source.fixAll": true,
-    "organizeImports": true
-  },
-  "editor.formatOnSave": true,
-  "editor.insertSpaces": true,
-  "editor.renderWhitespace": "all",
-  "editor.trimAutoWhitespace": true,
   "typescript.updateImportsOnFileMove.enabled": "always",
   "editor.bracketPairColorization.enabled": true,
   "[jsonc]": {
@@ -53,9 +60,7 @@
   "[yaml]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "editor.stickyScroll.enabled": true,
   "haskell.manageHLS": "GHCup",
-  "editor.inlineSuggest.enabled": true,
   "github.copilot.inlineSuggest.enable": true,
   "github.copilot.enable": {
     "*": true,

@@ -113,6 +113,8 @@ then
 	sudo systemctl enable --now pcscd.socket
 	systemctl --user enable --now yubikey-agent
 	export SSH_AUTH_SOCK="${XDG_RUNTIME_DIR}/yubikey-agent/yubikey-agent.sock"
+    # NOTE: if it stops working, restart with
+    # systemctl --user restart yubikey-agent
 else
 	echo "yubikey-agent already installed! Skipping"
 fi
