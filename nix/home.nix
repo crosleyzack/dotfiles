@@ -1,5 +1,7 @@
 { config, pkgs, ... }:
-
+let
+  pkgsUnstable = import <unstable> { config.allowUnfree = true; };
+in
 {
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
@@ -57,7 +59,7 @@
     pkgs.gimp
     pkgs.imagemagick
     pkgs.bitwarden
-    pkgs.vscode
+    pkgsUnstable.vscode
     pkgs.spotify
     pkgs.slack
   ];
