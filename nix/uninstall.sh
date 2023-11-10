@@ -1,3 +1,5 @@
+#!/bin/bash
+
 rm -rf /nix/
 rm -rf ~/.nix-channels ~/.nix-defexpr ~/.nix-profile
 sudo rm -rf /etc/nix /etc/profile.d/nix.sh /etc/tmpfiles.d/nix-daemon.conf /nix ~root/.nix-channels ~root/.nix-defexpr ~root/.nix-profile
