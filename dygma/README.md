@@ -1,6 +1,6 @@
 # Dygma
 
-configuration for Dygma keyboard config software Bazecor
+configuration for [Dygma](https://dygma.com) keyboard config software [Bazecor](https://github.com/Dygmalab/Bazecor)
 
 NOTE: requires policykit-1-gnome, policykit-1, libpolkit-agent-1-dev
 
