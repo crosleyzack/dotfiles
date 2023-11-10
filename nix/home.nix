@@ -62,6 +62,7 @@ in
     pkgsUnstable.vscode
     pkgs.spotify
     pkgs.slack
+    pkgs.signal-desktop
   ];
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
