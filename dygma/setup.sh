@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Install requirements
+#   sudo apt-get install policykit-1-gnome policykit-1 libpolkit-agent-1-dev
 # Download AppImage
 #   Initialize empty directories
 PROGRAMS="$HOME/programs"
