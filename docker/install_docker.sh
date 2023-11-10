@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
 source "${BASH_SOURCE%/*}/../tools/install_tools.sh"
 
 # Setup docker. See https://docs.docker.com/engine/install/debian
