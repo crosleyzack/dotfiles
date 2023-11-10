@@ -8,7 +8,8 @@ PATH="$PATH:/usr/local/bin:/bin:/usr/bin:$HOME/.nix-profile/bin/"
 firefox > /dev/null &
 spotify > /dev/null &
 slack > /dev/null &
-zoom > /dev/null &
+# signal_desktop > /dev/null &
+# zoom > /dev/null &
 code > /dev/null &
 alacritty -e tmux > /dev/null &
 
