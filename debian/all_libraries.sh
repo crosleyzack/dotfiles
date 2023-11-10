@@ -63,6 +63,7 @@ sudo apt install -y \
     xsel \
     xz-utils \
     zlib1g-dev \
+    reptyr
 
 # Update python
 python -m pip install --upgrade pip wheel setuptools virtualenv
