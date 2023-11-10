@@ -9,6 +9,7 @@ Script including install and setup for _minimal_ libraries, programming language
 ## all_libraries.sh
 
 Script including install and setup for _all_ libraries, programming languages, and other tools.
+WARNING: Do not run if using nix, as these packages are already installed there.
 
 ## install_firefox.sh
 
