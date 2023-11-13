@@ -20,7 +20,14 @@ then
     sudo update-alternatives --install /usr/bin/x-terminal-emulator x-terminal-emulator /usr/local/bin/alacritty 50
     # We shouldn't need this line, but execute it if not the default for some reason.
     sudo update-alternatives --config x-terminal-emulator
+    # Create .desktop file
+    sudo rm -f /usr/share/applications/alacritty.desktop
+    sudo echo "[Desktop Entry]
+Type=Application
+Name=Alacritty
+Exec=/usr/local/bin/alacritty
+Comment=Executes Alacritty
+Icon=/home/crosley/Pictures/alacritty.png" >> /usr/share/applications/alacritty.desktop
 else
     echo "alacritty already installed! Skipping..."
 fi
-
