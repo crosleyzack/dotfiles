@@ -4,9 +4,18 @@
 #	in Applications > Statup Applications
 # Note: This script should work on any X Window Manager system.
 
+# Get display names
+INTERNAL="XWAYLAND1"
+EXTERNAL="XWAYLAND0"
+
 # Get desktop size. See https://askubuntu.com/questions/584688/how-can-i-get-the-monitor-resolution-using-the-command-line
 X=$(xrandr --current | grep '*' | uniq | awk '{print $1}' | cut -d 'x' -f1)
 Y=$(xrandr --current | grep '*' | uniq | awk '{print $1}' | cut -d 'x' -f2)
+
+# enum options for layout
+VERT_MAXED=1
+VERT_HORZ_MAXED=2
+FULLSCREEN=3
 
 function position {
 	# $1 indicates program to position - must be name of executable in bash path
@@ -44,6 +53,7 @@ function position {
 			wmctrl -i -r $WINID -b toggle,fullscreen
 		elif [[ $3 -eq 2 ]]; then
 			echo "changing $1 to maximized horz"
+            # The -e option expects a list of comma separated integers: "gravity,X,Y,width,height"
 			wmctrl -i -r $WINID -e 0,0,0,$X,$Y
 		elif [[ $3 -eq 1 ]]; then
 			# if 1 make vertically maxed
@@ -54,10 +64,21 @@ function position {
 	done
 }
 
-position zoom 7 2 false &
-position firefox 8 2 false &
+VERT_MAXED=1
+VERT_HORZ_MAXED=2
+FULLSCREEN=3
+
+# TODO:
+#  Get list of display names
+#  If more than one, set largest as primary
+#  move each window to primary display
+# NOTE: looks like location might require calculation
+#  see https://github.com/jc00ke/move-to-next-monitor/blob/master/move-to-next-monitor
+
+position zoom 7 $VERT_MAXED false $HALF 0 &
+position firefox 8 $VERT_HORZ_MAXED false $X $Y &
 THIRD=$(( $X / 3 ))
 HALF=$(( $X / 2 ))
-position spotify 9 1 false $HALF 0 &
-position slack 9 1 false $HALF $HALF &
-position code 1 3 true &
+position spotify 9 $VERT_MAXED false $HALF 0 &
+position slack 9 $VERT_MAXED false $HALF $HALF &
+position code 1 $FULLSCREEN true $X $Y &
