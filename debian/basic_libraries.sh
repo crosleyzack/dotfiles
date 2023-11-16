@@ -52,6 +52,7 @@ sudo apt install -y \
     xsel \
     xz-utils \
     zlib1g-dev \
+    printer-driver-all
 
 # Update python
 python -m pip install --upgrade pip wheel setuptools virtualenv
