@@ -167,6 +167,9 @@ spaceship add --after line_sep vi_mode
 # spaceship add --before char vi_mode
 spaceship_vi_mode_enable
 
+# Autocomplete kubectl
+[[ $commands[kubectl] ]] && source <(kubectl completion zsh)
+
 [ -f "/etc/profile.d/nix.sh" ] && source "/etc/profile.d/nix.sh"
 [ -f "$HOME/.nix-profile/etc/profile.d/nix.sh" ] && source "$HOME/.nix-profile/etc/profile.d/nix.sh"
 [ -f "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh" ] && source "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh"

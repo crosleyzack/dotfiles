@@ -76,6 +76,7 @@ FULLSCREEN=3
 #  see https://github.com/jc00ke/move-to-next-monitor/blob/master/move-to-next-monitor
 
 position zoom 7 $VERT_MAXED false $HALF 0 &
+position docker 7 $VERT_MAXED false $HALF $HALF &
 position firefox 8 $VERT_HORZ_MAXED false $X $Y &
 THIRD=$(( $X / 3 ))
 HALF=$(( $X / 2 ))
