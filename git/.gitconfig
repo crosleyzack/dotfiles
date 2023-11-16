@@ -7,7 +7,9 @@
 [core]
 	editor = vim
 [color]
-	ui = true
+    ui = true
+[url "ssh://git@github.com/"]
+	insteadOf = https://github.com/
 [alias]
 	tree = log --graph --decorate --pretty=oneline --abbrev-commit
 	unstage = reset HEAD --
