@@ -9,7 +9,9 @@
   "search.collapseResults": "alwaysCollapse",
   // Editor settings
   "editor.minimap.enabled": false,
-  "editor.fontFamily": "Source Code Pro",
+  "editor.fontFamily": "'Monaspace Neon', monospace",
+  // For texture healing with monaspace
+  "editor.fontLigatures": true,
   "editor.fontSize": 14.5,
   "editor.formatOnSave": true,
   "editor.insertSpaces": true,
