@@ -3,6 +3,17 @@
 //  [Ctrl+P] > Open Default Keyboard Shortcuts(JSON) _or_ [Ctrl+F1] as defined below.
 [
   {
+    "key": "ctrl+/",
+    "command": "-editor.action.blockComment",
+    "when": "editorTextFocus && !editorReadonly && editorHasSelection"
+  },
+  {
+    "key": "ctrl+/",
+    "command": "editor.action.commentLine",
+    "when": "editorTextFocus && !editorReadonly && editorHasSelection"
+    // Use line comment for selection groups
+  },
+  {
     "key": "ctrl+w ;",
     "command": "workbench.action.terminal.focus",
     "when": "editorFocus"
@@ -56,6 +67,10 @@
     "key": "ctrl+w v",
     "command": "workbench.action.splitEditorDown",
     "when": "editorFocus"
+  },
+  {
+    "key": "ctrl+\\",
+    "command": "-workbench.action.splitEditor"
   },
   {
     "key": "ctrl+w q",
