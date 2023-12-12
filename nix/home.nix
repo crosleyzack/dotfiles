@@ -37,8 +37,10 @@ in
     #   echo "Hello, ${config.home.username}!"
     # '')
     pkgs.sops
+    pkgs.jwt-cli
     pkgs.tor
     pkgs.texlive.combined.scheme-medium
+    pkgs.pre-commit
     pkgs.postgresql
     pkgs.google-cloud-sdk
     pkgs.docker-credential-gcr
@@ -46,19 +48,22 @@ in
     pkgs.grpcurl
     pkgs.proxychains
     pkgs.neovim
-    pkgs.go
+    pkgs.go-task
     pkgs.kubectx
     pkgs.kubectl
     pkgs.kind
     pkgs.ctlptl
+    pkgs.tilt
     pkgs.kubernetes-helm
     pkgs.yubikey-manager
     pkgs.cloud-sql-proxy
     pkgs.nodejs_18
+    pkgs.ruby_2_7
     pkgs.rustup
     pkgs.gimp
     pkgs.imagemagick
     pkgs.bitwarden
+    pkgsUnstable.go
     pkgsUnstable.vscode
     pkgs.spotify
     pkgs.slack
