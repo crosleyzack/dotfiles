@@ -15,7 +15,7 @@ in
   # You should not change this value, even if you update Home Manager. If you do
   # want to update the value, then make sure to first check the Home Manager
   # release notes.
-  home.stateVersion = "23.05"; # Please read the comment before changing.
+  home.stateVersion = "23.11"; # Please read the comment before changing.
 
   # The home.packages option allows you to install Nix packages into your
   # environment.
@@ -36,6 +36,7 @@ in
     # (pkgs.writeShellScriptBin "my-hello" ''
     #   echo "Hello, ${config.home.username}!"
     # '')
+    pkgs.gimp
     pkgs.sops
     pkgs.jwt-cli
     pkgs.tor
@@ -45,6 +46,7 @@ in
     pkgs.google-cloud-sdk
     pkgs.docker-credential-gcr
     pkgs.protobuf
+    pkgs.dive
     pkgs.grpcurl
     pkgs.proxychains
     pkgs.neovim
@@ -56,7 +58,7 @@ in
     pkgs.tilt
     pkgs.kubernetes-helm
     pkgs.yubikey-manager
-    pkgs.cloud-sql-proxy
+    pkgs.google-cloud-sql-proxy
     pkgs.nodejs_18
     pkgs.ruby_2_7
     pkgs.rustup
