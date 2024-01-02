@@ -51,12 +51,17 @@ in
     pkgs.proxychains
     pkgs.neovim
     pkgs.go-task
-    pkgs.kubectx
+    pkgs.cfssl
+    pkgs.coredns
+    pkgs.containerd
     pkgs.kubectl
-    pkgs.kind
+    pkgs.kubectx
     pkgs.ctlptl
-    pkgs.tilt
     pkgs.kubernetes-helm
+    pkgs.kind
+    pkgs.tilt
+    pkgs.etcd
+    pkgs.cni
     pkgs.yubikey-manager
     pkgs.google-cloud-sql-proxy
     pkgs.nodejs_18
@@ -65,11 +70,11 @@ in
     pkgs.gimp
     pkgs.imagemagick
     pkgs.bitwarden
-    pkgsUnstable.go
-    pkgsUnstable.vscode
     pkgs.spotify
     pkgs.slack
     pkgs.signal-desktop
+    pkgsUnstable.go
+    pkgsUnstable.vscode
   ];
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
