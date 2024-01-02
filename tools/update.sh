@@ -2,7 +2,8 @@
 
 # Script to update machine fully
 
-source "${BASH_SOURCE%/*}/../tools/install_tools.sh"
+FILE="${BASH_SOURCE%/*}"
+source "$FILE/../tools/install_tools.sh"
 
 # Apt packages
 is_installed apt
@@ -13,6 +14,13 @@ then
     sudo apt autoremove
     sudo apt autoclean
     sudo apt clean
+fi
+
+# ansible
+is_installed ansible
+if [ "true" = "$INSTALLED" ]
+then
+    ansible-playbook -b "$FILE/../ansible/install_packages.yml"
 fi
 
 # Update rust

@@ -36,6 +36,7 @@ in
     # (pkgs.writeShellScriptBin "my-hello" ''
     #   echo "Hello, ${config.home.username}!"
     # '')
+    pkgs.ansible_2_14
     pkgs.gimp
     pkgs.sops
     pkgs.jwt-cli
