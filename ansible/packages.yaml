@@ -4,7 +4,6 @@
   - name: Install all packages
     ansible.builtin.package:
       name:
-        - apt-transport-https
         - binutils
         - binwalk
         - build-essential
