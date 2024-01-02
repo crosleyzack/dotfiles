@@ -6,8 +6,9 @@ source "${BASH_SOURCE%/*}/../tools/install_tools.sh"
 is_installed firefox
 if [ "false" = "$INSTALLED" ]
 then
-    sudo apt update
     # install dependency and prevent it from being removed
+    # ansible localhost -m ansible.builtin.package -a "name=libdbus-glib-1-2 state=latest"
+    sudo apt update
     sudo apt install -y --reinstall libdbus-glib-1-2
     sudo apt-mark hold libdbus-glib-1-2
     # remove existing firefox

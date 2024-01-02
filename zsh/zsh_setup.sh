@@ -6,6 +6,7 @@ source "${BASH_SOURCE%/*}/../tools/install_tools.sh"
 is_installed zsh
 if [ "false" = "$INSTALLED" ]
 then
+    # ansible localhost -m ansible.builtin.package -a "name=zsh state=latest"
     sudo apt install zsh
 fi
 

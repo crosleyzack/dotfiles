@@ -1,11 +1,18 @@
 #!/bin/bash
 
-# Install some apt packages
-sudo apt update
-sudo apt upgrade
-sudo apt install -y \
-    python3 \
-    python-is-python3
+# Install python, if it isn't already.
+source "${BASH_SOURCE%/*}/../tools/install_tools.sh"
+is_installed python
+if [ "false" = "$INSTALLED" ]
+then
+    # ansible localhost -m ansible.builtin.package -a "name=python3 state=latest"
+    # ansible localhost -m ansible.builtin.package -a "name=python-is-python3 state=latest"
+    sudo apt update
+    sudo apt upgrade
+    sudo apt install -y \
+        python3 \
+        python-is-python3
+fi
 
 # Update python
 python -m pip install --upgrade pip wheel setuptools virtualenv

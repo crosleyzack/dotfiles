@@ -7,12 +7,14 @@ is_installed docker-ce
 if [ "false" = "$INSTALLED" ]
 then
      # Add Docker's official GPG key:
+     # ansible localhost -m ansible.builtin.package -a "name=curl state=latest"
+     # ansible localhost -m ansible.builtin.package -a "name=gnupg state=latest"
+     # ansible localhost -m ansible.builtin.package -a "name=ca-certificates state=latest"
      sudo apt-get update
      sudo apt-get install ca-certificates curl gnupg
      sudo install -m 0755 -d /etc/apt/keyrings
      curl -fsSL https://download.docker.com/linux/debian/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
      sudo chmod a+r /etc/apt/keyrings/docker.gpg
-
      # Add the repository to Apt sources:
      echo \
        "deb [arch="$(dpkg --print-architecture)" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian \
@@ -23,7 +25,6 @@ then
      sudo groupadd -f docker
      sudo usermod -aG docker $USER
      newgrp docker
-
      # sym link daemon
      # sudo mkdir -p /etc/docker
      # sudo rm -f /etc/docker/daemon.json

@@ -12,6 +12,13 @@ then
     git clone https://github.com/alacritty/alacritty.git
     cd alacritty
     #       Install requirements
+    # ansible localhost -m ansible.builtin.package -a "name=cmake state=latest"
+    # ansible localhost -m ansible.builtin.package -a "name=pkg-config state=latest"
+    # ansible localhost -m ansible.builtin.package -a "name=libfreetype6-dev state=latest"
+    # ansible localhost -m ansible.builtin.package -a "name=libfontconfig1-dev state=latest"
+    # ansible localhost -m ansible.builtin.package -a "name=libxcb-xfixes0-dev state=latest"
+    # ansible localhost -m ansible.builtin.package -a "name=libxkbcommon-dev state=latest"
+    # ansible localhost -m ansible.builtin.package -a "name=python3 state=latest"
     sudo apt-get install cmake pkg-config libfreetype6-dev libfontconfig1-dev libxcb-xfixes0-dev libxkbcommon-dev python3
     cargo build --release
     #       Move to bin

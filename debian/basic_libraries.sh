@@ -2,7 +2,8 @@
 
 DOTFILES="${BASH_SOURCE%/*}/../"
 
-ansible-playbook -b "$DOTFILES/ansible/install_packages.yml"
+ansible-playbook -b "$DOTFILES/ansible/debian.yaml" --ask-become-pass
+ansible-playbook -b "$DOTFILES/ansible/packages.yaml" --ask-become-pass
 
 # Update python
 python -m pip install --upgrade pip wheel setuptools virtualenv
