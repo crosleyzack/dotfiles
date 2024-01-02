@@ -1,0 +1,57 @@
+---
+- hosts: localhost
+  tasks:
+  - name: Install all packages
+    ansible.builtin.package:
+      name:
+        - apt-transport-https
+        - binutils
+        - binwalk
+        - build-essential
+        - ca-certificates
+        - cmake
+        - curl
+        - diffutils
+        - gcc
+        - gdb
+        - gettext
+        - git
+        - gnupg
+        - gzip
+        - jq
+        - libbz2-dev
+        - libffi-dev
+        - liblzma-dev
+        - libncursesw5-dev
+        - libpcsclite-dev
+        - libreadline-dev
+        - libsqlite3-dev
+        - libssl-dev
+        - libtool
+        - libtool-bin
+        - libxml2-dev
+        - libxmlsec1-dev
+        - llvm
+        - lsb-release
+        - make
+        - miniupnpc
+        - ncurses-base
+        - net-tools
+        - nmap
+        - openssl
+        - pipenv
+        - python3
+        - tcpdump
+        - tmux
+        - unar
+        - unzip
+        - vim
+        - wget
+        - whois
+        - wmctrl
+        - xsel
+        - xz-utils
+        - zlib1g-dev
+        - printer-driver-all
+      state: latest
+# ansible-playbook -b install_packages.yml
