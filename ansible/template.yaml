@@ -40,6 +40,7 @@
         - {{ openssl }}
         - {{ pipenv }}
         - {{ python3 }}
+        - {{ python_is_python3 }}
         - {{ tcpdump }}
         - {{ tmux }}
         - {{ unar }}

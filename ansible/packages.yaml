@@ -40,6 +40,7 @@
         - openssl
         - pipenv
         - python3
+        - python-is-python3
         - tcpdump
         - tmux
         - unar
