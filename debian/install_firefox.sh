@@ -7,7 +7,7 @@ is_installed firefox
 if [ "false" = "$INSTALLED" ]
 then
     # install dependency and prevent it from being removed
-    # ansible localhost -m ansible.builtin.package -a "name=libdbus-glib-1-2 state=latest"
+    # ansible localhost -m ansible.builtin.package -a "name=libdbus-glib-1-2 state=present"
     sudo apt update
     sudo apt install -y --reinstall libdbus-glib-1-2
     sudo apt-mark hold libdbus-glib-1-2
