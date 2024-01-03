@@ -2,7 +2,7 @@
 
 DOTFILES="${BASH_SOURCE%/*}/../"
 
-ansible-playbook -b "$DOTFILES/ansible/debian.yaml" --ask-become-pass
+# Should pull package names from Debian.yaml
 ansible-playbook -b "$DOTFILES/ansible/packages.yaml" --ask-become-pass
 
 # Update python
