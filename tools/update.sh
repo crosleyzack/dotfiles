@@ -20,7 +20,7 @@ fi
 is_installed ansible
 if [ "true" = "$INSTALLED" ]
 then
-    ansible-playbook -b "$FILE/../ansible/install_packages.yml"
+    ansible-playbook -b "$FILE/../ansible/packages.yaml"
 fi
 
 # Update rust
