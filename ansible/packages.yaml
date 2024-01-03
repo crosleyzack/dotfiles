@@ -3,7 +3,7 @@
 - hosts: localhost
   tasks:
   - name: include vars
-    include_vars: "{{ ansible_distribution }}.yaml"
+    include_vars: "{{ ansible_facts['os_family'] }}.yaml"
   - name: Install all packages
     ansible.builtin.package:
       name:
