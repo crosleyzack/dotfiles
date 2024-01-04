@@ -55,5 +55,7 @@
         - "{{ xsel }}"
         - "{{ xz_utils }}"
         - "{{ zlib1g_dev }}"
+        - "{{ telnet }}"
+        - "{{ netcat }}"
         - "{{ printer_driver }}"
       state: latest

@@ -47,4 +47,6 @@ wmctrl: wmctrl
 xsel: xsel
 xz_utils: xz-utils
 zlib1g_dev: zlib1g-dev
+telnet: telnet
+netcat: netcat-traditional
 printer_driver: printer-driver-all
