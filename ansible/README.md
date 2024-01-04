@@ -4,11 +4,11 @@ Installs programs via appropriate package manager for system.
 
 ## Installing
 
-Run `ansible-playbook -b packages.yaml --ask-become-pass`. This will pull from the appropriate `<os_family>.yaml` the package names.
+Run `ansible-playbook -b packages.yaml --ask-become-pass`. Package name defaults are defined in `defaults.yaml`. The appropriate `<os_family>.yaml` file will be pulled for the systems os family to override default package names.
 
 > **_NOTE:_** The "BECOME password:" will be you user password
 
-Implemented operating systems include:
+Implemented operating system families include:
 - Debian.yaml
 
-To create a new template, copy `Debian.yaml` and replace each variable name with the appropriate package name for your operating systems package manager. For valid OS Family options, see: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_conditionals.html#ansible-facts-os-family
+To create a new template, copy `defaults.yaml` and replace differing package names with the name for your operating systems package manager. For valid OS Family options, see: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_conditionals.html#ansible-facts-os-family
