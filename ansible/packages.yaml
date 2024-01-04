@@ -1,9 +1,11 @@
 ---
 # ansible-playbook -b packages.yaml --ask-become-pass
 - hosts: localhost
+  # var files. File with the os family name will overwrite values in defaults
+  vars_files:
+  - "defaults.yaml"
+  - "{{ ansible_facts['os_family'] }}.yaml"
   tasks:
-  - name: include vars
-    include_vars: "{{ ansible_facts['os_family'] }}.yaml"
   - name: Install all packages
     ansible.builtin.package:
       name:
