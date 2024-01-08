@@ -12,3 +12,7 @@ Implemented operating system families include:
 - Debian.yaml
 
 To create a new template, copy `defaults.yaml` and replace differing package names with the name for your operating systems package manager. For valid OS Family options, see: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_conditionals.html#ansible-facts-os-family
+
+## Debugging
+
+If you hang on "Gathering Facts", try doing `rm -rf ~/.ansible` to cleanup cache and try again.

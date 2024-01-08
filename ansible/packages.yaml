@@ -16,6 +16,7 @@
         - "{{ cmake }}"
         - "{{ curl }}"
         - "{{ diffutils }}"
+        - "{{ distrobox }}"
         - "{{ gcc }}"
         - "{{ gdb }}"
         - "{{ gettext }}"

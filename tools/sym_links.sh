@@ -103,3 +103,8 @@ sudo rm -f $HOME/.config/home-manager/home.nix
 echo "Linking $HOME/.config/home-manager/home.nix to $BASE_DIR/nix/home.nix"
 sudo mkdir -p $HOME/.config/home-manager
 sudo ln -s $BASE_DIR/nix/home.nix $HOME/.config/home-manager/home.nix
+
+# distrobox
+sudo rm -f $HOME/distrobox.ini
+echo "Linking $HOME/distrobox.ini to $BASE_DIR/distrobox/distrobox.ini"
+sudo ln -s $BASE_DIR/distrobox/distrobox.ini $HOME/distrobox.ini

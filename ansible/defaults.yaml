@@ -6,6 +6,7 @@ ca_certificates: ca-certificates
 cmake: cmake
 curl: curl
 diffutils: diffutils
+distrobox: distrobox
 gcc: gcc
 gdb: gdb
 gettext: gettext
