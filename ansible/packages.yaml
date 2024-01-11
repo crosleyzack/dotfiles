@@ -46,6 +46,7 @@
         - "{{ lsb_release }}"
         - "{{ make }}"
         - "{{ miniupnpc }}"
+        - "{{ neovim }}"
         - "{{ netcat }}"
         - "{{ ncurses_base }}"
         - "{{ net_tools }}"
