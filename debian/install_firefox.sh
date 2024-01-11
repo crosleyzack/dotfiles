@@ -31,6 +31,15 @@ then
     # cleanup
     rm -f $HOME/temp/firefox.bz2
     rm -rf $HOME/temp/firefox
+    # Create deskop file
+    wget https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Firefox_logo%2C_2019.png/636px-Firefox_logo%2C_2019.png -O $HOME/Pictures/firefox.png
+    sudo rm -f /usr/share/applications/firefox.desktop
+    echo "[Desktop Entry]
+Type=Application
+Name=Firefox
+Exec=/usr/local/bin/firefox
+Comment=Executes Firefox
+Icon=/home/crosley/Pictures/firefox.png" | sudo tee -a /usr/share/applications/     firefox.desktop
 else
     echo "firefox already installed! Skipping"
 fi

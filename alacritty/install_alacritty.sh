@@ -21,7 +21,7 @@ then
     sudo cp $HOME/temp/alacritty/extra/logo/alacritty-term.svg /usr/share/pixmaps/Alacritty.svg
     sudo update-alternatives --install /usr/bin/x-terminal-emulator x-terminal-emulator /usr/local/bin/alacritty 50
     # Create .desktop file
-    wget https://raw.githubusercontent.com/alacritty/alacritty/master/extra/logo/compat/alacritty-term%2Bscanlines.png -o $HOME/Pictures/alacritty.png
+    wget https://raw.githubusercontent.com/alacritty/alacritty/master/extra/logo/compat/alacritty-term%2Bscanlines.png -O $HOME/Pictures/alacritty.png
     sudo rm -f /usr/share/applications/alacritty.desktop
     echo "[Desktop Entry]
 Type=Application
