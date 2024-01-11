@@ -36,27 +36,25 @@ in
     # (pkgs.writeShellScriptBin "my-hello" ''
     #   echo "Hello, ${config.home.username}!"
     # '')
-    pkgs.ansible_2_14
-    pkgs.gimp
+    # pkgs.ansible_2_14
     pkgs.sops
     pkgs.jwt-cli
-    pkgs.tor
-    pkgs.texlive.combined.scheme-medium
-    pkgs.pre-commit
-    pkgs.postgresql
+    # pkgs.tor
+    # pkgs.texlive.combined.scheme-medium
+    # pkgs.pre-commit
+    # pkgs.postgresql
     pkgs.google-cloud-sdk
     pkgs.docker-credential-gcr
     pkgs.protobuf
     pkgs.dive
     pkgs.grpcurl
-    pkgs.proxychains
-    pkgs.neovim
+    # pkgs.neovim
     pkgs.go-task
-    pkgs.cfssl
+    # pkgs.cfssl
     pkgs.coredns
-    pkgs.containerd
+    # pkgs.containerd
     pkgs.kubectl
-    pkgs.kubectx
+    # pkgs.kubectx
     pkgs.ctlptl
     pkgs.kubernetes-helm
     pkgs.kind
@@ -65,16 +63,16 @@ in
     pkgs.cni
     pkgs.yubikey-manager
     pkgs.google-cloud-sql-proxy
-    pkgs.nodejs_18
+    # pkgs.nodejs_18
     pkgs.ruby_2_7
     pkgs.rustup
+    # pkgs.imagemagick
+    pkgsUnstable.go
     pkgs.gimp
-    pkgs.imagemagick
     pkgs.bitwarden
     pkgs.spotify
     pkgs.slack
     pkgs.signal-desktop
-    pkgsUnstable.go
     pkgsUnstable.vscode
   ];
 

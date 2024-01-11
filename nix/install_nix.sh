@@ -17,4 +17,6 @@ sudo -i nix-channel --add https://nixos.org/channels/nixpkgs-unstable unstable
 sudo -i nix-channel --remove home-manager
 sudo -i nix-channel --add https://github.com/nix-community/home-manager/archive/release-23.11.tar.gz home-manager
 sudo -i nix-channel --update
+# setup home manager
+echo "Home manager installed, the command to setup may not work until after a restart"
 nix-shell '<home-manager>' -A install
