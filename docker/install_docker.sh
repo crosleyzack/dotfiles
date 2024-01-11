@@ -7,11 +7,9 @@ is_installed docker-ce
 if [ "false" = "$INSTALLED" ]
 then
      # Add Docker's official GPG key:
-     # ansible localhost -m ansible.builtin.package -a "name=curl state=latest"
-     # ansible localhost -m ansible.builtin.package -a "name=gnupg state=latest"
-     # ansible localhost -m ansible.builtin.package -a "name=ca-certificates state=latest"
-     sudo apt-get update
-     sudo apt-get install ca-certificates curl gnupg
+     ansible localhost -m ansible.builtin.package -a "name=curl state=latest" -a "name=gnupg state=latest" -a "name=ca-certificates state=latest"
+     # sudo apt-get update
+     # sudo apt-get install ca-certificates curl gnupg
      sudo install -m 0755 -d /etc/apt/keyrings
      curl -fsSL https://download.docker.com/linux/debian/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
      sudo chmod a+r /etc/apt/keyrings/docker.gpg
@@ -51,8 +49,8 @@ is_installed docker-desktop
 if [ "false" = "$INSTALLED" ]
 then
     # remove old
-    rm -r $HOME/.docker/desktop
-    sudo rm /usr/local/bin/com.docker.cli
+    rm -rf $HOME/.docker/desktop
+    sudo rm -f /usr/local/bin/com.docker.cli
     sudo apt purge docker-desktop
     # # install curl if not already
     sudo apt-get update
