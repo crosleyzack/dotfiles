@@ -4,21 +4,36 @@
 dconf write /org/gnome/mutter/dynamic-workspaces false
 dconf write /org/gnome/desktop/wm/preferences/num-workspaces 10
 
+echo "Set workspaces to 10"
+
 # Remove the hotkeys already bound to super + num.
 #	set hotkeys to false
 dconf reset /org/gnome/shell/extensions/dash-to-dock/hot-keys
 # gsettings set org.gnome.shell.extensions.dash-to-dock hot-keys false
+# View dconf keybindings:
+#    dconf dump /org/gnome/desktop/wm/keybindings/
 #	remove mapping
+#	org.gnome.shell.keybindings switch-to-application-1 ['<Super>1']
 dconf reset /org/gnome/desktop/wm/keybindings/switch-to-application-1
+gsettings set org.gnome.shell.keybindings switch-to-application-1 "['<Super>Grave']"
 dconf reset /org/gnome/desktop/wm/keybindings/switch-to-application-2
+gsettings set org.gnome.shell.keybindings switch-to-application-2 "['<Super>Grave']"
 dconf reset /org/gnome/desktop/wm/keybindings/switch-to-application-3
+gsettings set org.gnome.shell.keybindings switch-to-application-3 "['<Super>Grave']"
 dconf reset /org/gnome/desktop/wm/keybindings/switch-to-application-4
+gsettings set org.gnome.shell.keybindings switch-to-application-4 "['<Super>Grave']"
 dconf reset /org/gnome/desktop/wm/keybindings/switch-to-application-5
+gsettings set org.gnome.shell.keybindings switch-to-application-5 "['<Super>Grave']"
 dconf reset /org/gnome/desktop/wm/keybindings/switch-to-application-6
+gsettings set org.gnome.shell.keybindings switch-to-application-6 "['<Super>Grave']"
 dconf reset /org/gnome/desktop/wm/keybindings/switch-to-application-7
+gsettings set org.gnome.shell.keybindings switch-to-application-7 "['<Super>Grave']"
 dconf reset /org/gnome/desktop/wm/keybindings/switch-to-application-8
+gsettings set org.gnome.shell.keybindings switch-to-application-8 "['<Super>Grave']"
 dconf reset /org/gnome/desktop/wm/keybindings/switch-to-application-9
+gsettings set org.gnome.shell.keybindings switch-to-application-9 "['<Super>Grave']"
 dconf reset /org/gnome/desktop/wm/keybindings/switch-to-application-10
+# gsettings set org.gnome.shell.keybindings switch-to-application-9 "['<Super>Grave']"
 
 # Set super + num goes to workspace num.
 dconf write /org/gnome/desktop/wm/keybindings/switch-to-workspace-1 "['<Super>1']"
@@ -44,6 +59,8 @@ dconf write /org/gnome/desktop/wm/keybindings/move-to-workspace-8  "['<Super><Sh
 dconf write /org/gnome/desktop/wm/keybindings/move-to-workspace-9  "['<Super><Shift>9']"
 dconf write /org/gnome/desktop/wm/keybindings/move-to-workspace-10 "['<Super><Shift>0']"
 
+echo "Set workspace keyboard shortcuts"
+
 # Use vim bindings for maximize too
 dconf write /org/gnome/desktop/wm/keybindings/maximize "['<Super>Up','<Super>k']"
 dconf write /org/gnome/desktop/wm/keybindings/minimize "['<Super><Shift>Down','<Super><Shift>j']"
@@ -59,6 +76,11 @@ dconf write /org/gnome/desktop/wm/keybindings/switch-to-workspace-right "['<Supe
 dconf write /org/gnome/desktop/wm/keybindings/move-to-workspace-left "['<Super><Shift><Alt>h','<Super><Shift><Alt>Left']"
 dconf write /org/gnome/desktop/wm/keybindings/move-to-workspace-right "['<Super><Shift><Alt>l','<Super><Shift><Alt>Right']"
 
+echo "Set other keybindings"
+
+#
+# org.gnome.desktop.default-applications.terminal exec 'x-terminal-emulator'
+# org.gnome.desktop.default-applications.terminal exec-arg '-e'
 # TODO Set super + enter to open terminal.
 gsettings reset org.gnome.settings-daemon.plugins.media-keys terminal
 gsettings reset org.gnome.settings-daemon.plugins.media-keys custom-keybindings
@@ -69,6 +91,10 @@ gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/or
 gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom/ command alacritty
 gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom/ binding '<Super>Return'
 
+echo "Set terminal open keybindings"
+
 # Enable fractional scaling
-# gsettings set org.gnome.mutter experimental-features "['scale-monitor-framebuffer']"
-gsettings set org.gnome.mutter experimental-features "['x11-randr-fractional-scaling']"
+gsettings set org.gnome.mutter experimental-features "['scale-monitor-framebuffer']"
+# gsettings set org.gnome.mutter experimental-features "['x11-randr-fractional-scaling']"
+
+echo "Set fractional scaling"
