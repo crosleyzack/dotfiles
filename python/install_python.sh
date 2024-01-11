@@ -5,17 +5,17 @@ source "${BASH_SOURCE%/*}/../tools/install_tools.sh"
 is_installed python
 if [ "false" = "$INSTALLED" ]
 then
-    # ansible localhost -m ansible.builtin.package -a "name=python3 state=latest"
-    # ansible localhost -m ansible.builtin.package -a "name=python-is-python3 state=latest"
-    sudo apt update
-    sudo apt upgrade
-    sudo apt install -y \
-        python3 \
-        python-is-python3
+    ansible localhost -m ansible.builtin.package -a "name=python3 state=latest" -a "name=python-is-python3 state=latest"
+    # sudo apt update
+    # sudo apt upgrade
+    # sudo apt install -y \
+    #     python3 \
+    #    python-is-python3
 fi
 
 # Update python
 python -m pip install --upgrade pip wheel setuptools virtualenv
+python -m pip install --user pipenv
 
 source "${BASH_SOURCE%/*}/../tools/install_tools.sh"
 
@@ -37,3 +37,5 @@ if [ "false" = "$INSTALLED" ]
 then
     curl -sSL https://install.python-poetry.org | python3 -
 fi
+
+echo "Python install finished"

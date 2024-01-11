@@ -20,6 +20,8 @@ rm -f $HOME/.config/autostart/startup.desktop
 ln -s $DESKTOP_FILE $HOME/.config/autostart/startup.desktop
 # cp "$DIR_PATH/startup.desktop" $HOME/.config/autostart
 
+echo "Startup configured!"
+
 ### OLD attempt crontab
 # COMMAND="$DIR_PATH/startup_program.sh"
 # echo "Adding command $COMMAND to startup"
