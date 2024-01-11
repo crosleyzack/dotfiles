@@ -2,6 +2,9 @@
 
 source "${BASH_SOURCE%/*}/../tools/install_tools.sh"
 
+# To remove firefox-esr on debian, do:
+#  sudo apt purge firefox-esr
+
 # Setup firefox. See https://support.mozilla.org/en-US/kb/install-firefox-linux
 is_installed firefox
 if [ "false" = "$INSTALLED" ]
@@ -23,10 +26,10 @@ then
     tar xjf $HOME/temp/firefox.bz2 -C $HOME/temp
     # move to final install location
     sudo cp -r $HOME/temp/firefox /opt
-    sudo rm /usr/local/bin/firefox
+    sudo rm -f /usr/local/bin/firefox
     sudo ln -s /opt/firefox/firefox /usr/local/bin/firefox
     # cleanup
-    rm $HOME/temp/firefox.bz2
+    rm -f $HOME/temp/firefox.bz2
     rm -rf $HOME/temp/firefox
 else
     echo "firefox already installed! Skipping"
