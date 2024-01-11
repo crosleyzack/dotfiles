@@ -42,6 +42,14 @@ ln -sf "$ZSH_CUSTOM/themes/spaceship-prompt/spaceship.zsh-theme" "$ZSH_CUSTOM/th
 rm -rf "$ZSH_CUSTOM/plugins/spaceship-vi-mode"
 git clone https://github.com/spaceship-prompt/spaceship-vi-mode.git "$ZSH_CUSTOM/plugins/spaceship-vi-mode"
 
+# Install zsh-syntax-highlighting
+rm -rf "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting"
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting"
+
+# Install autosuggestions
+rm -rf "$ZSH_CUSTOM/plugins/zsh-autosuggestions"
+git clone https://github.com/zsh-users/zsh-autosuggestions "$ZSH_CUSTOM/plugins/zsh-autosuggestions"
+
 # sym link
 # mkdir -p $HOME/.oh-my-zsh
 # ln -s $ZSH/oh-my-zsh.sh $HOME/.oh-my-zsh/oh-my-zsh.sh
