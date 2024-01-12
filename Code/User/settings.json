@@ -94,7 +94,7 @@
     }
   },
   "explorer.autoReveal": false,
-  "window.menuBarVisibility": "compact"
+  "window.menuBarVisibility": "compact",
   "window.density.editorTabHeight": "compact"
   // "workbench.editor": {
   //   "splitSizing": "auto"
