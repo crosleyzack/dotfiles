@@ -48,8 +48,8 @@ in
     pkgs.protobuf
     pkgs.dive
     pkgs.grpcurl
-    # pkgs.neovim
     pkgs.go-task
+    pkgs.neovim
     # pkgs.cfssl
     pkgs.coredns
     # pkgs.containerd
@@ -72,6 +72,7 @@ in
     pkgs.bitwarden
     pkgs.spotify
     pkgs.slack
+    pkgs.zoom
     pkgs.signal-desktop
     pkgsUnstable.vscode
   ];
