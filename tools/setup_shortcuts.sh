@@ -26,7 +26,7 @@ sudo rm -f /usr/share/applications/signal.desktop
 echo "[Desktop Entry]
 Type=Application
 Name=Signal
-Exec=$(which signal)
+Exec=$(which signal-desktop)
 Comment=Executes Signal
 Icon=/home/crosley/Pictures/signal.png" | sudo tee -a /usr/share/applications/signal.desktop
 
