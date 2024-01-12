@@ -29,3 +29,14 @@ Name=Signal
 Exec=$(which signal)
 Comment=Executes Signal
 Icon=/home/crosley/Pictures/signal.png" | sudo tee -a /usr/share/applications/signal.desktop
+
+# Zoom
+wget https://assets.stickpng.com/images/5e8ce318664eae0004085461.png -O $HOME/Pictures/zoom.png
+sudo rm -f /usr/share/applications/zoom.desktop
+echo "[Desktop Entry]
+Type=Application
+Name=Zoom
+Exec=$(which zoom)
+Comment=Executes Zoom
+Icon=/home/crosley/Pictures/zoom.png" | sudo tee -a /usr/share/applications/zoom.desktop
+
