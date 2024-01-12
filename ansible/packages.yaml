@@ -60,6 +60,7 @@
         - "{{ printer_driver }}"
         - "{{ python3 }}"
         - "{{ python_is_python3 }}"
+        - "{{ pyvenv }}"
         - "{{ tcpdump }}"
         - "{{ telnet }}"
         - "{{ texlive }}"

@@ -52,6 +52,7 @@ pipenv: pipenv
 printer_driver: printer-driver-foo
 python3: python3
 python_is_python3: python-is-python3
+pyvenv: python3-venv
 tcpdump: tcpdump
 telnet: telnet
 texlive: texlive
