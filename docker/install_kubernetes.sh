@@ -95,6 +95,7 @@ then
     # Store in home directory and symlink
     mkdir -p $HOME/bin
     curl -o $HOME/bin/cloud-sql-proxy https://storage.googleapis.com/cloud-sql-connectors/cloud-sql-proxy/v2.8.1/cloud-sql-proxy.linux.amd64
-    chmod +x $HOME/cloud-sql-proxy
-    sudo ln -s /$HOME/cloud-sql-proxy /usr/local/bin/cloud-sql-proxy
+    chmod +x $HOME/bin/cloud-sql-proxy
+    sudo rm -f /usr/local/bin/cloud-sql-proxy
+    sudo ln -s $HOME/bin/cloud-sql-proxy /usr/local/bin/cloud-sql-proxy
 fi
