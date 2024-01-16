@@ -8,3 +8,4 @@ flatpak install flathub org.signal.Signal
 flatpak install flathub com.visualstudio.code
 flatpak install flathub com.bitwarden.desktop
 flatpak install flathub io.neovim.nvim
+flatpak install flathub org.mozilla.firefox
