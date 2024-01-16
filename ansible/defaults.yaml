@@ -32,7 +32,7 @@ libtool: libtool
 libtool_bin: libtool-bin
 libxml2_dev: libxml2-dev
 libxmlsec1_dev: libxmlsec1-dev
-libpq-dev: libpq-dev
+libpq: libpq-dev
 llvm: llvm
 lsb_release: lsb-release
 make: make
