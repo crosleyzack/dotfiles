@@ -38,4 +38,11 @@ then
     curl -sSL https://install.python-poetry.org | python3 -
 fi
 
+# Setup pipx
+is_installed pipx
+if [ "false" = "$INSTALLED" ]
+then
+    sudo apt install pipx
+fi
+
 echo "Python install finished"
