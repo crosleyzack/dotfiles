@@ -62,23 +62,24 @@ else
 fi
 
 # Setup docker desktop. https://docs.docker.com/desktop/install/debian/
-# is_installed docker-desktop
-# if [ "false" = "$INSTALLED" ]
-# then
-#     # remove old
-#     rm -rf $HOME/.docker/desktop
-#     sudo rm -f /usr/local/bin/com.docker.cli
-#     sudo apt purge docker-desktop
-#     # # install curl if not already
-#     sudo apt-get update
-#     # # get new copy of deb file
-#     mkdir -p $HOME/temp
-#     rm -f $HOME/temp/docker-desktop.deb
-#     curl -SL -o $HOME/temp/docker-desktop.deb https://desktop.docker.com/linux/main/amd64/docker-desktop-4.25.1-amd64.deb
-#     # install deb file
-#     sudo apt-get install -y $HOME/temp/docker-desktop.deb
-#     # # set to run at startup
-#     systemctl --user enable docker-desktop
-# else
-#     echo "docker-desktop already installed! Skipping"
-# fi
+is_installed docker-desktop
+if [ "false" = "$INSTALLED" ]
+then
+    # remove old
+    rm -rf $HOME/.docker/desktop
+    sudo rm -f /usr/local/bin/com.docker.cli
+    sudo apt purge docker-desktop
+    # # install curl if not already
+    sudo apt-get update
+    sudo apt-get install curl --yes
+    # # get new copy of deb file
+    mkdir -p $HOME/temp
+    rm -f $HOME/temp/docker-desktop.deb
+    curl -SL -o $HOME/temp/docker-desktop.deb https://desktop.docker.com/linux/main/amd64/docker-desktop-4.25.1-amd64.deb
+    # install deb file
+    sudo dpkg -i $HOME/temp/docker-desktop.deb
+    # # set to run at startup
+    systemctl --user enable docker-desktop
+else
+    echo "docker-desktop already installed! Skipping"
+fi
