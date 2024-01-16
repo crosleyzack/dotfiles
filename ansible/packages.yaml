@@ -30,6 +30,7 @@
         - "{{ jq }}"
         - "{{ imagemagick }}"
         - "{{ kubectx }}"
+        - "{{ launchpad }}"
         - "{{ libbz2_dev }}"
         - "{{ libffi_dev }}"
         - "{{ liblzma_dev }}"

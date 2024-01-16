@@ -20,6 +20,7 @@ gzip: gzip
 imagemagick: imagemagick
 jq: jq
 kubectx: kubectx
+launchpad: python3-launchpadlib
 libbz2_dev: libbz2-dev
 libffi_dev: libffi-dev
 liblzma_dev: liblzma-dev
