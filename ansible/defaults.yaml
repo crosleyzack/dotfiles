@@ -49,6 +49,7 @@ podman: podman
 proxychains: proxychains
 pip: python3-pip
 pipenv: pipenv
+pipx: pipx
 printer_driver: printer-driver-foo
 python3: python3
 python_is_python3: python-is-python3
