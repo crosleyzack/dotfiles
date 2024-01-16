@@ -35,6 +35,7 @@
         - "{{ liblzma_dev }}"
         - "{{ libncursesw5_dev }}"
         - "{{ libpcsclite_dev }}"
+        - "{{ libpq-dev }}"
         - "{{ libreadline_dev }}"
         - "{{ libsqlite3_dev }}"
         - "{{ libssl_dev }}"
