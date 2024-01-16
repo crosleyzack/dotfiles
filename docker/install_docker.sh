@@ -6,37 +6,46 @@ source "${BASH_SOURCE%/*}/../tools/install_tools.sh"
 is_installed docker-ce
 if [ "false" = "$INSTALLED" ]
 then
-     # Add Docker's official GPG key:
-     # ansible localhost -m ansible.builtin.package -a "name=curl state=latest" -a "name=gnupg state=latest" -a "name=ca-certificates state=latest"
-     sudo apt-get update
-     sudo apt-get install ca-certificates curl gnupg
-     sudo install -m 0755 -d /etc/apt/keyrings
-     curl -fsSL https://download.docker.com/linux/debian/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
-     sudo chmod a+r /etc/apt/keyrings/docker.gpg
-     # Add the repository to Apt sources:
-     echo \
-       "deb [arch="$(dpkg --print-architecture)" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian \
-       "$(. /etc/os-release && echo "$VERSION_CODENAME")" stable" | \
-       sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-     sudo apt-get update
-     for pkg in docker.io docker-doc docker-compose podman-docker containerd runc; do sudo apt-get remove $pkg; done
-     sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
-     # add group: https://docs.docker.com/engine/install/linux-postinstall/#manage-docker-as-a-non-root-user
-     sudo groupadd -f docker
-     sudo usermod -aG docker $USER
-     newgrp docker
-     sudo chown "$USER":"$USER" /home/"$USER"/.docker -R
-     sudo chmod g+rwx "$HOME/.docker" -R
-     # sym link daemon
-     # sudo mkdir -p /etc/docker
-     # sudo rm -f /etc/docker/daemon.json
-     # echo "Linking /etc/docker/deamon.json to $BASE_DIR/docker/daemon.json"
-     # sudo ln -s $BASE_DIR/docker/daemon.json /etc/docker/daemon.json
-     # launch with system: https://docs.docker.com/engine/install/linux-postinstall/#configure-docker-to-start-on-boot-with-systemd
-     sudo systemctl enable docker.service
-     sudo systemctl enable containerd.service
+    dpkg -l | grep -i docker
+    sudo apt-get purge -y docker-engine docker docker.io docker-ce docker-ce-cli docker-compose-plugin
+    sudo apt-get autoremove -y --purge docker-engine docker docker.io docker-ce docker-compose-plugin
+    sudo rm -rf /var/lib/docker /etc/docker
+    sudo rm -f /etc/apparmor.d/docker
+    sudo groupdel docker
+    sudo rm -rf /var/run/docker.sock
+    # Add Docker's official GPG key:
+    # ansible localhost -m ansible.builtin.package -a "name=curl state=latest" -a "name=gnupg state=latest" -a "name=ca-certificates state=latest"
+    sudo apt-get update
+    sudo apt-get install ca-certificates curl gnupg
+    sudo install -m 0755 -d /etc/apt/keyrings
+    curl -fsSL https://download.docker.com/linux/debian/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+    sudo chmod a+r /etc/apt/keyrings/docker.gpg
+    # Add the repository to Apt sources:
+    echo \
+      "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian \
+      $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+      sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+    sudo apt-get update
+    sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+    echo "docker installed"
+    # add user to docker group
+    sudo groupadd -f docker
+    sudo usermod -aG docker $USER
+    newgrp docker
+    sudo chown "$USER":"$USER" /home/"$USER"/.docker -R
+    sudo chmod g+rwx "$HOME/.docker" -R
+    echo "docker group created"
+    # sym link daemon
+    # sudo mkdir -p /etc/docker
+    # sudo rm -f /etc/docker/daemon.json
+    # echo "Linking /etc/docker/deamon.json to $BASE_DIR/docker/daemon.json"
+    # sudo ln -s $BASE_DIR/docker/daemon.json /etc/docker/daemon.json
+    # launch with system: https://docs.docker.com/engine/install/linux-postinstall/#configure-docker-to-start-on-boot-with-systemd
+    sudo systemctl enable docker.service
+    sudo systemctl enable containerd.service
+    echo "docker-ce service enabled!"
 else
-     echo "docker-ce already installed! Skipping"
+    echo "docker-ce already installed! Skipping"
 fi
 
 is_installed docker-compose
@@ -47,6 +56,7 @@ then
     sudo ln -f -s /usr/libexec/docker/cli-plugins/docker-compose /usr/local/bin/docker-compose
     # sudo touch /usr/bin/docker-compose
     # echo "docker compose \"$@\"" > /usr/bin/docker-compose
+    echo "docker-compose installed!"
 else
      echo "docker-compose already installed! Skipping"
 fi
