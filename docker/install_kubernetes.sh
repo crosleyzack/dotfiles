@@ -84,8 +84,9 @@ is_installed dive
 if [ "false" = "$INSTALLED" ]
 then
     export DIVE_VERSION=$(curl -sL "https://api.github.com/repos/wagoodman/dive/releases/latest" | grep '"tag_name":' | sed -E 's/.*"v([^"]+)".*/\1/')
-    curl -OL https://github.com/wagoodman/dive/releases/download/v${DIVE_VERSION}/dive_${DIVE_VERSION}_linux_amd64.deb
-    sudo apt install ./dive_${DIVE_VERSION}_linux_amd64.deb
+    mkdir -p $HOME/temp
+    curl -L -o $HOME/temp/dive.deb https://github.com/wagoodman/dive/releases/download/v${DIVE_VERSION}/dive_${DIVE_VERSION}_linux_amd64.deb
+    sudo apt install $HOME/temp/dive.deb
 fi
 
 is_installed cloud-sql-proxy
