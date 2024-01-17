@@ -5,7 +5,7 @@ source "${BASH_SOURCE%/*}/../tools/install_tools.sh"
 is_installed python
 if [ "false" = "$INSTALLED" ]
 then
-    ansible localhost -m ansible.builtin.package -a "name=python3 state=latest" -a "name=python-is-python3 state=latest"
+    ansible localhost -m ansible.builtin.package -a "name=python3 state=latest" # -a "name=python-is-python3 state=latest"
     # sudo apt update
     # sudo apt upgrade
     # sudo apt install -y \
@@ -42,7 +42,8 @@ fi
 is_installed pipx
 if [ "false" = "$INSTALLED" ]
 then
-    sudo apt install pipx
+    ansible localhost -m ansible.builtin.package -a "name=pipx state=latest"
+    # sudo apt install pipx
 fi
 
 echo "Python install finished"
