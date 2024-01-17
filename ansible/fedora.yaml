@@ -1,6 +1,5 @@
 ---
-# ansible-playbook -b packages.yaml --ask-become-pass
-# Basic set of install items
+# ansible-playbook -b fedora.yaml --ask-become-pass
 - hosts: localhost
   # var files. File with the os family name will overwrite values in defaults
   vars_files:
@@ -10,6 +9,7 @@
   - name: Install all packages
     ansible.builtin.package:
       name:
+        - "{{ alacritty }}"
         - "{{ binutils }}"
         - "{{ binwalk }}"
           # - "{{ build_essential }}"
@@ -19,9 +19,11 @@
         - "{{ curl }}"
         - "{{ containerd }}"
         - "{{ diffutils }}"
-        # - "{{ distrobox }}"
+        - "{{ distrobox }}"
+        - "{{ ffmpeg }}"
         - "{{ flatpak }}"
-        - "{{ gnome_flatpak }}"
+        # - "{{ gnome_flatpak }}"
+        - "{{ golang }}"
         - "{{ gcc }}"
         - "{{ gdb }}"
         - "{{ gettext }}"
@@ -30,21 +32,21 @@
         - "{{ gzip }}"
         - "{{ jq }}"
         - "{{ imagemagick }}"
-        - "{{ kubectx }}"
+        # - "{{ kubectx }}"
         - "{{ launchpad }}"
-        - "{{ libbz2_dev }}"
-        - "{{ libffi_dev }}"
-        - "{{ liblzma_dev }}"
-        - "{{ libncursesw5_dev }}"
-        - "{{ libpcsclite_dev }}"
+        # - "{{ libbz2_dev }}"
+        # - "{{ libffi_dev }}"
+        # - "{{ liblzma_dev }}"
+        # - "{{ libncursesw5_dev }}"
+        # - "{{ libpcsclite_dev }}"
         - "{{ libpq }}"
         - "{{ libreadline }}"
         - "{{ sqlite }}"
-        - "{{ libssl_dev }}"
+        # - "{{ libssl_dev }}"
         - "{{ libtool }}"
-        - "{{ libtool_bin }}"
-        - "{{ libxml2_dev }}"
-        - "{{ libxmlsec1_dev }}"
+        # - "{{ libtool_bin }}"
+        # - "{{ libxml2_dev }}"
+        # - "{{ libxmlsec1_dev }}"
         - "{{ llvm }}"
         - "{{ lsb_release }}"
         - "{{ make }}"
@@ -53,6 +55,7 @@
         - "{{ netcat }}"
         - "{{ ncurses_base }}"
         - "{{ net_tools }}"
+        - "{{ neovim }}"
         - "{{ nmap }}"
         - "{{ nodejs }}"
         - "{{ openssl }}"
@@ -61,7 +64,7 @@
         - "{{ pip }}"
         - "{{ pipx }}"
         - "{{ pipenv }}"
-        - "{{ printer_driver }}"
+        # - "{{ printer_driver }}"
         - "{{ python3 }}"
         - "{{ python_is_python3 }}"
         - "{{ pyvenv }}"
@@ -76,8 +79,10 @@
         - "{{ wget }}"
         - "{{ whois }}"
         - "{{ wmctrl }}"
+        - "{{ xrandr }}"
         - "{{ xsel }}"
-        - "{{ xz_utils }}"
-        - "{{ yq }}"
-        - "{{ zlib1g_dev }}"
+        # - "{{ xz_utils }}"
+        # - "{{ yq }}"
+        # - "{{ zlib1g_dev }}"
+        - "{{ zsh }}"
       state: latest

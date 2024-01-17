@@ -1,4 +1,5 @@
 ---
+alacritty: alacritty
 binwalk: binwalk
 binutils: binutils
 build_essential: build-essential
@@ -9,12 +10,14 @@ curl: curl
 containerd: containerd
 diffutils: diffutils
 distrobox: distrobox
+ffmpeg: ffmpeg-free
 flatpak: flatpak
 gnome_flatpak: gnome-software-plugin-flatpak
 gcc: gcc
 gdb: gdb
 gettext: gettext
 git: git
+golang: golang
 gnupg: gnupg
 gzip: gzip
 imagemagick: imagemagick
@@ -25,9 +28,10 @@ libbz2_dev: libbz2-dev
 libffi_dev: libffi-dev
 liblzma_dev: liblzma-dev
 libncursesw5_dev: libncursesw5-dev
+libnotify: libnotify
 libpcsclite_dev: libpcsclite-dev
-libreadline_dev: libreadline-dev
-libsqlite3_dev: libsqlite3-dev
+libreadline: libreadline-dev
+sqlite: libsqlite3-dev
 libssl_dev: libssl-dev
 libtool: libtool
 libtool_bin: libtool-bin
@@ -67,7 +71,9 @@ vim: vim
 wget: wget
 whois: whois
 wmctrl: wmctrl
+xrandr: xrandr
 xsel: xsel
 xz_utils: xz-utils
 yq: yq
 zlib1g_dev: zlib1g-dev
+zsh: zsh

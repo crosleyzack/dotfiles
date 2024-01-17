@@ -1,0 +1,10 @@
+---
+sqlite: sqlite
+libreadline: readline
+libpq: libpq
+printer_driver: printer-driver-all
+cfssl: golang-github-cloudflare-cfssl
+proxychains: proxychains-ng
+pyvenv: python3-virtualenv
+imagemagick: ImageMagick
+netcat: netcat
