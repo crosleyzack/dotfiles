@@ -52,15 +52,15 @@ function position {
 		# change window size based on arguments
 		#	if 3, make full screen
 		if [[ $3 -eq $FULLSCREEN ]]; then
-			echo "changing $1 to fullscreen"
+            echo "changing $1 to fullscreen: (wmctrl -i -r $WINID -b toggle,fullscreen)"
 			wmctrl -i -r $WINID -b toggle,fullscreen
 		elif [[ $3 -eq $VERT_HORZ_MAXED ]]; then
-			echo "changing $1 to maximized horz"
+            echo "changing $1 to maximized horz (wmctrl -i -r $WINID -e 0,0,0,$X,$Y)"
             # The -e option expects a list of comma separated integers: "gravity,X,Y,width,height"
 			wmctrl -i -r $WINID -e 0,0,0,$X,$Y
 		elif [[ $3 -eq $VERT_MAXED ]]; then
 			# if 1 make vertically maxed
-			echo "changing $1 to maximized vert"
+            echo "changing $1 to maximized vert (wmctrl -i -r $WINID -e $6,0,$5,$X,$Y)"
 			wmctrl -i -r $WINID -e 0,$6,0,$5,$Y
 		fi
 		sleep 0.33
