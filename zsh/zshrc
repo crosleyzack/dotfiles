@@ -159,6 +159,10 @@ if test -f "$ENV_FILE"; then
     set -a; source $ENV_FILE; set +a
 fi
 
+# Add cargo if it exists
+if [ -d $HOME/.cargo/evn ]; then
+    source "$HOME/.cargo/env"
+fi
 
 # Reattach tmux sessions.
 # tmux attach
