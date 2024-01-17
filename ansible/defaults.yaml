@@ -12,9 +12,12 @@ diffutils: diffutils
 distrobox: distrobox
 ffmpeg: ffmpeg-free
 flatpak: flatpak
+fontconfig: fontconfig-devel
+freetype: freetype-devel
 gnome_flatpak: gnome-software-plugin-flatpak
 gcc: gcc
 gdb: gdb
+gplusplus: g++
 gettext: gettext
 git: git
 golang: golang
@@ -35,6 +38,8 @@ sqlite: libsqlite3-dev
 libssl_dev: libssl-dev
 libtool: libtool
 libtool_bin: libtool-bin
+libxcb: libxcb-devel
+libxkbcommon: libxkbcommon-devel
 libxml2_dev: libxml2-dev
 libxmlsec1_dev: libxmlsec1-dev
 libpq: libpq-dev
