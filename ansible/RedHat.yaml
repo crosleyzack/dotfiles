@@ -1,5 +1,6 @@
 ---
 sqlite: sqlite
+crontab: cronie
 libreadline: readline
 libpq: libpq
 printer_driver: printer-driver-all
