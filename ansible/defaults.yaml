@@ -58,6 +58,8 @@ pre-commit: pre-commit
 postgresql: postgresql
 podman: podman
 proxychains: proxychains
+protobuf: protobuf
+protobuf_compiler: protobuf-compiler
 pip: python3-pip
 pipenv: pipenv
 pipx: pipx

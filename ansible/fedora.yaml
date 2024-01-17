@@ -65,6 +65,8 @@
         - "{{ nodejs }}"
         - "{{ openssl }}"
         # - "{{ podman }}"
+        - "{{ protobuf }}"
+        - "{{ protobuf_compiler }}"
         - "{{ proxychains }}"
         - "{{ pip }}"
         - "{{ pipx }}"
