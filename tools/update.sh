@@ -60,3 +60,10 @@ then
     nix-channel --update
     home-manager switch
 fi
+
+# update flatpak
+is_installed flatpak
+if [ "true" = "$INSTALLED" ]
+then
+    flatpak update
+fi
