@@ -106,6 +106,8 @@ gpgkey=https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
 EOM
     sudo dnf install libxcrypt-compat.x86_64
     sudo dnf install google-cloud-cli
+    sudo dnf install google-cloud-cli-gke-gcloud-auth-plugin
+    sudo dnf install google-cloud-cli-docker-credential-gcr
     echo "gcloud cli installed"
 fi
 
