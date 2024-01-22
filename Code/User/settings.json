@@ -1,11 +1,10 @@
 {
-  "workbench.colorTheme": "Default High Contrast",
   "extensions.experimental.affinity": {
     "vscodevim.vim": 1,
     "asvetliakov.vscode-neovim": 1
   },
-  "vim.neovimPath": "/bin/nvim",
-  "vim.enableNeovim": true,
+  // "vim.neovimPath": "/bin/nvim",
+  // "vim.enableNeovim": true,
   "search.collapseResults": "alwaysCollapse",
   // Editor settings
   "editor.minimap.enabled": false,
@@ -19,18 +18,26 @@
   "editor.trimAutoWhitespace": true,
   "editor.stickyScroll.enabled": true,
   "editor.inlineSuggest.enabled": true,
+  "editor.bracketPairColorization.enabled": true,
+  "editor.hover.sticky": true,
+  "editor.folding": true,
+  "editor.foldingHighlight": true,
+  "editor.foldingImportsByDefault": false,
+  // "editor.foldingMaximumRegions": 5000,
+  "editor.foldingStrategy": "auto",
   "editor.codeActionsOnSave": {
-    "source.fixAll": true,
-    "organizeImports": true
+    "source.fixAll": "explicit",
+    "organizeImports": "explicit"
   },
   // Go settings
   "gopls": {
+    "build.allowImplicitNetworkAccess": false,
     "formatting.local": "github.com/censys"
   },
+  "go.useLanguageServer": true,
   "go.lintTool": "golint",
   "go.delveConfig": {},
   "go.toolsManagement.autoUpdate": true,
-  "go.goroot": "/nix/store/hiqm2sg34wrjb7i9h8ac666vnd8aa5gh-go-1.20.8/share/go",
   // Debug settings
   "debug.openDebug": "openOnSessionStart",
   // language settings
@@ -48,22 +55,21 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "typescript.updateImportsOnFileMove.enabled": "always",
-  "editor.bracketPairColorization.enabled": true,
   "[jsonc]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "python.defaultInterpreterPath": "python3",
-  "python.formatting.provider": "black",
+  // "python.formatting.provider": "black",
   "[python]": {
-    "editor.showUnused": true,
+    "editor.showUnused": true
     // Turn this off, as it keeps removing imports.
-    "editor.formatOnSave": true
+    // "editor.formatOnSave": true
   },
   "[yaml]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "haskell.manageHLS": "GHCup",
-  "github.copilot.inlineSuggest.enable": true,
+  "github.copilot.editor.enableAutoCompletions": true,
   "github.copilot.enable": {
     "*": true,
     "plaintext": false,
@@ -88,6 +94,8 @@
   "protoc": {
     "options": ["--proto_path=$HOME/dev/pipeline/proto"]
   },
+  "workbench.startupEditor": "readme",
+  "workbench.colorTheme": "Default High Contrast",
   "workbench.colorCustomizations": {
     "[Default Dark+]": {
       "editorWhitespace.foreground": "#555"
@@ -95,10 +103,12 @@
   },
   "explorer.autoReveal": false,
   "window.menuBarVisibility": "compact",
-  "window.density.editorTabHeight": "compact"
-  // "workbench.editor": {
-  //   "splitSizing": "auto"
-  // },
+  "window.restoreFullscreen": true,
+  "window.density.editorTabHeight": "compact",
+  "workbench.editor.splitInGroupLayout": "horizontal",
+  "workbench.editor.splitSizing": "distribute",
+  "diffEditor.codeLens": true,
+  "security.workspace.trust.untrustedFiles": "open"
   // "files": {
   //   "trimTrailingWhitespace": true,
   //   "dialog.defaultPath": "~/dev"
