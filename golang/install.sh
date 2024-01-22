@@ -9,4 +9,6 @@ export PATH=$PATH:/usr/local/go/bin
 
 # golang tools
 go install github.com/fullstorydev/grpcurl/cmd/grpcurl@latest
+go install google.golang.org/protobuf/cmd/protoc-gen-go@v1.20
+go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.2
 # go get -u go.mozilla.org/sops/cmd/sops
