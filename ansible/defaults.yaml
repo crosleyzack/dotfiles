@@ -22,6 +22,7 @@ gdb: gdb
 gplusplus: g++
 gettext: gettext
 git: git
+gitlfs: git-lfs
 golang: golang
 gnupg: gnupg
 gzip: gzip
@@ -85,5 +86,6 @@ xrandr: xrandr
 xsel: xsel
 xz_utils: xz-utils
 yq: yq
+yubikey: yubikey-manager
 zlib1g_dev: zlib1g-dev
 zsh: zsh
