@@ -16,11 +16,19 @@ then
     sudo apt clean
 fi
 
+# dnf packages
+is_installed dnf
+if [ "true" = "$INSTALLED" ]
+then
+    sudo dnf upgrade
+    sudo dnf distro-sync
+fi
+
 # ansible
 is_installed ansible
 if [ "true" = "$INSTALLED" ]
 then
-    ansible-playbook -b "$FILE/../ansible/packages.yaml"
+    ansible-playbook -b "$FILE/../ansible/packages.yaml" --ask-become-pass
 fi
 
 # Update rust
