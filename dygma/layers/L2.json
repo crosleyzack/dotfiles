@@ -1,4 +1,17 @@
 {
+  "device": {
+    "vendor": "Dygma",
+    "product": "Raise",
+    "keyboardType": "ISO",
+    "displayName": "Dygma Raise ISO",
+    "urls": [
+      {
+        "name": "Homepage",
+        "url": "https://www.dygma.com/raise/"
+      }
+    ]
+  },
+  "language": "english",
   "layerNames": [
     {
       "id": 0,
@@ -121,19 +134,16 @@
       "extraLabel": "Num"
     },
     {
-      "keyCode": 95,
-      "label": "7",
-      "extraLabel": "Num"
+      "keyCode": 36,
+      "label": "7"
     },
     {
-      "keyCode": 96,
-      "label": "8",
-      "extraLabel": "Num"
+      "keyCode": 37,
+      "label": "8"
     },
     {
-      "keyCode": 97,
-      "label": "9",
-      "extraLabel": "Num"
+      "keyCode": 38,
+      "label": "9"
     },
     {
       "keyCode": 86,
@@ -181,10 +191,9 @@
       "verbose": "Disabled"
     },
     {
-      "keyCode": 0,
-      "label": "KEY",
-      "extraLabel": "NO",
-      "verbose": "Disabled"
+      "keyCode": 53852,
+      "label": "Mute ",
+      "extraLabel": "MACRO"
     },
     {
       "keyCode": 75,
@@ -196,9 +205,9 @@
       "label": "ENTER"
     },
     {
-      "keyCode": 49226,
+      "keyCode": 57,
       "label": "⇪",
-      "extraLabel": "CTRL/"
+      "verbose": "Caps Lock"
     },
     {
       "keyCode": 85,
@@ -206,19 +215,16 @@
       "extraLabel": "Num"
     },
     {
-      "keyCode": 92,
-      "label": "4",
-      "extraLabel": "Num"
+      "keyCode": 33,
+      "label": "4"
     },
     {
-      "keyCode": 93,
-      "label": "5",
-      "extraLabel": "Num"
+      "keyCode": 34,
+      "label": "5"
     },
     {
-      "keyCode": 94,
-      "label": "6",
-      "extraLabel": "Num"
+      "keyCode": 35,
+      "label": "6"
     },
     {
       "keyCode": 87,
@@ -266,10 +272,9 @@
       "verbose": "Disabled"
     },
     {
-      "keyCode": 0,
-      "label": "KEY",
-      "extraLabel": "NO",
-      "verbose": "Disabled"
+      "keyCode": 20866,
+      "label": "SLEEP",
+      "verbose": "Sleep"
     },
     {
       "keyCode": 78,
@@ -289,24 +294,20 @@
       "verbose": "Disabled"
     },
     {
-      "keyCode": 98,
-      "label": "0",
-      "extraLabel": "Num"
+      "keyCode": 39,
+      "label": "0"
     },
     {
-      "keyCode": 89,
-      "label": "1",
-      "extraLabel": "Num"
+      "keyCode": 30,
+      "label": "1"
     },
     {
-      "keyCode": 90,
-      "label": "2",
-      "extraLabel": "Num"
+      "keyCode": 31,
+      "label": "2"
     },
     {
-      "keyCode": 91,
-      "label": "3",
-      "extraLabel": "Num"
+      "keyCode": 32,
+      "label": "3"
     },
     {
       "keyCode": 99,
@@ -472,7 +473,7 @@
     0,
     15,
     9,
-    9,
+    2,
     9,
     9,
     8,
@@ -492,14 +493,14 @@
     3,
     0,
     11,
-    13,
-    13,
+    14,
+    15,
     13,
     13,
     1,
     1,
     11,
-    15,
+    14,
     13,
     4,
     4,
@@ -669,10 +670,10 @@
       "rgb": "rgb(0, 0, 0)"
     },
     {
-      "r": 0,
-      "g": 0,
-      "b": 0,
-      "rgb": "rgb(0, 0, 0)"
+      "r": 255,
+      "g": 255,
+      "b": 255,
+      "rgb": "rgb(255, 255, 255)"
     },
     {
       "r": 0,
