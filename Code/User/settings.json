@@ -22,6 +22,7 @@
   "editor.hover.sticky": true,
   "editor.folding": true,
   "editor.foldingHighlight": true,
+  "editor.lineNumbers": "relative",
   "editor.foldingImportsByDefault": false,
   // "editor.foldingMaximumRegions": 5000,
   "editor.foldingStrategy": "auto",
@@ -31,16 +32,26 @@
   },
   // Go settings
   "gopls": {
-    "build.allowImplicitNetworkAccess": false,
+    // "build.allowImplicitNetworkAccess": false,
     "formatting.local": "github.com/censys"
   },
   "go.useLanguageServer": true,
   "go.lintTool": "golint",
   "go.delveConfig": {},
   "go.toolsManagement.autoUpdate": true,
+  // "go.inferGopath": false,
+  // "go.toolsGopath": "C:\\Go",
   // Debug settings
   "debug.openDebug": "openOnSessionStart",
   // language settings
+  "[go]": {
+    "editor.foldingImportsByDefault": true,
+    "editor.formatOnSave": false,
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "never"
+    },
+    "editor.codeLens": true
+  },
   "[json]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
