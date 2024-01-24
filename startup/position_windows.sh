@@ -29,7 +29,7 @@ function position {
 	# $6 if $3==1, X placement of window
 
 	# Get process ids for running windows.
-	WINIDS=$(wmctrl -l | grep -i $1 | cut -f1 -d " ")
+	WINIDS=$(wmctrl -lx | grep -i $1 | cut -f1 -d " ")
     if [ -z "$WINIDS" ]; then
         echo "WARN: no Windows found for process $1"
     fi
@@ -87,6 +87,7 @@ position zoom    7 $VERT_MAXED      false $HALF 0 &
 position docker  7 $VERT_MAXED      false $HALF $HALF &
 position podman  7 $VERT_MAXED      false $HALF 0 &
 position firefox 8 $VERT_HORZ_MAXED false $X    $Y &
+position signal  9 $VERT_MAXED      false $HALF 0 &
 position spotify 9 $VERT_MAXED      false $HALF 0 &
 position slack   9 $VERT_MAXED      false $HALF $HALF &
 position code    1 $FULLSCREEN      true  $X    $Y &
