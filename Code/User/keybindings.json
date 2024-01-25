@@ -140,6 +140,11 @@
     "when": "editorFocus"
   },
   {
+    "key": "ctrl+w shift+-",
+    "command": "workbench.action.toggleSidebarVisibility",
+    "when": "editorFocus"
+  },
+  {
     "key": "ctrl+w shift+.",
     "command": "workbench.action.increaseViewWidth",
     "when": "editorFocus"
