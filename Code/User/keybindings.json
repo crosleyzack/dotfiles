@@ -78,20 +78,14 @@
     "when": "editorFocus"
   },
   {
-    "key": "ctrl+w o",
+    "key": "ctrl+w shift+o",
     "command": "workbench.action.closeEditorsInOtherGroups",
     "when": "editorFocus"
   },
   {
     // close all other editors in this group
-    "command": "runCommands",
-    "key": "ctrl+w shift+o",
-    "args": {
-      "commands": [
-        "workbench.action.closeEditorsToTheLeft",
-        "workbench.action.closeEditorsToTheRight"
-      ]
-    },
+    "key": "ctrl+w o",
+    "command": "workbench.action.closeOtherEditors",
     "when": "editorFocus"
   },
   {
@@ -129,6 +123,27 @@
     "command": "workbench.action.moveEditorToPreviousGroup",
     "when": "editorFocus"
   },
+  {
+    "key": "ctrl+w shift+j",
+    "command": "workbench.action.moveActiveEditorGroupDown",
+    "when": "editorFocus"
+  },
+  {
+    "key": "ctrl+w shift+k",
+    "command": "workbench.action.moveActiveEditorGroupUp",
+    "when": "editorFocus"
+  },
+  {
+    "key": "ctrl+w shift+h",
+    "command": "workbench.action.moveActiveEditorGroupLeft",
+    "when": "editorFocus"
+  },
+  {
+    "key": "ctrl+w shift+l",
+    "command": "workbench.action.moveActiveEditorGroupRight",
+    "when": "editorFocus"
+  },
+
   {
     "key": "ctrl+w z",
     "command": "workbench.action.toggleEditorWidths",
@@ -172,7 +187,6 @@
     "command": "editor.action.inlineSuggest.commit",
     "when": "textInputFocus && inlineSuggestionHasIndentationLessThanTabSize && inlineSuggestionVisible && !editorTabMovesFocus"
   },
-  // { "key": "ctrl+w p", "command": "last used editor group" },
   // {"key": "ctrl+w x", "command": "swap with next group" },
   // {"key": "ctrl+w n", "command": "New empty window?" },
   // { "key": "ctrl+w shift+k", "command": "current window to top full width" },
@@ -208,5 +222,15 @@
     "key": "ctrl+w shift+]",
     "command": "editor.action.peekTypeDefinition",
     "when": "editorFocus"
+  },
+  {
+    "key": "ctrl+w p",
+    "command": "workbench.action.openPreviousRecentlyUsedEditorInGroup"
+    // "when": "editorFocus"
+    // "command": "workbench.action.previousEditor"
+  },
+  {
+    "key": "ctrl+pageup",
+    "command": "-workbench.action.previousEditor"
   }
 ]

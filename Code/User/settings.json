@@ -45,7 +45,7 @@
   "debug.openDebug": "openOnSessionStart",
   // language settings
   "[go]": {
-    "editor.foldingImportsByDefault": true,
+    "editor.foldingImportsByDefault": false,
     "editor.formatOnSave": false,
     "editor.codeActionsOnSave": {
       "source.organizeImports": "never"
