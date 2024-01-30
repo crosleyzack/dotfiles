@@ -8,6 +8,7 @@
 	editor = vim
 [color]
     ui = true
+# NOTE: don'e forward the entire github.com, as that will cause issues with go
 [url "ssh://git@github.com/censys"]
     insteadOf = https://github.com/censys
 [url "ssh://git@github.com/crosleyzack"]
