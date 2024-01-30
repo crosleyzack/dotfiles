@@ -8,8 +8,10 @@
 	editor = vim
 [color]
     ui = true
-[url "ssh://git@github.com/"]
-	insteadOf = https://github.com/
+[url "ssh://git@github.com/censys"]
+    insteadOf = https://github.com/censys
+[url "ssh://git@github.com/crosleyzack"]
+    insteadOf = https://github.com/crosleyzack
 [alias]
      # To debug, use GIT_TRACE=1
      unstage = reset HEAD --
