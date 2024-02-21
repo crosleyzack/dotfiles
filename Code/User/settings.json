@@ -3,44 +3,44 @@
     "vscodevim.vim": 1,
     "asvetliakov.vscode-neovim": 1
   },
-  // "vim.neovimPath": "/bin/nvim",
-  // "vim.enableNeovim": true,
   "search.collapseResults": "alwaysCollapse",
+  // Font settings
+  "editor.fontSize": 14.5,
+  "editor.fontFamily": "'Monaspace Neon', monospace",
+  "editor.fontLigatures": true,
   // Editor settings
   "editor.minimap.enabled": false,
-  "editor.fontFamily": "'Monaspace Neon', monospace",
-  // For texture healing with monaspace
-  "editor.fontLigatures": true,
-  "editor.fontSize": 14.5,
-  "editor.formatOnSave": true,
+  // Tab vs Spaces 
   "editor.insertSpaces": true,
+  "editor.tabSize": 4,
+  "editor.detectIndentation": true,
+  // Whitespace etc
   "editor.renderWhitespace": "all",
   "editor.trimAutoWhitespace": true,
   "editor.stickyScroll.enabled": true,
   "editor.inlineSuggest.enabled": true,
   "editor.bracketPairColorization.enabled": true,
   "editor.hover.sticky": true,
+  "editor.lineNumbers": "relative",
+  // folding
   "editor.folding": true,
   "editor.foldingHighlight": true,
-  "editor.lineNumbers": "relative",
   "editor.foldingImportsByDefault": false,
-  // "editor.foldingMaximumRegions": 5000,
   "editor.foldingStrategy": "auto",
+  // on save hooks
+  "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
     "source.fixAll": "explicit",
     "organizeImports": "explicit"
   },
   // Go settings
   "gopls": {
-    // "build.allowImplicitNetworkAccess": false,
     "formatting.local": "github.com/censys"
   },
   "go.useLanguageServer": true,
   "go.lintTool": "golint",
   "go.delveConfig": {},
   "go.toolsManagement.autoUpdate": true,
-  // "go.inferGopath": false,
-  // "go.toolsGopath": "C:\\Go",
   // Debug settings
   "debug.openDebug": "openOnSessionStart",
   // language settings
@@ -119,10 +119,5 @@
   "workbench.editor.splitInGroupLayout": "horizontal",
   "workbench.editor.splitSizing": "distribute",
   "diffEditor.codeLens": true,
-  "security.workspace.trust.untrustedFiles": "open"
-  // "files": {
-  //   "trimTrailingWhitespace": true,
-  //   "dialog.defaultPath": "~/dev"
-  // },
   // "workbench.experimental.settingsProfiles.enabled": true
 }
