@@ -12,6 +12,7 @@ curl: curl
 containerd: containerd
 diffutils: diffutils
 distrobox: distrobox
+direnv: direnv
 ffmpeg: ffmpeg-free
 flatpak: flatpak
 fontconfig: fontconfig-devel

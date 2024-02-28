@@ -19,6 +19,7 @@
         - "{{ curl }}"
         - "{{ containerd }}"
         - "{{ diffutils }}"
+        - "{{ direnv }}"
         # - "{{ distrobox }}"
         - "{{ flatpak }}"
         - "{{ gnome_flatpak }}"
