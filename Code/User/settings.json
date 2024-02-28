@@ -27,12 +27,6 @@
   "editor.foldingHighlight": true,
   "editor.foldingImportsByDefault": false,
   "editor.foldingStrategy": "auto",
-  // on save hooks
-  "editor.formatOnSave": true,
-  "editor.codeActionsOnSave": {
-    "source.fixAll": "explicit",
-    "organizeImports": "explicit"
-  },
   // Go settings
   "gopls": {
     "formatting.local": "github.com/censys"
@@ -115,6 +109,7 @@
   "window.density.editorTabHeight": "compact",
   "workbench.editor.splitInGroupLayout": "horizontal",
   "workbench.editor.splitSizing": "distribute",
-  "diffEditor.codeLens": true
+  "diffEditor.codeLens": true,
+  "git.openRepositoryInParentFolders": "never"
   // "workbench.experimental.settingsProfiles.enabled": true
 }
