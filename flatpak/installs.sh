@@ -1,13 +1,27 @@
 #!/bin/bash
 
 flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
-flatpak install flathub io.podman_desktop.PodmanDesktop
-flatpak install flathub org.gimp.GIMP
-flatpak install flathub com.spotify.Client
-flatpak install flathub com.slack.Slack
-flatpak install flathub org.signal.Signal
-flatpak install flathub us.zoom.Zoom
-# flatpak install flathub com.visualstudio.code
-flatpak install flathub com.bitwarden.desktop
-# flatpak install flathub io.neovim.nvim
-# flatpak install flathub org.mozilla.firefox
+
+declare -a packages=(
+    "io.podman_desktop.PodmanDesktop"
+    "org.gimp.GIMP"
+    "com.spotify.Client"
+    "com.slack.Slack"
+    "org.signal.Signal"
+    "com.bitwarden.desktop"
+    "md.obsidian.Obsidian"
+)
+# com.visualstudio.code
+# io.neovim.nvim
+# org.mozilla.firefox
+# https://github.com/flathub/us.zoom.Zoom/issues/437
+# us.zoom.Zoom
+# flatpak update --commit=786cd52f8219276edd0184f3c6fa0ca7041c3814369fe378dc068a0864b049a9 us.zoom.Zoom
+# flatpak mask us.zoom.Zoom
+
+## now loop through the above array
+for i in "${packages[@]}"
+do
+    flatpak install flathub $i
+done
+
