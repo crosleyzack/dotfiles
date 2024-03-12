@@ -70,7 +70,7 @@
   "[yaml]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "haskell.manageHLS": "GHCup",
+  // "haskell.manageHLS": "GHCup",
   "github.copilot.editor.enableAutoCompletions": true,
   "github.copilot.enable": {
     "*": true,
@@ -89,10 +89,10 @@
     "python": true
   },
   "github.copilot.advanced": {},
-  "vs-kubernetes": {
-    "vs-kubernetes.crd-code-completion": "disabled",
-    "vscode-kubernetes.helm-path.linux": "$HOME/.local/state/vs-kubernetes/tools/helm/linux-amd64/helm"
-  },
+  // "vs-kubernetes": {
+  //   "vs-kubernetes.crd-code-completion": "disabled",
+  //   "vscode-kubernetes.helm-path.linux": "$HOME/.local/state/vs-kubernetes/tools/helm/linux-amd64/helm"
+  // },
   "protoc": {
     "options": ["--proto_path=$HOME/dev/pipeline/proto"]
   },
@@ -107,9 +107,46 @@
   "window.menuBarVisibility": "compact",
   "window.restoreFullscreen": true,
   "window.density.editorTabHeight": "compact",
+  "workbench.editor.highlightModifiedTabs": true,
   "workbench.editor.splitInGroupLayout": "horizontal",
   "workbench.editor.splitSizing": "distribute",
   "diffEditor.codeLens": true,
-  "git.openRepositoryInParentFolders": "never"
+  "git.openRepositoryInParentFolders": "never",
   // "workbench.experimental.settingsProfiles.enabled": true
+  // efficiency improvements
+  "files.watcherExclude": {
+    "**/.git/objects/**": true,
+    "**/.git/subtree-cache/**": true,
+    "**/node_modules/**": true,
+    "**/env/**": true,
+    "**/venv/**": true,
+    "env-*": true,
+    "**/tmp/**": true,
+    "**/dist/**": true
+  },
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/bower_components": true,
+    "**/env": true,
+    "**/venv": true
+  },
+  "files.exclude": {
+    "**/.git": true,
+    "**/.DS_Store": true,
+    "**/.vscode": true,
+    "**/__pycache__": true,
+    "**/.pytest_cache": true,
+    "**/node_modules": true,
+    "venv": true,
+    "*.sublime-*": true,
+    "env*": true,
+    "**/tmp/**": true,
+    "**/node_modules/**": true,
+    "**/.git/objects/**": true,
+    "**/.git/subtree-cache/**": true,
+    "**/dist/**": true
+  },
+  "telemetry.telemetryLevel": "crash",
+  "extensions.autoUpdate": false,
+  "search.followSymlinks": false
 }
