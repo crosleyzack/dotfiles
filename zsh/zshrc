@@ -153,6 +153,8 @@ unsetopt inc_append_history
 unsetopt share_history
 setopt APPEND_HISTORY
 
+export MOZ_ENABLE_WAYLAND=1
+
 # if a .env file exists, source it
 ENV_FILE=$HOME/.env
 if test -f "$ENV_FILE"; then
