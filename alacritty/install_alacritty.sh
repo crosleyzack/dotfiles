@@ -15,13 +15,14 @@ then
     rm -rf $LOC/alacritty
     mkdir -p $LOC
     git clone https://github.com/alacritty/alacritty.git $LOC/alacritty
+
     # Install requirements
     #   ansible localhost -m ansible.builtin.package -a "name=cmake state=latest" -a "name=pkg-config state=latest" -a "name=libfreetype6-dev state=latest" -a "name=libfontconfig1-dev state=latest" -a "name=libxcb-xfixes0-dev state=latest" -a "name=libxkbcommon-dev state=latest" -a "name=python3 state=latest"
     #   dnf install cmake freetype-devel fontconfig-devel libxcb-devel libxkbcommon-devel g++
     #   sudo apt-get install cmake pkg-config libfreetype6-dev libfontconfig1-dev libxcb-xfixes0-dev libxkbcommon-dev python3
     #   set rustup and install. See https://github.com/alacritty/alacritty/blob/master/INSTALL.md
     rustup override set stable && rustup update stable
-    cd $LOC/alacritty && cargo build --release
+    cd $LOC/alacritty && git checkout tags/v0.12.3 && cargo build
     # Move to bin
     #   sudo ln -s $LOC/alacritty/target/release/alacritty /usr/local/bin # or anywhere else in $PATH
     #   sudo ln -s $LOC/alacritty/extra/logo/alacritty-term.svg /usr/share/pixmaps/Alacritty.svg
