@@ -166,6 +166,9 @@ if [ -d $HOME/.cargo/evn ]; then
     source "$HOME/.cargo/env"
 fi
 
+# setup direnv
+eval "$(direnv hook zsh)"
+
 # Reattach tmux sessions.
 # tmux attach
 # Automatically list tmux sessions.

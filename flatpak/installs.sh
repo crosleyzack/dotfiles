@@ -15,6 +15,7 @@ declare -a packages=(
 # com.visualstudio.code
 # io.neovim.nvim
 # org.mozilla.firefox
+# org.chromium.Chromium
 # us.zoom.Zoom
 # https://github.com/flathub/us.zoom.Zoom/issues/437
 # flatpak update --commit=786cd52f8219276edd0184f3c6fa0ca7041c3814369fe378dc068a0864b049a9 us.zoom.Zoom

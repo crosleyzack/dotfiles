@@ -75,3 +75,10 @@ if [ "true" = "$INSTALLED" ]
 then
     flatpak update
 fi
+
+# update vscode extensions
+is_installed code
+if [ "true" = "$INSTALLED" ]
+then
+    code --update-extensions
+fi
