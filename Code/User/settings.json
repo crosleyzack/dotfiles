@@ -148,5 +148,6 @@
   },
   "telemetry.telemetryLevel": "crash",
   "extensions.autoUpdate": false,
-  "search.followSymlinks": false
+  "search.followSymlinks": false,
+  "workbench.reduceMotion": "on"
 }
