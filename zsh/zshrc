@@ -116,9 +116,6 @@ alias pc="proxychains"
 # alias for easy tmux cleanup
 alias tmux-cleanup='for x in $(tmux list-sessions | grep -E -i "^[[:digit:]]" | awk -F ":" "{print \$1}"); do tmux kill-session -t $x; done'
 
-# Set yubikey agent.
-# export SSH_AUTH_SOCK="${XDG_RUNTIME_DIR}/yubikey-agent/yubikey-agent.sock"
-
 # Indicate authentication for kubectl
 export USE_GKE_GCLOUD_AUTH_PLUGIN=True
 
@@ -146,13 +143,23 @@ if [ -d /usr/local/go/bin ]; then
     export PATH="$PATH:/usr/local/go/bin"
 fi
 
-# setup py
+# setup npm location
+if [ -d $HOME/npm ]; then
+    # add to path
+    export PATH="$PATH:$HOME/.npm/bin"
+fi
+
+# setup nvm
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 # Set history by session
 unsetopt inc_append_history
 unsetopt share_history
 setopt APPEND_HISTORY
 
+# Ensure mozilla firefox works on wayland
 export MOZ_ENABLE_WAYLAND=1
 
 # if a .env file exists, source it
@@ -169,12 +176,6 @@ fi
 # setup direnv
 eval "$(direnv hook zsh)"
 
-# Reattach tmux sessions.
-# tmux attach
-# Automatically list tmux sessions.
-# echo "Available TMUX Sessions:"
-# tmux ls
-
 # Configure spaceship vi extension
 spaceship add --after line_sep vi_mode
 # spaceship add --before char vi_mode
@@ -183,6 +184,7 @@ spaceship_vi_mode_enable
 # Autocomplete kubectl
 [[ $commands[kubectl] ]] && source <(kubectl completion zsh)
 
+# Setup nix
 [ -f "/etc/profile.d/nix.sh" ] && source "/etc/profile.d/nix.sh"
 [ -f "$HOME/.nix-profile/etc/profile.d/nix.sh" ] && source "$HOME/.nix-profile/etc/profile.d/nix.sh"
 [ -f "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh" ] && source "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh"
