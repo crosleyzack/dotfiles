@@ -108,3 +108,6 @@
       npm install yarn
     args:
       creates: "{{ ansible_env.HOME }}/.nvm/nvm.sh"
+  - name: Install tailscale
+    ansible.builtin.shell: |
+      curl -fsSL https://tailscale.com/install.sh | sh
