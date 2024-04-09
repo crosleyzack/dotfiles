@@ -66,6 +66,7 @@
         - "{{ python3 }}"
         - "{{ python_is_python3 }}"
         - "{{ pyvenv }}"
+        - "{{ redis }}"
         - "{{ tcpdump }}"
         - "{{ telnet }}"
         - "{{ texlive }}"
@@ -82,3 +83,11 @@
         - "{{ yq }}"
         - "{{ zlib1g_dev }}"
       state: latest
+  - name: Install nvm
+      ansible.builtin.shell: |
+        curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+        nvm install --lts
+        rm -f ~/.npmrc
+        npm install yarn
+      args:
+        creates: "{{ ansible_env.HOME }}/.nvm/nvm.sh"

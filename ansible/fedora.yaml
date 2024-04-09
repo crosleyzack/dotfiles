@@ -66,7 +66,7 @@
         - "{{ net_tools }}"
         - "{{ neovim }}"
         - "{{ nmap }}"
-        - "{{ nodejs }}"
+        # - "{{ nodejs }}"
         - "{{ openssl }}"
         # - "{{ podman }}"
         - "{{ protobuf }}"
@@ -79,6 +79,7 @@
         - "{{ python3 }}"
         - "{{ python_is_python3 }}"
         - "{{ pyvenv }}"
+        - "{{ redis }}"
         # - "{{ rust }}"
         - "{{ tcpdump }}"
         - "{{ telnet }}"
@@ -99,3 +100,11 @@
         # - "{{ zlib1g_dev }}"
         - "{{ zsh }}"
       state: latest
+  - name: Install nvm
+    ansible.builtin.shell: |
+      curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+      nvm install --lts
+      rm -f ~/.npmrc
+      npm install yarn
+    args:
+      creates: "{{ ansible_env.HOME }}/.nvm/nvm.sh"

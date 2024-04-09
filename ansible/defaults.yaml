@@ -56,7 +56,7 @@ neovim: neovim
 ncurses_base: ncurses-base
 net_tools: net-tools
 nmap: nmap
-nodejs: nodejs
+# nodejs: nodejs
 openssl: openssl
 pre-commit: pre-commit
 postgresql: postgresql
@@ -71,6 +71,7 @@ printer_driver: printer-driver-foo
 python3: python3
 python_is_python3: python-is-python3
 pyvenv: python3-venv
+redis: redis
 rust: rustup
 tcpdump: tcpdump
 telnet: telnet

@@ -10,3 +10,4 @@ pyvenv: python3-virtualenv
 imagemagick: ImageMagick
 netcat: netcat
 protobuf: "protobuf,protobuf-devel,protobuf-lite"
+texlive: texlive-scheme-full
