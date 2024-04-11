@@ -44,12 +44,12 @@
         # - "{{ libbz2_dev }}"
         # - "{{ libffi_dev }}"
         # - "{{ liblzma_dev }}"
-        # - "{{ libncursesw5_dev }}"
+        - "{{ libncursesdev }}"
         # - "{{ libpcsclite_dev }}"
         - "{{ libpq }}"
         - "{{ libreadline }}"
         - "{{ sqlite }}"
-        # - "{{ libssl_dev }}"
+        - "{{ libssl_dev }}"
         - "{{ libtool }}"
         - "{{ libxcb }}"
         - "{{ libxkbcommon }}"
@@ -84,6 +84,7 @@
         - "{{ tcpdump }}"
         - "{{ telnet }}"
         - "{{ texlive }}"
+        - "{{ tkinter }}"
         - "{{ tmux }}"
         - "{{ tor }}"
         - "{{ unar }}"
@@ -111,3 +112,7 @@
   - name: Install tailscale
     ansible.builtin.shell: |
       curl -fsSL https://tailscale.com/install.sh | sh
+  - name: Install cloud sql proxy
+    ansible.builtin.shell: |
+      curl -o /usr/local/bin/cloud-sql-proxy https://storage.googleapis.com/cloud-sql-connectors/cloud-sql-proxy/v2.10.1/cloud-sql-proxy.linux.amd64
+      chmod +x /usr/local/bin/cloud-sql-proxy 

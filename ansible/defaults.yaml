@@ -34,7 +34,8 @@ launchpad: python3-launchpadlib
 libbz2_dev: libbz2-dev
 libffi_dev: libffi-dev
 liblzma_dev: liblzma-dev
-libncursesw5_dev: libncursesw5-dev
+libncursesdev: libncursesw5-dev
+ncurses_base: ncurses-base
 libnotify: libnotify
 libpcsclite_dev: libpcsclite-dev
 libreadline: libreadline-dev
@@ -53,7 +54,6 @@ make: make
 miniupnpc: miniupnpc
 netcat: netcat-traditional
 neovim: neovim
-ncurses_base: ncurses-base
 net_tools: net-tools
 nmap: nmap
 # nodejs: nodejs
@@ -76,6 +76,7 @@ rust: rustup
 tcpdump: tcpdump
 telnet: telnet
 texlive: texlive
+tkinter: tk
 tmux: tmux
 tor: tor
 unar: unar

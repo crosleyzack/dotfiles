@@ -1,7 +1,7 @@
 ---
-sqlite: sqlite
+sqlite: sqlite-devel
 crontab: cronie
-libreadline: readline
+libreadline: readline-devel
 libpq: libpq
 printer_driver: printer-driver-all
 cfssl: golang-github-cloudflare-cfssl
@@ -11,3 +11,6 @@ imagemagick: ImageMagick
 netcat: netcat
 protobuf: "protobuf,protobuf-devel,protobuf-lite"
 texlive: texlive-scheme-full
+libncursesdev: ncurses-devel 
+libssl_dev: openssl-devel
+tkinter: tk-devel
