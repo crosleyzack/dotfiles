@@ -1,11 +1,11 @@
 # For all options see https://git-scm.com/docs/git-config
 [user]
-	name = crosleyzack
-	email = crosleyzack@gmail.com
+    name = crosleyzack
+    email = crosleyzack@gmail.com
 [init]
-	defaultBranch = main
+    defaultBranch = main
 [core]
-	editor = vim
+    editor = vim
 [color]
     ui = true
 # NOTE: don'e forward the entire github.com, as that will cause issues with go
@@ -14,39 +14,41 @@
 [url "ssh://git@github.com/crosleyzack"]
     insteadOf = https://github.com/crosleyzack
 [alias]
-     # To debug, use GIT_TRACE=1
-     unstage = reset HEAD --
-     staged = diff --staged
-     aliases = config --get-regexp '^alias\\.'
-     yolo = push --force-with-lease
-     # Specify this will be added later, so it will show with diff still
-     aware = add -N
-     # Get last 10 branches worked on
-     recent = for-each-ref --count=10 --sort=-committerdate refs/heads/ --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(contents:subject) (%(color:green)%(committerdate:short)%(color:reset))'
-     # Create upstream branch and push
-     upstream = push -u origin HEAD
-     # Get changes after specified commit to latest
-     since = "!f() { git diff $1..HEAD; }; f"
-     # modify last commit
-     amend = !git log -1 --pretty=tformat:%s%n%n%b | git commit -F - --amend
-     # View git tree
-     tree = log --graph --decorate --pretty=oneline --abbrev-commit
-     ta = log --all --graph --oneline --decorate --simplify-by-decoration --abbrev-commit
-     # git clean forced for everything 
-     wash = clean -fdx
-     # View last commit (more or less detail)
-     last = log -1 HEAD
-     details = log -1 -p --format=fuller
-     # Checks all commits to check all lines to get total number you committed. This gets    _REALLY_ slow for large projects.
-     lines-committed = !git ls-files | xargs -n1 git blame --line-porcelain | sed -n 's/     ^author //p' | uniq -ic | grep -iF "crosley" | awk '{s+=$1} END {print s}'
-     # get files in branch which are changed from main
-     changed-files = !git diff --name-only $1 $(git merge-base $1 $(git main))
-     # get changes in a file from its copy on main
-     changes = !git diff $(git main) -- .
-     # If origin/HEAD doesn't exist, run 'git remote set-head origin -a'
-     main = !git symbolic-ref refs/remotes/origin/HEAD | cut -d'/' -f4
-     # get commits from origin, rebase main, rebase current branch off of main.
-     update = !BRANCH=$(git branch --show-current) && git checkout-m && git fetch && git     rebase && git checkout $BRANCH && git rebase-m
-     rc = rebase --continue
-     checkout-m = !git checkout $(git main)
-     rebase-m = !git rebase $(git main)
+    # To debug, use GIT_TRACE=1
+    unstage = reset HEAD --
+    staged = diff --staged
+    aliases = config --get-regexp '^alias\\.'
+    yolo = push --force-with-lease
+    # Get changes by the author
+    by = "!f() { git log --author=$1; }; f"
+    # Specify this will be added later, so it will show with diff still
+    aware = add -N
+    # Get last 10 branches worked on
+    recent = for-each-ref --count=10 --sort=-committerdate refs/heads/ --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(contents:subject) (%(color:green)%(committerdate:short)%(color:reset))'
+    # Create upstream branch and push
+    upstream = push -u origin HEAD
+    # Get changes after specified commit to latest
+    since = "!f() { git diff $1..HEAD; }; f"
+    # modify last commit
+    amend = !git log -1 --pretty=tformat:%s%n%n%b | git commit -F - --amend
+    # View git tree
+    tree = log --graph --decorate --pretty=oneline --abbrev-commit
+    ta = log --all --graph --oneline --decorate --simplify-by-decoration --abbrev-commit
+    # git clean forced for everything 
+    wash = clean -fdx
+    # View last commit (more or less detail)
+    last = log -1 HEAD
+    details = log -1 -p --format=fuller
+    # Checks all commits to check all lines to get total number you committed. This gets _REALLY_ slow for large projects.
+    lines-committed = !git ls-files | xargs -n1 git blame --line-porcelain | sed -n 's/^author //p' | uniq -ic | grep -iF "crosley" | awk '{s+=$1} END {print s}'
+    # get files in branch which are changed from main
+    changed-files = !git diff --name-only $1 $(git merge-base $1 $(git main))
+    # get changes in a file from its copy on main
+    changes = !git diff $(git main) -- .
+    # If origin/HEAD doesn't exist, run 'git remote set-head origin -a'
+    main = !git symbolic-ref refs/remotes/origin/HEAD | cut -d'/' -f4
+    # get commits from origin, rebase main, rebase current branch off of main.
+    update = !BRANCH=$(git branch --show-current) && git checkout-m && git fetch && git rebase && git checkout $BRANCH && git rebase-m
+    rc = rebase --continue
+    checkout-m = !git checkout $(git main)
+    rebase-m = !git rebase $(git main)
