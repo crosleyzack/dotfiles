@@ -173,6 +173,15 @@ if [ -d $HOME/.cargo/evn ]; then
     source "$HOME/.cargo/env"
 fi
 
+# add share to path if it exists
+if [ -d $HOME/.local/share/coursier/bin/ ]; then
+    # add to path
+    export PATH="$PATH:$HOME/.local/share/coursier/bin"
+fi
+
+# ensure unique PATH values
+typeset -U PATH path
+
 # setup direnv
 eval "$(direnv hook zsh)"
 
