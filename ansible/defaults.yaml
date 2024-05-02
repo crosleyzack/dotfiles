@@ -29,6 +29,7 @@ gnupg: gnupg
 gzip: gzip
 imagemagick: imagemagick
 jq: jq
+jdk: openjdk
 kubectx: kubectx
 launchpad: python3-launchpadlib
 libbz2_dev: libbz2-dev

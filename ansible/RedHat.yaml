@@ -14,3 +14,5 @@ texlive: texlive-scheme-full
 libncursesdev: ncurses-devel 
 libssl_dev: openssl-devel
 tkinter: tk-devel
+jdk: java-17-openjdk-src
+

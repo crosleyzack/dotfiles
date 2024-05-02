@@ -6,6 +6,9 @@
   - "defaults.yaml"
   - "{{ ansible_facts['os_family'] }}.yaml"
   tasks:
+  - name: Gather the package facts
+    ansible.builtin.package_facts:
+      manager: auto
   - name: Install all packages
     ansible.builtin.package:
       name:
@@ -38,6 +41,7 @@
         - "{{ gnupg }}"
         - "{{ gzip }}"
         - "{{ jq }}"
+        - "{{ jdk }}"
         - "{{ imagemagick }}"
         # - "{{ kubectx }}"
         - "{{ launchpad }}"
@@ -116,3 +120,8 @@
     ansible.builtin.shell: |
       curl -o /usr/local/bin/cloud-sql-proxy https://storage.googleapis.com/cloud-sql-connectors/cloud-sql-proxy/v2.10.1/cloud-sql-proxy.linux.amd64
       chmod +x /usr/local/bin/cloud-sql-proxy 
+#  - name: Install scala
+#    when: "'scala' not in ansible_facts.packages"
+#    ansible.builtin.shell: |
+#      mkdir -p ~/temp
+#      curl -fL https://github.com/coursier/coursier/releases/latest/download/cs-x86_64-pc-linux.gz | gzip -d > ~/temp/cs && chmod +x ~/temp/cs && ~/temp/cs setup

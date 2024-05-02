@@ -60,13 +60,21 @@
   "[jsonc]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "python.defaultInterpreterPath": "python3",
-  // "python.formatting.provider": "black",
+  "python.formatting.provider": "black",
+  // "python.linting.flake8Args": ["--ignore=W293"],
+  // "python.linting.pylintEnabled": true,
+  // "python.linting.pylintArgs": ["--enable=W0614"],
   "[python]": {
-    "editor.showUnused": true
+    "defaultInterpreterPath": "python3",
+    "terminal.activateEnvInCurrentTerminal": true,
+    "editor.defaultFormatter": "ms-python.black-formatter",
+    "editor.formatOnSave": true
+    // "editor.showUnused": true,
     // Turn this off, as it keeps removing imports.
-    // "editor.formatOnSave": true
+    // "source.organizeImports": "explicit",
+    // "source.unusedImports": "explicit",
   },
+  "black-formatter.showNotification": "onWarning",
   "[yaml]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
@@ -122,7 +130,10 @@
     "**/venv/**": true,
     "env-*": true,
     "**/tmp/**": true,
-    "**/dist/**": true
+    "**/dist/**": true,
+    "**/.bloop": true,
+    "**/.metals": true,
+    "**/.ammonite": true
   },
   "search.exclude": {
     "**/node_modules": true,
@@ -149,5 +160,6 @@
   "telemetry.telemetryLevel": "crash",
   "extensions.autoUpdate": false,
   "search.followSymlinks": false,
-  "workbench.reduceMotion": "on"
+  "workbench.reduceMotion": "on",
+  "extensions.ignoreRecommendations": true,
 }
