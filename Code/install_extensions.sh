@@ -5,6 +5,7 @@ code --install-extension asvetliakov.vscode-neovim
 # Required link for nvim to work
 sudo ln -s $(which nvim) /usr/local/bin/nvim
 code --install-extension GitHub.copilot
+code --install-extension GitHub.vscode-pull-request-github
 code --install-extension ms-python.python
 code --install-extension ms-python.black-formatter
 code --install-extension zxh404.vscode-proto3
