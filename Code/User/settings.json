@@ -44,7 +44,7 @@
     "editor.codeLens": true
   },
   "[json]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "vscode.json-language-features"
   },
   "[javascript]": {
     "editor.maxTokenizationLineLength": 2500,
@@ -162,4 +162,5 @@
   "search.followSymlinks": false,
   "workbench.reduceMotion": "on",
   "extensions.ignoreRecommendations": true,
+  "githubPullRequests.pullBranch": "never",
 }

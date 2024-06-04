@@ -105,23 +105,7 @@
         # - "{{ zlib1g_dev }}"
         - "{{ zsh }}"
       state: latest
-  - name: Install nvm
-    ansible.builtin.shell: |
-      curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
-      nvm install --lts
-      rm -f ~/.npmrc
-      npm install yarn
-    args:
-      creates: "{{ ansible_env.HOME }}/.nvm/nvm.sh"
-  - name: Install tailscale
-    ansible.builtin.shell: |
-      curl -fsSL https://tailscale.com/install.sh | sh
-  - name: Install cloud sql proxy
-    ansible.builtin.shell: |
-      curl -o /usr/local/bin/cloud-sql-proxy https://storage.googleapis.com/cloud-sql-connectors/cloud-sql-proxy/v2.10.1/cloud-sql-proxy.linux.amd64
-      chmod +x /usr/local/bin/cloud-sql-proxy 
-#  - name: Install scala
-#    when: "'scala' not in ansible_facts.packages"
-#    ansible.builtin.shell: |
-#      mkdir -p ~/temp
-#      curl -fL https://github.com/coursier/coursier/releases/latest/download/cs-x86_64-pc-linux.gz | gzip -d > ~/temp/cs && chmod +x ~/temp/cs && ~/temp/cs setup
+  - name: Run master file of command line installers
+    ansible.builtin.import_tasks:
+      file: master.yaml
+

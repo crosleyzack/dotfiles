@@ -1,0 +1,109 @@
+--- 
+- name: Install nvm
+  ansible.builtin.shell: |
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+    nvm install --lts
+    rm -f ~/.npmrc
+    npm install yarn
+  args:
+    creates: "{{ ansible_env.HOME }}/.nvm/nvm.sh"
+- name: Install tailscale
+  ansible.builtin.shell: |
+    curl -fsSL https://tailscale.com/install.sh | sh
+- name: Install cloud sql proxy
+  ansible.builtin.shell: |
+    curl -o /usr/local/bin/cloud-sql-proxy https://storage.googleapis.com/cloud-sql-connectors/cloud-sql-proxy/v2.10.1/cloud-sql-proxy.linux.amd64
+    chmod +x /usr/local/bin/cloud-sql-proxy
+- name: Install yq
+  ansible.builtin.shell: |
+    wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /usr/bin/yq
+    chmod +x /usr/bin/yq
+- name: Install debeaver
+  ansible.builtin.shell: |
+    flatpak install flathub io.dbeaver.DBeaverCommunity
+- name: Install Alacritty
+  ansible.builtin.shell: |
+    rm -rf $HOME/bin/alacritty
+    mkdir -p $HOME/bin
+    git clone https://github.com/alacritty/alacritty.git $HOME/bin/alacritty
+    rustup override set stable && rustup update stable
+    cd $LOC/alacritty && git checkout tags/v0.12.3 && cargo build
+    sudo cp $HOME/bin/alacritty/target/release/alacritty /usr/local/bin
+    sudo cp $HOME/bin/alacritty/extra/logo/alacritty-term.svg /usr/share/pixmaps/Alacritty.svg
+    sudo desktop-file-install $HOME/bin/alacritty/extra/linux/Alacritty.desktop
+    sudo update-desktop-database
+- name: Install Docker compose
+  ansible.builtin.shell: |
+    sudo rm -f /usr/local/bin/docker-compose
+    sudo ln -f -s /usr/libexec/docker/cli-plugins/docker-compose /usr/local/bin/docker-compose
+- name: Install Kubernetes Kind
+  ansible.builtin.shell: |
+    go install sigs.k8s.io/kind@latest
+- name: Install kubectx
+  ansible.builtin.shell: |
+    rm -rf /usr/local/kubectx /usr/local/bin/kubectx /usr/local/bin/kubens
+    sudo git clone https://github.com/ahmetb/kubectx /usr/local/kubectx
+    sudo ln -s /usr/local/kubectx/kubectx /usr/local/bin/kubectx
+    ln -s /usr/local/kubectx/kubens /usr/local/bin/kubens
+- name: Install tilt
+  ansible.builtin.shell: |
+    curl -fsSL https://raw.githubusercontent.com/tilt-dev/tilt/master/scripts/install.sh | bash
+- name: Install task
+  ansible.builtin.shell: |
+    go install github.com/go-task/task/v3/cmd/task@latest
+# - name: Install dive
+# ansible.builtin.shell: |
+#   go install github.com/wagoodman/dive@latest
+- name: Install cloud sql proxy
+  ansible.builtin.shell: |
+    mkdir -p $HOME/bin
+    curl -o $HOME/bin/cloud-sql-proxy https://storage.googleapis.com/cloud-sql-connectors/cloud-sql-proxy/v2.8.1/cloud-sql-proxy.linux.amd64
+    chmod +x $HOME/bin/cloud-sql-proxy
+    sudo rm -f /usr/local/bin/cloud-sql-proxy
+    sudo ln -s $HOME/bin/cloud-sql-proxy /usr/local/bin/cloud-sql-proxy
+- name: Install proxychains
+  ansible.builtin.shell: |
+    mkdir -p $HOME/temp
+    git clone https://github.com/haad/proxychains.git $HOME/temp/proxychains
+    cd $HOME/temp/proxychains && ./configure && make && sudo make install
+- name: Update python
+  ansible.builtin.shell: |
+    python -m pip install --upgrade pip wheel setuptools virtualenv
+    python -m pip install --user pipenv
+- name: Install pyenv
+  ansible.builtin.shell: |
+    rm -rf $HOME/.pyenv
+    git clone https://github.com/pyenv/pyenv.git $HOME/.pyenv
+    export PYENV_ROOT="$HOME/.pyenv"
+    export PATH="$PATH:$PYENV_ROOT/bin"
+    git clone https://github.com/pyenv/pyenv-virtualenv.git $(pyenv root)/plugins/pyenv-virtualenv
+- name: Install poetry
+  ansible.builtin.shell: |
+    curl -sSL https://install.python-poetry.org | python3 -
+- name: Install tmux
+  ansible.builtin.shell: |
+    export PLUGINS_DIR="$HOME/.config/tmux/plugins"
+    rm -rf $PLUGINS_DIR
+    mkdir -p $PLUGINS_DIR
+    git clone https://github.com/tmux-plugins/tpm $PLUGINS_DIR/tpm
+    git clone https://github.com/tmux-plugins/tmux-resurrect $PLUGINS_DIR/resurrect
+    git clone https://github.com/tmux-plugins/tmux-continuum $PLUGINS_DIR/continuum
+    git clone https://github.com/erikw/tmux-powerline.git $PLUGINS_DIR/powerline
+- name: Install Rust
+  ansible.builtin.shell: |
+    curl https://sh.rustup.rs -sSf | sh
+# - name: Install distrobox
+# ansible.builtin.shell: |
+#     curl -s https://raw.githubusercontent.com/89luca89/distrobox/main/install | sudo sh
+#     sudo rm -f $HOME/distrobox.ini
+#     sudo ln -s $BASE_DIR/distrobox/distrobox.ini $HOME/distrobox.ini
+#     sudo rm -f $HOME/.config/distrobox/distrobox.conf
+#     sudo mkdir -p $HOME/.config/distrobox
+#     sudo ln -s $BASE_DIR/distrobox/distrobox.conf $HOME/.config/distrobox/distrobox.conf
+#     distrobox assemble rm --file $PARENT/distrobox.ini
+#     distrobox assemble create --file $PARENT/distrobox.ini
+#  - name: Install scala
+#    when: "'scala' not in ansible_facts.packages"
+#    ansible.builtin.shell: |
+#      mkdir -p ~/temp
+#      curl -fL https://github.com/coursier/coursier/releases/latest/download/cs-x86_64-pc-linux.gz | gzip -d > ~/temp/cs && chmod +x ~/temp/cs && ~/temp/cs setup
