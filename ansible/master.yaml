@@ -1,4 +1,18 @@
 --- 
+- name: Install Neovim
+  ansible.builtin.shell: |
+    mkdir -p $HOME/temp
+    curl -o $HOME/temp/nvim.appimage https://github.com/neovim/neovim/releases/latest/download/nvim.appimage
+    chmod u+x $HOME/temp/nvim.appimage
+    cd $HOME/temp && ./nvim.appimage
+- name: Install Lazyvim
+  ansible.builtin.shell: |
+    rm -rf $HOME/.config/nvim
+    git clone https://github.com/LazyVim/starter $HOME/.config/nvim
+    rm -rf ~/.config/nvim/.git
+- name: Install lazygit
+  ansible.builtin.shell: |
+    go install github.com/jesseduffield/lazygit@latest
 - name: Install nvm
   ansible.builtin.shell: |
     curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
@@ -96,7 +110,9 @@
 - name: Install postman
   ansible.builtin.shell: |
     curl -o- "https://dl-cli.pstmn.io/install/linux64.sh" | sh
-
+- name: Install bruno
+  ansible.builtin.shell: |
+    npm install -g @usebruno/cli
 # - name: Install distrobox
 # ansible.builtin.shell: |
 #     curl -s https://raw.githubusercontent.com/89luca89/distrobox/main/install | sudo sh

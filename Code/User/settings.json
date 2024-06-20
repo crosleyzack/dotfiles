@@ -112,7 +112,6 @@
     }
   },
   "explorer.autoReveal": false,
-  "window.menuBarVisibility": "compact",
   "window.restoreFullscreen": true,
   "window.density.editorTabHeight": "compact",
   "workbench.editor.highlightModifiedTabs": true,
@@ -163,4 +162,7 @@
   "workbench.reduceMotion": "on",
   "extensions.ignoreRecommendations": true,
   "githubPullRequests.pullBranch": "never",
+  "window.customTitleBarVisibility": "auto",
+  "window.commandCenter": false,
+  "workbench.layoutControl.enabled": false,
 }
