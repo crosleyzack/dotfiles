@@ -165,4 +165,14 @@
   "window.customTitleBarVisibility": "auto",
   "window.commandCenter": false,
   "workbench.layoutControl.enabled": false,
+  "[sql]": {
+    "editor.defaultFormatter": "adpyke.vscode-sql-formatter"
+  },
+  "vim.useSystemClipboard": true,
+  "vim.easymotion": true,
+  "vim.enableNeovim": true,
+  "vim.foldfix": true,
+  "vim.highlightedyank.enable": true,
+  "vim.history": 500,
+  "vim.hlsearch": true,
 }
