@@ -14,7 +14,7 @@
 [url "ssh://git@github.com/crosleyzack"]
     insteadOf = https://github.com/crosleyzack
 [commit]
-    template = $HOME/dev/dotfiles/vim/.gitmessage
+    template = $HOME/.gitmessage
 [alias]
     # To debug, use GIT_TRACE=1
     unstage = reset HEAD --
