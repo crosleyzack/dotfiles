@@ -179,6 +179,12 @@ if [ -d $HOME/.local/share/coursier/bin/ ]; then
     export PATH="$PATH:$HOME/.local/share/coursier/bin"
 fi
 
+# add local bin to path
+if [ -d $HOME/.local/bin ]; then
+    # add to path
+    export PATH="$PATH:$HOME/.local/bin"
+fi
+
 # ensure unique PATH values
 typeset -U PATH path
 
