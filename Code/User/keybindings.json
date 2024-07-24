@@ -232,5 +232,5 @@
   {
     "key": "ctrl+pageup",
     "command": "-workbench.action.previousEditor"
-  }
+  },
 ]

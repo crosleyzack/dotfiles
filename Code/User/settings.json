@@ -1,7 +1,7 @@
 {
   "extensions.experimental.affinity": {
     "vscodevim.vim": 1,
-    "asvetliakov.vscode-neovim": 1
+    // "asvetliakov.vscode-neovim": 1
   },
   "search.collapseResults": "alwaysCollapse",
   // Font settings
@@ -74,7 +74,7 @@
     // "source.organizeImports": "explicit",
     // "source.unusedImports": "explicit",
   },
-  "black-formatter.showNotification": "onWarning",
+  // "black-formatter.showNotification": "onWarning",
   "[yaml]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
@@ -165,14 +165,87 @@
   "window.customTitleBarVisibility": "auto",
   "window.commandCenter": false,
   "workbench.layoutControl.enabled": false,
-  "[sql]": {
-    "editor.defaultFormatter": "adpyke.vscode-sql-formatter"
-  },
+  "redhat.telemetry.enabled": false,
   "vim.useSystemClipboard": true,
-  "vim.easymotion": true,
-  "vim.enableNeovim": true,
-  "vim.foldfix": true,
   "vim.highlightedyank.enable": true,
   "vim.history": 500,
-  "vim.hlsearch": true,
+  "vim.smartRelativeLine": true,
+  "vim.showMarksInGutter": true,
+  "vim.autoindent": false,
+  "vim.easymotionDimBackground": false,
+  "vim.joinspaces": false,
+  "vim.startofline": false,
+  "vim.targets.smartQuotes.breakThroughLines": false,
+  "vim.vimrc.enable": true,
+  "vim.vimrc.path": "$HOME/.vimrc",
+  "vim.leader": ",",
+  "vim.normalModeKeyBindingsNonRecursive": [
+    {
+      "before": ["<leader>","<leader>"],
+      "commands": ["whichkey.show"]
+    },
+  ],
+  "vim.visualModeKeyBindingsNonRecursive": [
+    {
+      "before": ["<leader>","<leader>"],
+      "commands": ["whichkey.show"]
+    },
+  ],
+  "whichkey.bindingOverrides": [
+    {
+      "keys": "d",
+      "name": "Debugging",
+      "type": "bindings",
+      "bindings": [
+        {
+          "key": "b",
+          "name": "Set breakpoint",
+          "type": "command",
+          "command": "editor.debug.action.toggleBreakpoint",
+        },
+        {
+          "key": "d",
+          "name": "Start debugging",
+          "type": "command",
+          "command": "workbench.action.debug.start",
+        },
+        {
+          "key": "c",
+          "name": "Continue...",
+          "type": "command",
+          "command": "workbench.action.debug.continue",
+        },
+        {
+          "key": "i",
+          "name": "Step into",
+          "type": "command",
+          "command": "workbench.action.debug.stepInto",
+        },
+        {
+          "key": "o",
+          "name": "Step Out",
+          "type": "command",
+          "command": "workbench.action.debug.stepOut",
+        },
+        {
+          "key": "v",
+          "name": "Step Over",
+          "type": "command",
+          "command": "workbench.action.debug.stepOver",
+        },
+        {
+          "key": "r",
+          "name": "Restart Debugging",
+          "type": "command",
+          "command": "workbench.action.debug.restart",
+        },
+        {
+          "key": "s",
+          "name": "Stop Debugging",
+          "type": "command",
+          "command": "workbench.action.debug.stop",
+        },
+      ]
+    }
+  ]
 }
