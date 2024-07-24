@@ -82,3 +82,10 @@ if [ "true" = "$INSTALLED" ]
 then
     code --update-extensions
 fi
+
+# update zsh
+is_installed omz
+if [ "true" = "$INSTALLED" ]
+then
+    omz update
+fi
