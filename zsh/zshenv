@@ -1,0 +1,69 @@
+# if a .env file exists, source it
+ENV_FILE=$HOME/.env
+if test -f "$ENV_FILE"; then
+    set -a; source $ENV_FILE; set +a
+fi
+
+# setup golang locations
+export GO_PATH="$HOME/go"
+export GOPATH="$HOME/go"
+if [ -d $HOME/go ]; then
+    # add to path
+    export PATH="$PATH:$GOPATH/bin"
+fi
+if [ -d /usr/local/go/bin ]; then
+    # add to path
+    export PATH="$PATH:/usr/local/go/bin"
+fi
+
+# setup npm location
+if [ -d $HOME/npm ]; then
+    # add to path
+    export PATH="$PATH:$HOME/.npm/bin"
+fi
+
+# Add cargo if it exists
+if [ -d $HOME/.cargo/evn ]; then
+    source "$HOME/.cargo/env"
+fi
+
+# add share to path if it exists
+if [ -d $HOME/.local/share/coursier/bin/ ]; then
+    export PATH="$PATH:$HOME/.local/share/coursier/bin"
+fi
+
+# add local bin to path
+if [ -d $HOME/.local/bin ]; then
+    # add to path
+    export PATH="$PATH:$HOME/.local/bin"
+fi
+
+typeset -U PATH path
+
+jdiff() {
+    diff <(jq --sort-keys <<< $1) <(jq --sort-keys <<< $2)
+}
+
+host_data() {
+    HOST=$1
+    TIME=$2
+    PORT=-1
+    if [[ $string == *":"* ]]; then
+        split=($(echo $HOST | tr ":" "\n"))
+        len=${#split[@]}
+        HOST=${split[@]:0:(len-1)}
+        local IFS="$1"
+        shift
+        HOST=$(echo "$*")
+        PORT=${#split[@]:(len-1)}
+    fi
+    cmd="censys view $HOST"
+    if [[ -n "$TIME" ]]; then
+        cmd="$cmd --at-time $TIME"
+    fi
+    out=$(pyenv exec $cmd)
+    if [[ $PORT -ge 0 ]]; then
+        out=$(echo $OUT | jq ".services.[] | select(.port == $PORT)")
+    fi
+    echo $out
+}
