@@ -23,8 +23,13 @@ if [ -d $HOME/npm ]; then
 fi
 
 # Add cargo if it exists
-if [ -d $HOME/.cargo/evn ]; then
+if [ -d $HOME/.cargo/env ]; then
     source "$HOME/.cargo/env"
+fi
+
+# Add atuin if it exists
+if [ -d $HOME/.atuin/bin ]; then
+    export PATH="$PATH:$HOME/.atuin/bin"
 fi
 
 # add share to path if it exists
@@ -47,23 +52,23 @@ jdiff() {
 host_data() {
     HOST=$1
     TIME=$2
-    PORT=-1
-    if [[ $string == *":"* ]]; then
-        split=($(echo $HOST | tr ":" "\n"))
-        len=${#split[@]}
-        HOST=${split[@]:0:(len-1)}
-        local IFS="$1"
-        shift
-        HOST=$(echo "$*")
-        PORT=${#split[@]:(len-1)}
-    fi
+    # PORT=-1
+    # if [[ $string == *":"* ]]; then
+    #     split=($(echo $HOST | tr ":" "\n"))
+    #     len=${#split[@]}
+    #     HOST=${split[@]:0:(len-1)}
+    #     local IFS="$1"
+    #     shift
+    #     HOST=$(echo "$*")
+    #     PORT=${#split[@]:(len-1)}
+    # fi
     cmd="censys view $HOST"
     if [[ -n "$TIME" ]]; then
         cmd="$cmd --at-time $TIME"
     fi
     out=$(pyenv exec $cmd)
-    if [[ $PORT -ge 0 ]]; then
-        out=$(echo $OUT | jq ".services.[] | select(.port == $PORT)")
-    fi
+    # if [[ $PORT -ge 0 ]]; then
+    #     out=$(echo $OUT | jq ".services.[] | select(.port == $PORT)")
+    # fi
     echo $out
 }

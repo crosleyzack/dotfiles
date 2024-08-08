@@ -110,6 +110,10 @@ bindkey -v
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
+# Move ZSH history
+# mv ~/.zsh_history ~/.zsh_record
+export HISTFILE=~/.zsh_record
+
 # add alias shortcut for proxychains
 alias pc="proxychains"
 
@@ -165,3 +169,5 @@ spaceship_vi_mode_enable
 if [ -f '/home/crosley/temp/google-cloud-sdk/path.zsh.inc' ]; then . '/home/crosley/temp/google-cloud-sdk/path.zsh.inc'; fi
 # The next line enables shell command completion for gcloud.
 if [ -f '/home/crosley/temp/google-cloud-sdk/completion.zsh.inc' ]; then . '/home/crosley/temp/google-cloud-sdk/completion.zsh.inc'; fi
+
+eval "$(atuin init zsh)"

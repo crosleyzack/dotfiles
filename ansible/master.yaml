@@ -113,6 +113,16 @@
 - name: Install bruno
   ansible.builtin.shell: |
     npm install -g @usebruno/cli
+- name: Install argocd cli
+  ansible.builtin.shell: |
+    ARGOCD_VERSION=$(curl --silent "https://api.github.com/repos/argoproj/argo-cd/releases/latest" | grep '"tag_name"' | sed -E 's/.*"([^"]+)".*/\1/')
+    curl -sSL -o /tmp/argocd-${ARGOCD_VERSION} https://github.com/argoproj/argo-cd/releases/download/${ARGOCD_VERSION}/argocd-darwin-amd64
+    chmod +x /tmp/argocd-${ARGOCD_VERSION}
+    sudo mv /tmp/argocd-${ARGOCD_VERSION} /usr/local/bin/argocd
+- name: Install atuin
+  ansible.builtin.shell: |
+    curl --proto '=https' --tlsv1.2 -LsSf https://setup.atuin.sh | sh
+    echo 'eval "$(atuin init zsh)"' >> ~/.zshrc
 # - name: Install distrobox
 # ansible.builtin.shell: |
 #     curl -s https://raw.githubusercontent.com/89luca89/distrobox/main/install | sudo sh
