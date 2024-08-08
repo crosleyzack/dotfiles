@@ -158,6 +158,9 @@ alias docker-stop-all="docker stop $(docker ps -aq)"
 alias docker-rm-all="docker rm $(docker ps -aq)"
 alias docker-rmi-all="docker rmi -f $(docker images -aq)"
 
+# mv ~/.bash_history ~/.bash_record
+export HISTFILE="~/.bash_record"
+
 export MOZ_ENABLE_WAYLAND=1
 
 if [ "$TMUX" = "" ]; then
