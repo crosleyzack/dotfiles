@@ -39,6 +39,9 @@ ln -s $BASE_DIR/tmux/tmux.conf $HOME/.config/tmux/tmux.conf
 rm -f $HOME/.zshrc
 echo "Linking $HOME/.zshrc to $BASE_DIR/zsh/zshrc"
 ln -s $BASE_DIR/zsh/zshrc $HOME/.zshrc
+rm -f $HOME/.zshenv
+echo "Linking $HOME/.zshenv to $BASE_DIR/zsh/zshenv"
+ln -s $BASE_DIR/zsh/zshenv $HOME/.zshenv
 
 # Docker
 sudo rm -f /etc/docker/daemon.json

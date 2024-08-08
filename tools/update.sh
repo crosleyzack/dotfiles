@@ -83,9 +83,16 @@ then
     code --update-extensions
 fi
 
-# update zsh
+# update omz
 is_installed omz
 if [ "true" = "$INSTALLED" ]
 then
     omz update
+fi
+
+# update atuin-update
+is_installed atuin-update
+if [ "true" = "$INSTALLED" ]
+then
+    atuin-update
 fi
