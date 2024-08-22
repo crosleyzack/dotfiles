@@ -16,6 +16,11 @@ if [ -d /usr/local/go/bin ]; then
     export PATH="$PATH:/usr/local/go/bin"
 fi
 
+# if gcloud is defined, set access token env variable
+if [ -n $(command -v gcloud) ]; then
+    export CLOUDSDK_AUTH_ACCESS_TOKEN=$(gcloud auth print-access-token)
+fi
+
 # setup npm location
 if [ -d $HOME/npm ]; then
     # add to path
