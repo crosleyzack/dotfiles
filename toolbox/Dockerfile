@@ -28,8 +28,8 @@ EOF
 RUN yum install -y kubectl
 
 RUN ln -fs /bin/sh /usr/bin/sh && \
-    ln -fs /usr/bin/distrobox-host-exec /usr/local/bin/podman && \
-    ln -fs /usr/bin/distrobox-host-exec /usr/local/bin/docker-compose && \
-    ln -fs /usr/bin/distrobox-host-exec /usr/local/bin/flatpak && \
-    ln -fs /usr/bin/distrobox-host-exec /usr/local/bin/rpm-ostree && \
-    ln -fs /usr/bin/distrobox-host-exec /usr/local/bin/distrobox
+    ln -fs /usr/bin/host-spawn /usr/local/bin/podman && \
+    ln -fs /usr/bin/host-spawn /usr/local/bin/docker-compose && \
+    ln -fs /usr/bin/host-spawn /usr/local/bin/flatpak && \
+    ln -fs /usr/bin/host-spawn /usr/local/bin/rpm-ostree && \
+    ln -fs /usr/bin/host-spawn /usr/local/bin/distrobox

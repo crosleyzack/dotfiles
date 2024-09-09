@@ -29,5 +29,4 @@ proxychains-ng
 net-tools
 golang-github-cloudflare-cfssl
 netcat
-distrobox
 host-spawn
