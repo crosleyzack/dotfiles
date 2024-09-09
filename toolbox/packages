@@ -1,7 +1,4 @@
-# Languages
 golang
-
-# SDKs
 protobuf
 protobuf-devel
 protobuf-lite
@@ -9,19 +6,10 @@ gcc
 gcc-c++
 gdb
 kernel-devel
-
-# Kubernetes, Cloud
-kubectl
 helm
-k9s
-kubectx
-
-# Tools
-atuin
 direnv
 vim
 zsh
-starship
 tmux
 jq
 yq
@@ -34,11 +22,12 @@ git-lfs
 ca-certificates
 diffutils
 unar
-
-# Networking
 telnet
 whois
 tor
 proxychains-ng
 net-tools
+golang-github-cloudflare-cfssl
 netcat
+distrobox
+host-spawn
