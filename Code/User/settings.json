@@ -35,13 +35,17 @@
   "go.lintTool": "golint",
   "go.delveConfig": {},
   "go.toolsManagement.autoUpdate": true,
+  "go.testTimeout": "200s",
+  
   // Debug settings
   "debug.openDebug": "openOnSessionStart",
   // language settings
   "[go]": {
     "editor.foldingImportsByDefault": false,
-    "editor.formatOnSave": false,
-    "editor.codeLens": true
+    "editor.codeLens": true,
+    "editor.insertSpaces": true,
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "golang.go"
   },
   "[json]": {
     "editor.defaultFormatter": "vscode.json-language-features"
@@ -247,5 +251,19 @@
         },
       ]
     }
-  ]
+  ],
+  "dev.containers.defaultExtensionsIfInstalledLocally": [
+    "GitHub.copilot",
+    "GitHub.copilot-chat",
+    "GitHub.vscode-pull-request-github",
+    "vscodevim.vim"
+  ],
+  "dev.containers.repositoryConfigurationPaths": [
+    "$HOME/repos"
+  ],
+  "dev.containers.experimentalLockfile": true,
+  "dev.containers.forwardWSLServices": false,
+  "task": {
+    "path": "/usr/local/bin/task",
+  },
 }

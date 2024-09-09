@@ -17,9 +17,9 @@ if [ -d /usr/local/go/bin ]; then
 fi
 
 # if gcloud is defined, set access token env variable
-if [ -n $(command -v gcloud) ]; then
-    export CLOUDSDK_AUTH_ACCESS_TOKEN=$(gcloud auth print-access-token)
-fi
+# if [ -n $(command -v gcloud) ]; then
+#     export CLOUDSDK_AUTH_ACCESS_TOKEN=$(gcloud auth application-default print-access-token)
+# fi
 
 # setup npm location
 if [ -d $HOME/npm ]; then
