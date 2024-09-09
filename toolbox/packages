@@ -30,3 +30,6 @@ net-tools
 golang-github-cloudflare-cfssl
 netcat
 host-spawn
+man-pages
+man-db
+man
