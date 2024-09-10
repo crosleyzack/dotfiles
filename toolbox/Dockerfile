@@ -18,6 +18,7 @@ RUN go install github.com/wagoodman/dive@latest
 RUN go install github.com/fullstorydev/grpcurl/cmd/grpcurl@latest
 RUN go install google.golang.org/protobuf/cmd/protoc-gen-go@v1.20
 RUN go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.2
+RUN go install golang.org/x/tools/gopls@latest
 
 # setup kubernetes
 RUN cat <<EOF | sudo tee /etc/yum.repos.d/kubernetes.repo

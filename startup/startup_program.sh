@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# restart tmux session detatched
+# This requires tmux exist on the host, however doing the `toolbox run -c devs tmux`
+# alone results in ressurect not running. Ideally, will find a way to make this
+# work without host requiring tmux
+tmux new-session -d
+
 FILE_PATH=$(realpath $BASH_SOURCE)
 DIR=$(dirname $FILE_PATH)
 
@@ -11,7 +17,8 @@ flatpak run com.slack.Slack > /dev/null &
 # signal_desktop > /dev/null &
 # zoom > /dev/null &
 code > /dev/null &
-alacritty -e tmux > /dev/null &
+# start our term
+alacritty -e toolbox run -c devs tmux > /dev/null
 
 echo "Programs launched, sleeping"
 sleep 7
