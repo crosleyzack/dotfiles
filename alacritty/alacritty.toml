@@ -44,31 +44,34 @@ y = 0
 
 [colors]
 draw_bold_text_with_bright_colors = true
-indexed_colors = []
 
-[colors.bright]
-black = "#000000"
-blue = "#1a66ff"
-cyan = "#00ffff"
-green = "#22ff00"
-magenta = "#ff61df"
-red = "#ff7c4d"
-white = "#ffffff"
-yellow = "#ffcc00"
+[colors.primary]
+background = "0x0a0c10"
+foreground = "0xf0f3f6"
 
 [colors.cursor]
-cursor = "CellForeground"
-text = "CellBackground"
+text = "0x0a0c10"
+cursor = "0xf0f3f6"
 
-[colors.dim]
-black = "#000000"
-blue = "#1a66ff"
-cyan = "#00ffff"
-green = "#22ff00"
-magenta = "#ff61df"
-red = "#ff7c4d"
-white = "#888888"
-yellow = "#ffcc00"
+[colors.normal]
+black = "0x7a828e"
+red = "0xff9492"
+green = "0x26cd4d"
+yellow = "0xf0b72f"
+blue = "0x71b7ff"
+magenta = "0xcb9eff"
+cyan = "0x39c5cf"
+white = "0xd9dee3"
+
+[colors.bright]
+black = "0x9ea7b3"
+red = "0xffb1af"
+green = "0x4ae168"
+yellow = "0xf7c843"
+blue = "0x91cbff"
+magenta = "0xcb9eff"
+cyan = "0x39c5cf"
+white = "0xd9dee3"
 
 [colors.hints.end]
 background = "#ffffff"
@@ -81,22 +84,6 @@ foreground = "#ffffff"
 [colors.line_indicator]
 background = "None"
 foreground = "None"
-
-[colors.normal]
-black = "#000000"
-blue = "#1a66ff"
-cyan = "#00ffff"
-green = "#22ff00"
-magenta = "#ff61df"
-red = "#ff7c4d"
-white = "#888888"
-yellow = "#ffcc00"
-
-[colors.primary]
-background = "#000000"
-bright_foreground = "#ffffff"
-dim_foreground = "#ffffff"
-foreground = "#ffffff"
 
 [colors.search.focused_match]
 background = "#1a66ff"
