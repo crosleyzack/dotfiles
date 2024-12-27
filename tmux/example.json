@@ -1,0 +1,13 @@
+{
+   "sessions": [
+     {
+         "name": "dev",
+         "path": "$HOME/dev"
+     },
+     {
+         "name": "foo",
+         "path": "$HOME/bar"
+     }
+  ]
+}
+  
