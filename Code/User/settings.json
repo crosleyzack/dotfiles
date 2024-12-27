@@ -109,11 +109,9 @@
     "options": ["--proto_path=$HOME/dev/pipeline/proto"]
   },
   "workbench.startupEditor": "readme",
-  "workbench.colorTheme": "Default High Contrast",
+  "workbench.colorTheme": "GitHub Dark High Contrast",
   "workbench.colorCustomizations": {
-    "[Default Dark+]": {
-      "editorWhitespace.foreground": "#555"
-    }
+    "tab.activeBackground": "#0b0b0b"
   },
   "explorer.autoReveal": false,
   "window.restoreFullscreen": true,
@@ -183,75 +181,6 @@
   "vim.vimrc.enable": true,
   "vim.vimrc.path": "$HOME/.vimrc",
   "vim.leader": ",",
-  "vim.normalModeKeyBindingsNonRecursive": [
-    {
-      "before": ["<leader>","<leader>"],
-      "commands": ["whichkey.show"]
-    },
-  ],
-  "vim.visualModeKeyBindingsNonRecursive": [
-    {
-      "before": ["<leader>","<leader>"],
-      "commands": ["whichkey.show"]
-    },
-  ],
-  "whichkey.bindingOverrides": [
-    {
-      "keys": "d",
-      "name": "Debugging",
-      "type": "bindings",
-      "bindings": [
-        {
-          "key": "b",
-          "name": "Set breakpoint",
-          "type": "command",
-          "command": "editor.debug.action.toggleBreakpoint",
-        },
-        {
-          "key": "d",
-          "name": "Start debugging",
-          "type": "command",
-          "command": "workbench.action.debug.start",
-        },
-        {
-          "key": "c",
-          "name": "Continue...",
-          "type": "command",
-          "command": "workbench.action.debug.continue",
-        },
-        {
-          "key": "i",
-          "name": "Step into",
-          "type": "command",
-          "command": "workbench.action.debug.stepInto",
-        },
-        {
-          "key": "o",
-          "name": "Step Out",
-          "type": "command",
-          "command": "workbench.action.debug.stepOut",
-        },
-        {
-          "key": "v",
-          "name": "Step Over",
-          "type": "command",
-          "command": "workbench.action.debug.stepOver",
-        },
-        {
-          "key": "r",
-          "name": "Restart Debugging",
-          "type": "command",
-          "command": "workbench.action.debug.restart",
-        },
-        {
-          "key": "s",
-          "name": "Stop Debugging",
-          "type": "command",
-          "command": "workbench.action.debug.stop",
-        },
-      ]
-    }
-  ],
   "dev.containers.defaultExtensionsIfInstalledLocally": [
     "GitHub.copilot",
     "GitHub.copilot-chat",
