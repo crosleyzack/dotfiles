@@ -171,3 +171,5 @@ if [ -f '/home/crosley/temp/google-cloud-sdk/path.zsh.inc' ]; then . '/home/cros
 if [ -f '/home/crosley/temp/google-cloud-sdk/completion.zsh.inc' ]; then . '/home/crosley/temp/google-cloud-sdk/completion.zsh.inc'; fi
 
 eval "$(atuin init zsh)"
+
+. "$HOME/.atuin/bin/env"
