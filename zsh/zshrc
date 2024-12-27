@@ -78,6 +78,14 @@ export RPS1="%{$reset_color%}"
 # Load OhMyZsh
 source $ZSH/oh-my-zsh.sh
 
+# Use toolbox in prompt
+# source "$HOME/.zsh/spaceship-toolbx/toolbx-section.plugin.zsh"
+# spaceship add toolbx
+# SPACESHIP_RPROMPT_ORDER=(
+#     toolbx
+# )
+SPACESHIP_HOST_SHOW="always"
+
 # User configuration
 
 # export MANPATH="/usr/local/man:$MANPATH"

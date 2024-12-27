@@ -50,6 +50,10 @@ git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "$ZSH_CUSTOM/
 rm -rf "$ZSH_CUSTOM/plugins/zsh-autosuggestions"
 git clone https://github.com/zsh-users/zsh-autosuggestions "$ZSH_CUSTOM/plugins/zsh-autosuggestions"
 
+# install toolbox
+# mkdir -p "$HOME/.zsh"
+# git clone --depth=1 https://github.com/CrosleyZack/spaceship-toolbox.git "$HOME/.zsh/spaceship-toolbx"
+
 # sym link
 # mkdir -p $HOME/.oh-my-zsh
 # ln -s $ZSH/oh-my-zsh.sh $HOME/.oh-my-zsh/oh-my-zsh.sh
