@@ -4,10 +4,7 @@
 FROM registry.fedoraproject.org/fedora-toolbox:40
 
 # Install packages in file
-COPY packages /
-RUN yum upgrade && \
-    xargs yum -y install < packages
-RUN rm /packages
+RUN yum -y install golang protobuf protobuf-devel protobuf-lite gcc gcc-c++ gdb kernel-devel helm direnv vim zsh tmux jq yq coreutils cmake gzip gettext git git-lfs ca-certificates diffutils unar telnet whois tor proxychains-ng net-tools golang-github-cloudflare-cfssl netcat host-spawn man-pages man-db man
 
 # setup additional tools
 RUN curl -fsSL https://raw.githubusercontent.com/tilt-dev/tilt/master/scripts/install.sh | bash
@@ -18,7 +15,21 @@ RUN go install github.com/wagoodman/dive@latest
 RUN go install github.com/fullstorydev/grpcurl/cmd/grpcurl@latest
 RUN go install google.golang.org/protobuf/cmd/protoc-gen-go@v1.20
 RUN go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.2
-RUN go install golang.org/x/tools/gopls@latest
+RUN go install golang.org/x/tools/gopls@v0.16.2
+RUN go install github.com/cloudspannerecosystem/spanner-cli@latest
+
+# setup google cloud
+# RUN tee -a /etc/yum.repos.d/google-cloud-sdk.repo << EOM
+# [google-cloud-cli]
+# name=Google Cloud CLI
+# baseurl=https://packages.cloud.google.com/yum/repos/cloud-sdk-el9-x86_64
+# enabled=1
+# gpgcheck=1
+# repo_gpgcheck=0
+# gpgkey=https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+# EOM
+# RUN dnf install libxcrypt-compat.x86_64
+# RUN dnf install google-cloud-cli google-cloud-cli-pubsub-emulator google-cloud-cli-spanner-emulator
 
 # setup kubernetes
 RUN cat <<EOF | sudo tee /etc/yum.repos.d/kubernetes.repo
@@ -47,4 +58,6 @@ RUN ln -fs /bin/sh /usr/bin/sh && \
     ln -fs /usr/bin/host-spawn /usr/local/bin/docker-compose && \
     ln -fs /usr/bin/host-spawn /usr/local/bin/flatpak && \
     ln -fs /usr/bin/host-spawn /usr/local/bin/rpm-ostree && \
-    ln -fs /usr/bin/host-spawn /usr/local/bin/distrobox
+    ln -fs /usr/bin/host-spawn /usr/local/bin/distrobox && \
+    ln -fs /usr/bin/host-spawn /usr/bin/gcloud
+
