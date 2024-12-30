@@ -18,8 +18,8 @@ flatpak run com.slack.Slack > /dev/null &
 # signal_desktop > /dev/null &
 # zoom > /dev/null &
 code > /dev/null &
-# start our term
-alacritty -e toolbox run -c devs tmux > /dev/null
+# run terminal in toolbox
+alacritty -e toolbox run -c devs tmux
 
 echo "Programs launched, sleeping"
 sleep 7
