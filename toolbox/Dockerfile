@@ -59,5 +59,7 @@ RUN ln -fs /bin/sh /usr/bin/sh && \
     ln -fs /usr/bin/host-spawn /usr/local/bin/flatpak && \
     ln -fs /usr/bin/host-spawn /usr/local/bin/rpm-ostree && \
     ln -fs /usr/bin/host-spawn /usr/local/bin/distrobox && \
-    ln -fs /usr/bin/host-spawn /usr/bin/gcloud
-
+    ln -fs /usr/bin/host-spawn /usr/bin/code && \
+    ln -fs /usr/bin/host-spawn /usr/bin/gcloud && \
+    ln -fs /usr/bin/host-spawn /usr/bin/xrandr && \
+    ln -fs /usr/bin/host-spawn /usr/bin/wmctrl

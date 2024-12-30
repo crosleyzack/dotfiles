@@ -145,6 +145,8 @@ eval "$(pyenv virtualenv-init -)"
 
 # setup toolbox helper
 alias devbox='toolbox run -c devs tmux'
+# NOTE: must be run in dotfiles/toolbox
+alias rebuild_devbox='podman stop -i devs && toolbox rm devs && toolbox rmi devs-image && podman build -t devs-image -f Dockerfile . && toolbox create --image devs-image devs && toolbox enter devs'
 
 # setup nvm
 export NVM_DIR="$HOME/.nvm"
