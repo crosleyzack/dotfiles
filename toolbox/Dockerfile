@@ -53,11 +53,11 @@ ENV TESTCONTAINERS_RYUK_DISABLED=true
 # RUN git clone https://github.com/tmux-plugins/tmux-continuum $PLUGINS_DIR/continuum
 # RUN git clone https://github.com/erikw/tmux-powerline.git $PLUGINS_DIR/powerline
 
-RUN ln -fs /usr/bin/host-spawn /usr/local/bin/podman && \
-    ln -fs /usr/bin/host-spawn /usr/local/bin/podman && \
+RUN ln -fs /usr/bin/host-spawn /usr/bin/podman && \
+    ln -fs /usr/bin/host-spawn /usr/bin/docker && \
     ln -fs /usr/bin/host-spawn /usr/local/bin/docker-compose && \
-    ln -fs /usr/bin/host-spawn /usr/local/bin/flatpak && \
-    ln -fs /usr/bin/host-spawn /usr/local/bin/rpm-ostree && \
+    ln -fs /usr/bin/host-spawn /usr/bin/flatpak && \
+    ln -fs /usr/bin/host-spawn /usr/bin/rpm-ostree && \
     ln -fs /usr/bin/host-spawn /usr/local/bin/distrobox && \
     ln -fs /usr/bin/host-spawn /usr/bin/code && \
     ln -fs /usr/bin/host-spawn /usr/bin/gcloud && \
