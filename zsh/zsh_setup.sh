@@ -17,7 +17,8 @@ export XDG_CONFIG_HOME=${XDG_CONFIG_HOME-$HOME/.config}
 CONFIG_DIR="$HOME/dev/dotfiles/zsh"
 
 # Move ZSH history and config
-export ZDOTDIR=$XDG_CONFIG_HOME/zsh
+# TODO move to $XDG_CONFIG_HOME/zsh
+export ZDOTDIR=$HOME
 export HISTFILE=$ZOTDIR/.zsh_record
 export ZSH=$ZDOTDIR/.oh-my-zsh
 
@@ -29,6 +30,7 @@ chmod u+x $ZSH/oh-my-zsh.sh
 # Make ZSH default shell.
 chsh -s $(which zsh)
 
+# define custom plugin locations
 if [[ -z "${ZSH_CUSTOM}" ]]; then
     ZSH_CUSTOM="$ZSH/custom"
 fi
