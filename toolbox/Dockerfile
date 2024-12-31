@@ -4,7 +4,7 @@
 FROM registry.fedoraproject.org/fedora-toolbox:40
 
 # Install packages in file
-RUN yum -y install golang protobuf protobuf-devel protobuf-lite gcc gcc-c++ gdb kernel-devel helm direnv vim zsh tmux jq yq coreutils cmake gzip gettext git git-lfs ca-certificates diffutils unar telnet whois tor proxychains-ng net-tools golang-github-cloudflare-cfssl netcat host-spawn man-pages man-db man
+RUN yum -y install golang protobuf protobuf-devel protobuf-lite gcc gcc-c++ gdb kernel-devel helm direnv vim zsh tmux jq yq coreutils cmake gzip gettext git git-lfs ca-certificates diffutils unar telnet whois tor proxychains-ng net-tools golang-github-cloudflare-cfssl netcat host-spawn man-pages man-db man stow pgcli nmap telnet redis sqlite-devel texlive-scheme-basic ncurses-devel openssl-devel net-tools
 
 # setup additional tools
 RUN curl -fsSL https://raw.githubusercontent.com/tilt-dev/tilt/master/scripts/install.sh | bash
@@ -42,6 +42,11 @@ gpgkey=https://pkgs.k8s.io/core:/stable:/v1.31/rpm/repodata/repomd.xml.key
 EOF
 RUN yum install -y kubectl
 
+# install kubectx
+# git clone https://github.com/ahmetb/kubectx /usr/local/kubectx
+# ln -s /usr/local/kubectx/kubectx /usr/local/bin/kubectx
+# ln -s /usr/local/kubectx/kubens /usr/local/bin/kubens
+
 # turn off ryuk for test containers
 ENV TESTCONTAINERS_RYUK_DISABLED=true
 
@@ -62,4 +67,6 @@ RUN ln -fs /usr/bin/host-spawn /usr/bin/podman && \
     ln -fs /usr/bin/host-spawn /usr/bin/code && \
     ln -fs /usr/bin/host-spawn /usr/bin/gcloud && \
     ln -fs /usr/bin/host-spawn /usr/bin/xrandr && \
-    ln -fs /usr/bin/host-spawn /usr/bin/wmctrl
+    ln -fs /usr/bin/host-spawn /usr/bin/wmctrl && \
+    ln -fs /usr/bin/host-spawn /usr/bin/pkill && \
+    ln -fs /usr/bin/host-spawn /usr/bin/ps
