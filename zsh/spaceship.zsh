@@ -1,3 +1,5 @@
+# Change location
+SPACESHIP_CONFIG="$HOME/.config/zsh/spaceship.zsh"
 
 # For efficiency, limit prompt options
 SPACESHIP_PROMPT_ORDER=(

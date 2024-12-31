@@ -10,33 +10,48 @@ then
     sudo apt install zsh
 fi
 
-# If ZSH isn't set, use default
-if [[ -z "${ZSH}" ]]; then
-    # SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
-    # ZSH="$SCRIPT_DIR/oh-my-zsh"
-    ZSH="$HOME/.oh-my-zsh"
-fi
-mkdir -p "$ZSH"
+# set XDG_CONFIG_HOME if not defined
+export XDG_CONFIG_HOME=${XDG_CONFIG_HOME-$HOME/.config}
+
+# define this directory
+CONFIG_DIR="$HOME/dev/dotfiles/zsh"
+
+# Move ZSH history and config
+export ZDOTDIR=$XDG_CONFIG_HOME/zsh
+export HISTFILE=$ZOTDIR/.zsh_record
+export ZSH=$ZDOTDIR/.oh-my-zsh
+
+# Setup oh my zsh
+rm -rf $ZSH
+git clone https://github.com/ohmyzsh/ohmyzsh.git $ZSH
+chmod u+x $ZSH/oh-my-zsh.sh
+
+# Make ZSH default shell.
+chsh -s $(which zsh)
+
 if [[ -z "${ZSH_CUSTOM}" ]]; then
     ZSH_CUSTOM="$ZSH/custom"
 fi
 mkdir -p "$ZSH_CUSTOM"
 
-# Setup oh my zsh
-rm -rf $ZSH
-git clone https://github.com/ohmyzsh/ohmyzsh.git "$ZSH"
-
-# Make ZSH default shell.
-chsh -s $(which zsh)
-
 # Setup ZSH src - TODO, do not hardcode path
-rm -f $HOME/.zshrc
-echo "Linking $HOME/.zshrc to $HOME/dev/dotfiles/zsh/zshrc"
-ln -s $HOME/dev/dotfiles/zsh/zshrc $HOME/.zshrc
+rm -f $ZDOTDIR/.zshrc
+echo "Linking $ZDOTDIR/.zshrc to $CONFIG_DIR/zshrc"
+ln -s $CONFIG_DIR/zshrc $ZDOTDIR/.zshrc
+
+# Setup zsh env
+rm -f $ZDOTDIR/.zshenv
+echo "Linking $ZDOTDIR/.zshenv to $CONFIG_DIR/zshenv"
+ln -s $CONFIG_DIR/zshenv $ZDOTDIR/.zshenv
+
 # Install spaceship prompt
 rm -rf "$ZSH_CUSTOM/themes/spaceship-prompt"
 git clone https://github.com/spaceship-prompt/spaceship-prompt.git "$ZSH_CUSTOM/themes/spaceship-prompt" --depth=1
 ln -sf "$ZSH_CUSTOM/themes/spaceship-prompt/spaceship.zsh-theme" "$ZSH_CUSTOM/themes/spaceship.zsh-theme"
+
+# setup spaceship config
+rm -rf "$ZDOTDIR/spaceship.zsh"
+ln -sf "$CONFIG_DIR/spaceship.zsh" "$ZDOTDIR/spaceship.zsh"
 
 # Install spaceship vi
 rm -rf "$ZSH_CUSTOM/plugins/spaceship-vi-mode"
