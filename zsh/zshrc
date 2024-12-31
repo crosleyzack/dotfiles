@@ -27,18 +27,6 @@ plugins=( git spaceship-vi-mode zsh-syntax-highlighting zsh-autosuggestions z )
 # Load OhMyZsh
 source $ZSH/oh-my-zsh.sh
 
-# Use toolbox in prompt
-# source "$HOME/.zsh/spaceship-toolbx/toolbx-section.plugin.zsh"
-# spaceship add toolbx
-# SPACESHIP_RPROMPT_ORDER=(
-#     toolbx
-# )
-# Instead, show host so we know if we are in toolbox
-export SPACESHIP_HOST_SHOW=always
-# export SPACESHIP_DIR_SHOW=true
-# export SPACESHIP_DIR_TRUNC_REPO=true
-# export SPACESHIP_DIR_TRUNC=3
-
 # Aliases
 # add alias shortcut for proxychains
 alias pc="proxychains"
@@ -70,14 +58,6 @@ setopt APPEND_HISTORY
 
 # setup direnv, if isntalled
 command -v direnv >/dev/null || eval "$(direnv hook zsh)" 
-
-# Configure spaceship vi extension
-spaceship add --after line_sep vi_mode
-spaceship_vi_mode_enable
-export SPACESHIP_VI_MODE_SHOW=1
-# indicate when in normal mode, nothing in insert
-export SPACESHIP_VI_MODE_INSERT=
-export SPACESHIP_VI_MODE_NORMAL="⋂ "
 
 # Autocomplete kubectl
 [[ $commands[kubectl] ]] && source <(kubectl completion zsh)

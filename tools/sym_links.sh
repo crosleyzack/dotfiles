@@ -35,13 +35,18 @@ rm -f $HOME/.config/tmux/tmux.conf
 echo "Linking $HOME/.config/tmux/tmux.conf to $BASE_DIR/tmux/tmux.conf"
 ln -s $BASE_DIR/tmux/tmux.conf $HOME/.config/tmux/tmux.conf
 
-#Zsh
+# Zsh
 rm -f $HOME/.zshrc
 echo "Linking $HOME/.zshrc to $BASE_DIR/zsh/zshrc"
 ln -s $BASE_DIR/zsh/zshrc $HOME/.zshrc
 rm -f $HOME/.zshenv
 echo "Linking $HOME/.zshenv to $BASE_DIR/zsh/zshenv"
 ln -s $BASE_DIR/zsh/zshenv $HOME/.zshenv
+
+# Spaceship Prompt
+rm -f $HOME/.config/spaceship.zsh
+echo "Linking $HOME/.config/spaceship.zsh to $BASE_DIR/zsh/spaceship.zsh"
+ln -s $BASE_DIR/zsh/spaceship.zsh $HOME/.config/spaceship.zsh
 
 # Docker
 sudo rm -f /etc/docker/daemon.json
