@@ -58,16 +58,14 @@ ENV TESTCONTAINERS_RYUK_DISABLED=true
 # RUN git clone https://github.com/tmux-plugins/tmux-continuum $PLUGINS_DIR/continuum
 # RUN git clone https://github.com/erikw/tmux-powerline.git $PLUGINS_DIR/powerline
 
-RUN ln -fs /usr/bin/host-spawn /usr/bin/podman && \
-    ln -fs /usr/bin/host-spawn /usr/bin/docker && \
-    ln -fs /usr/bin/host-spawn /usr/local/bin/docker-compose && \
-    ln -fs /usr/bin/host-spawn /usr/bin/flatpak && \
-    ln -fs /usr/bin/host-spawn /usr/bin/rpm-ostree && \
-    ln -fs /usr/bin/host-spawn /usr/local/bin/distrobox && \
-    ln -fs /usr/bin/host-spawn /usr/bin/code && \
-    ln -fs /usr/bin/host-spawn /usr/local/bin/tilt && \
-    ln -fs /usr/bin/host-spawn /usr/bin/gcloud && \
-    ln -fs /usr/bin/host-spawn /usr/bin/xrandr && \
-    ln -fs /usr/bin/host-spawn /usr/bin/wmctrl && \
-    ln -fs /usr/bin/host-spawn /usr/bin/pkill && \
-    ln -fs /usr/bin/host-spawn /usr/bin/ps
+RUN ln -fs /usr/bin/host-spawn /usr/bin/podman
+RUN ln -fs /usr/bin/host-spawn /usr/bin/docker
+RUN ln -fs /usr/bin/host-spawn /usr/local/bin/docker-compose
+RUN ln -fs /usr/bin/host-spawn /usr/bin/flatpak
+RUN ln -fs /usr/bin/host-spawn /usr/bin/rpm-ostree
+RUN ln -fs /usr/bin/host-spawn /usr/local/bin/distrobox
+RUN ln -fs /usr/bin/host-spawn /usr/bin/code
+RUN ln -fs /usr/bin/host-spawn /usr/local/bin/tilt
+RUN ln -fs /usr/bin/host-spawn /usr/bin/gcloud
+RUN ln -fs /usr/bin/host-spawn /usr/bin/xrandr
+RUN ln -fs /usr/bin/host-spawn /usr/bin/wmctrl

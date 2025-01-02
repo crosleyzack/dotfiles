@@ -21,7 +21,7 @@ Tools that are not required but will only work if installed on host are
 
 ## Setting up
 ```
-podman build -t devs-image -f Dockerfile .
+podman build -t devs-image --label=toolbx -f Dockerfile .
 toolbox create --image devs-image devs
 toolbox enter devs
 ```
