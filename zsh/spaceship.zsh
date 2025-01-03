@@ -1,6 +1,3 @@
-# Change location
-SPACESHIP_CONFIG="$HOME/.config/zsh/spaceship.zsh"
-
 # For efficiency, limit prompt options
 SPACESHIP_PROMPT_ORDER=(
     dir            # Current directory section
@@ -30,5 +27,5 @@ spaceship add --after line_sep vi_mode
 spaceship_vi_mode_enable
 SPACESHIP_VI_MODE_SHOW=1
 # indicate when in normal mode, nothing in insert
-SPACESHIP_VI_MODE_INSERT=
+SPACESHIP_VI_MODE_INSERT=""
 SPACESHIP_VI_MODE_NORMAL="⋂ "

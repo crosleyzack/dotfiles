@@ -4,9 +4,6 @@ ZSH_THEME="spaceship"
 # Ensure mozilla firefox works on wayland
 export MOZ_ENABLE_WAYLAND=1
 
-# set XDG_CONFIG_HOME if not defined
-export XDG_CONFIG_HOME=${XDG_CONFIG_HOME-$HOME/.config}
-
 # Preferred editor for local and remote sessions
 export EDITOR='vim'
 
@@ -20,14 +17,6 @@ export RPS1="%{$reset_color%}"
 # Standard plugins can be found in $ZSH/plugins/
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 plugins=( git spaceship-vi-mode zsh-syntax-highlighting zsh-autosuggestions z )
-
-# Move ZSH history and config
-export ZDOTDIR=$XDG_CONFIG_HOME/zsh
-export HISTFILE=$ZOTDIR/.zsh_record
-
-# Load OhMyZsh
-export ZSH=$ZDOTDIR/.oh-my-zsh
-source $ZSH/oh-my-zsh.sh
 
 # Aliases
 # add alias shortcut for proxychains
@@ -78,3 +67,5 @@ if [ -f '/home/crosley/temp/google-cloud-sdk/completion.zsh.inc' ]; then . '/hom
 # Use atuin
 eval "$(atuin init zsh)"
 . "$HOME/.atuin/bin/env"
+
+source $ZSH/oh-my-zsh.sh
