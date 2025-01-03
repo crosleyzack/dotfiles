@@ -25,8 +25,8 @@ alias pc="proxychains"
 alias tmux-cleanup='for x in $(tmux list-sessions | grep -E -i "^[[:digit:]]" | awk -F ":" "{print \$1}"); do tmux kill-session -t $x; done'
 # setup toolbox helper
 alias devbox='toolbox run -c devs tmux'
-# NOTE: must be run in dotfiles/toolbox
-alias rebuild_devbox='podman stop -i devs && toolbox rm devs && toolbox rmi devs-image && podman build -t devs-image -f Dockerfile . && toolbox create --image devs-image devs && toolbox enter devs'
+# run kubectl on host. For some reason normal hostspawn isn't working...
+alias k='host-spawn kubectl'
 
 # Indicate authentication for kubectl
 export USE_GKE_GCLOUD_AUTH_PLUGIN=True
