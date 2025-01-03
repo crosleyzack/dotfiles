@@ -18,45 +18,10 @@ RUN go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.2
 RUN go install golang.org/x/tools/gopls@v0.16.2
 RUN go install github.com/cloudspannerecosystem/spanner-cli@latest
 
-# setup google cloud
-# RUN tee -a /etc/yum.repos.d/google-cloud-sdk.repo << EOM
-# [google-cloud-cli]
-# name=Google Cloud CLI
-# baseurl=https://packages.cloud.google.com/yum/repos/cloud-sdk-el9-x86_64
-# enabled=1
-# gpgcheck=1
-# repo_gpgcheck=0
-# gpgkey=https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
-# EOM
-# RUN dnf install libxcrypt-compat.x86_64
-# RUN dnf install google-cloud-cli google-cloud-cli-pubsub-emulator google-cloud-cli-spanner-emulator
-
-# setup kubernetes
-RUN cat <<EOF | sudo tee /etc/yum.repos.d/kubernetes.repo
-[kubernetes]
-name=Kubernetes
-baseurl=https://pkgs.k8s.io/core:/stable:/v1.31/rpm/
-enabled=1
-gpgcheck=1
-gpgkey=https://pkgs.k8s.io/core:/stable:/v1.31/rpm/repodata/repomd.xml.key
-EOF
-RUN yum install -y kubectl
-
-# install kubectx
-# git clone https://github.com/ahmetb/kubectx /usr/local/kubectx
-# ln -s /usr/local/kubectx/kubectx /usr/local/bin/kubectx
-# ln -s /usr/local/kubectx/kubens /usr/local/bin/kubens
-
 # turn off ryuk for test containers
 ENV TESTCONTAINERS_RYUK_DISABLED=true
 
-# Setup tmux
-# RUN PLUGINS_DIR="$HOME/.config/tmux/plugins"
-# RUN rm -rf $PLUGINS_DIR && mkdir -p $PLUGINS_DIR
-# RUN git clone https://github.com/tmux-plugins/tpm $PLUGINS_DIR/tpm
-# RUN git clone https://github.com/tmux-plugins/tmux-resurrect $PLUGINS_DIR/resurrect
-# RUN git clone https://github.com/tmux-plugins/tmux-continuum $PLUGINS_DIR/continuum
-# RUN git clone https://github.com/erikw/tmux-powerline.git $PLUGINS_DIR/powerline
+ENV OUTSIDE_DOCKER_HOST="172.17.0.1"
 
 RUN ln -fs /usr/bin/host-spawn /usr/bin/podman
 RUN ln -fs /usr/bin/host-spawn /usr/bin/docker
@@ -69,3 +34,4 @@ RUN ln -fs /usr/bin/host-spawn /usr/local/bin/tilt
 RUN ln -fs /usr/bin/host-spawn /usr/bin/gcloud
 RUN ln -fs /usr/bin/host-spawn /usr/bin/xrandr
 RUN ln -fs /usr/bin/host-spawn /usr/bin/wmctrl
+RUN ln -fs /usr/bin/host-spawn /usr/bin/kubectl
