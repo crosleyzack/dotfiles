@@ -1,10 +1,11 @@
 # For use with toolbox
 # toolbox create --image Dockerfile devs
 
-FROM registry.fedoraproject.org/fedora-toolbox:40
+FROM registry.fedoraproject.org/fedora-toolbox:41
 
 # Install packages in file
-RUN yum -y install golang protobuf protobuf-devel protobuf-lite gcc gcc-c++ gdb kernel-devel helm direnv vim zsh tmux jq yq coreutils cmake gzip gettext git git-lfs ca-certificates diffutils unar telnet whois tor proxychains-ng net-tools golang-github-cloudflare-cfssl netcat host-spawn man-pages man-db man stow pgcli nmap telnet redis sqlite-devel texlive-scheme-basic ncurses-devel openssl-devel net-tools
+RUN yum -y install golang protobuf protobuf-devel protobuf-lite gcc gcc-c++ gdb kernel-devel helm direnv vim zsh tmux jq yq coreutils cmake gzip gettext git git-lfs ca-certificates diffutils unar telnet whois tor proxychains-ng net-tools golang-github-cloudflare-cfssl netcat host-spawn man-pages man-db man stow pgcli nmap telnet redis sqlite-devel ncurses-devel openssl-devel net-tools
+# WARN: even basic tex adds 400 packages, not worth having
 
 # setup additional tools
 # RUN curl -fsSL https://raw.githubusercontent.com/tilt-dev/tilt/master/scripts/install.sh | bash
@@ -23,6 +24,8 @@ ENV TESTCONTAINERS_RYUK_DISABLED=true
 
 ENV OUTSIDE_DOCKER_HOST="172.17.0.1"
 
+# WARN: Kubectl causes toolbox to hang for some reason
+# RUN ln -fs /usr/bin/host-spawn /usr/bin/kubectl
 RUN ln -fs /usr/bin/host-spawn /usr/bin/podman
 RUN ln -fs /usr/bin/host-spawn /usr/bin/docker
 RUN ln -fs /usr/bin/host-spawn /usr/local/bin/docker-compose
@@ -34,4 +37,3 @@ RUN ln -fs /usr/bin/host-spawn /usr/local/bin/tilt
 RUN ln -fs /usr/bin/host-spawn /usr/bin/gcloud
 RUN ln -fs /usr/bin/host-spawn /usr/bin/xrandr
 RUN ln -fs /usr/bin/host-spawn /usr/bin/wmctrl
-RUN ln -fs /usr/bin/host-spawn /usr/bin/kubectl
