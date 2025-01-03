@@ -7,10 +7,14 @@ Uses [Toolbx](https://containertoolbx.org) to setup a development container
 Requires host to have:
 
 - podman
-- docker
+- toolbox
 
 Tools that are not required but will only work if installed on host are
 
+- docker
+- helm
+- kubectl
+- cloud-sql-proxy
 - flatpak
 - distrobox
 - code
