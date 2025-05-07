@@ -16,17 +16,7 @@ if test -f "$ENV_FILE"; then
     set -a; source $ENV_FILE; set +a
 fi 
 
-# setup golang locations
-export GO_PATH="$HOME/go"
-export GOPATH="$HOME/go"
-if [ -d $HOME/go ]; then
-    # add to path
-    export PATH="$PATH:$GOPATH/bin"
-fi
-if [ -d /usr/local/go/bin ]; then
-    # add to path
-    export PATH="$PATH:/usr/local/go/bin"
-fi
+export PATH=$(go env GOPATH)/bin:$PATH 
 
 # if gcloud is defined, set access token env variable
 # if [ -n $(command -v gcloud) ]; then

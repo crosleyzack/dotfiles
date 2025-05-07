@@ -181,12 +181,6 @@
   "vim.vimrc.enable": true,
   "vim.vimrc.path": "$HOME/.vimrc",
   "vim.leader": ",",
-  "dev.containers.defaultExtensionsIfInstalledLocally": [
-    "GitHub.copilot",
-    "GitHub.copilot-chat",
-    "GitHub.vscode-pull-request-github",
-    "vscodevim.vim"
-  ],
   "dev.containers.repositoryConfigurationPaths": [
     "$HOME/repos"
   ],
@@ -195,4 +189,12 @@
   "task": {
     "path": "/usr/local/bin/task",
   },
+  "go.formatTool": "gofmt",
+  "go.inlayHints.constantValues": true,
+  "remote.defaultExtensionsIfInstalledLocally": [
+    "GitHub.copilot",
+    "GitHub.copilot-chat",
+    "GitHub.vscode-pull-request-github",
+    "vscodevim.vim"
+  ],
 }
