@@ -1,10 +1,10 @@
 # alt_send_esc = true
-live_config_reload = true
+general.live_config_reload = true
 
 #[env]
 #FOO = "10"
 
-[shell]
+[terminal.shell]
 program = "/usr/bin/zsh"
 
 [window]
@@ -364,8 +364,8 @@ chars = "\u001B[21~"
 key = "F10"
 
 [[keyboard.bindings]]
-chars = "\u001B[23~"
 key = "F11"
+action = "ToggleFullscreen"
 
 [[keyboard.bindings]]
 chars = "\u001B[24~"
