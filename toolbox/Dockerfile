@@ -11,7 +11,7 @@ RUN yum -y install golang protobuf protobuf-devel protobuf-lite gcc gcc-c++ gdb 
 RUN curl --proto '=https' --tlsv1.2 -LsSf https://setup.atuin.sh | sh
 
 # Install go packages
-RUN go install github.com/go-task/task/v3/cmd/task@latest
+RUN go install github.com/go-task/task/v3/cmd/task@v3.35
 RUN go install github.com/wagoodman/dive@latest
 RUN go install github.com/fullstorydev/grpcurl/cmd/grpcurl@latest
 RUN go install google.golang.org/protobuf/cmd/protoc-gen-go@v1.20
@@ -19,6 +19,9 @@ RUN go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.2
 RUN go install golang.org/x/tools/gopls@v0.16.2
 RUN go install github.com/cloudspannerecosystem/spanner-cli@latest
 RUN go install github.com/tilt-dev/ctlptl/cmd/ctlptl@latest
+RUN go install github.com/bufbuild/buf/cmd/buf@v1.49.0
+RUN go install github.com/charmbracelet/glow@latest
+RUN go install github.com/charmbracelet/freeze@latest
 # TODO do these work in container?
 # RUN go install sigs.k8s.io/kind@latest
 
@@ -42,6 +45,7 @@ RUN ln -fs /usr/bin/host-spawn /usr/local/bin/tilt
 RUN ln -fs /usr/bin/host-spawn /usr/local/bin/gcloud
 RUN ln -fs /usr/bin/host-spawn /usr/local/bin/xrandr
 RUN ln -fs /usr/bin/host-spawn /usr/local/bin/wmctrl
+RUN ln -fs /usr/bin/host-spawn /usr/local/bin/gsettings
 
 # install kubectx - these are just bash scripts so they can be installed in container
 # RUN git clone https://github.com/ahmetb/kubectx /usr/local/kubectx
