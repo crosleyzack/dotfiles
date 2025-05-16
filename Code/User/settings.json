@@ -1,6 +1,8 @@
 {
+  "dev.containers.dockerPath": "/var/home/crosleyzack/.local/bin/podman-host",
+  "dev.containers.dockerSocketPath": "/run/user/1000/podman/podman.sock",
   "extensions.experimental.affinity": {
-    "vscodevim.vim": 1,
+    "vscodevim.vim": 1
     // "asvetliakov.vscode-neovim": 1
   },
   "search.collapseResults": "alwaysCollapse",
@@ -181,20 +183,6 @@
   "vim.vimrc.enable": true,
   "vim.vimrc.path": "$HOME/.vimrc",
   "vim.leader": ",",
-  "dev.containers.repositoryConfigurationPaths": [
-    "$HOME/repos"
-  ],
-  "dev.containers.experimentalLockfile": true,
-  "dev.containers.forwardWSLServices": false,
-  "task": {
-    "path": "/usr/local/bin/task",
-  },
   "go.formatTool": "gofmt",
   "go.inlayHints.constantValues": true,
-  "remote.defaultExtensionsIfInstalledLocally": [
-    "GitHub.copilot",
-    "GitHub.copilot-chat",
-    "GitHub.vscode-pull-request-github",
-    "vscodevim.vim"
-  ],
 }
