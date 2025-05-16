@@ -10,9 +10,12 @@ declare -a packages=(
     "org.signal.Signal"
     "com.bitwarden.desktop"
     "md.obsidian.Obsidian"
+    "com.visualstudio.code"
+    "app.zen_browser.zen"
+    "org.mozilla.firefox"
 )
 # com.usebruno.Bruno
-# com.visualstudio.code
+#
 # io.neovim.nvim
 # org.mozilla.firefox
 # org.chromium.Chromium
