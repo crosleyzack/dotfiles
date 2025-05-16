@@ -1,14 +1,5 @@
 #!/bin/bash
-# Runs even if Zsh isn't already installed
-
-# Install zsh, if it isn't already.
-source ${BASH_SOURCE%/*}/../tools/install_tools.sh
-is_installed zsh
-if [ "false" = "$INSTALLED" ]
-then
-    # ansible localhost -m ansible.builtin.package -a "name=zsh state=latest"
-    sudo apt install zsh
-fi
+# NOTE: requires ZSH be already installed
 
 # set XDG_CONFIG_HOME if not defined
 export XDG_CONFIG_HOME=${XDG_CONFIG_HOME-$HOME/.config}

@@ -55,27 +55,3 @@ typeset -U PATH path
 jdiff() {
     diff <(jq --sort-keys <<< $1) <(jq --sort-keys <<< $2)
 }
-
-host_data() {
-    HOST=$1
-    TIME=$2
-    # PORT=-1
-    # if [[ $string == *":"* ]]; then
-    #     split=($(echo $HOST | tr ":" "\n"))
-    #     len=${#split[@]}
-    #     HOST=${split[@]:0:(len-1)}
-    #     local IFS="$1"
-    #     shift
-    #     HOST=$(echo "$*")
-    #     PORT=${#split[@]:(len-1)}
-    # fi
-    cmd="censys view $HOST"
-    if [[ -n "$TIME" ]]; then
-        cmd="$cmd --at-time $TIME"
-    fi
-    out=$(pyenv exec $cmd)
-    # if [[ $PORT -ge 0 ]]; then
-    #     out=$(echo $OUT | jq ".services.[] | select(.port == $PORT)")
-    # fi
-    echo $out
-}
