@@ -27,8 +27,10 @@ RUN ln -fs /usr/bin/host-spawn /usr/sbin/podman
 RUN ln -fs /usr/bin/host-spawn /usr/sbin/flatpak
 RUN ln -fs /usr/bin/host-spawn /usr/sbin/rpm-ostree
 RUN ln -fs /usr/bin/host-spawn /usr/sbin/gsettings
-# RUN ln -fs /usr/bin/host-spawn /usr/local/bin/xrandr
-# RUN ln -fs /usr/bin/host-spawn /usr/local/bin/wmctrl
+RUN ln -fs /usr/bin/host-spawn /usr/local/bin/xrandr
+RUN ln -fs /usr/bin/host-spawn /usr/local/bin/wmctrl
+RUN ln -fs /usr/bin/host-spawn /usr/local/bin/pgrep
+RUN ln -fs /usr/bin/host-spawn /usr/local/bin/dconf
 # RUN ln -fs /usr/bin/host-spawn /usr/local/bin/docker
 # RUN ln -fs /usr/bin/host-spawn /usr/local/bin/kubectl
 # RUN ln -fs /usr/bin/host-spawn /usr/local/bin/helm
@@ -42,11 +44,14 @@ RUN ln -fs /usr/bin/host-spawn /usr/sbin/gsettings
 # setup atuin for tracking history
 RUN curl --proto '=https' --tlsv1.2 -LsSf https://setup.atuin.sh | sh
 
+# proxychains
+# RUN rm -rf /usr/local/sbin/proxychains
+# RUN git clone https://github.com/haad/proxychains.git $HOME/.proxychains
+# RUN $HOME/.proxychains/configure && make -C $HOME/.proxychains/configure && make -C $HOME/.proxychains/configure install
+
 # oh-my-zsh
-# mkdir -P $HOME/.ohmyzsh
-# wget https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh -P $HOME/.ohmyzsh
-# bash $HOME/.ohmyzsh/install.sh
 RUN bash -c "$(curl -fsSL https://install.ohmyz.sh/)"
 
 # setup pyenv
 RUN curl -fsSL https://pyenv.run | bash
+RUN curl -sSL https://install.python-poetry.org | python3 -
