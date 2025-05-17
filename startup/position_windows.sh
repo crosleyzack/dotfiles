@@ -11,6 +11,8 @@ EXTERNAL="XWAYLAND0"
 # Get desktop size. See https://askubuntu.com/questions/584688/how-can-i-get-the-monitor-resolution-using-the-command-line
 X=$(xrandr --current | grep '*' | uniq | awk '{print $1}' | cut -d 'x' -f1)
 Y=$(xrandr --current | grep '*' | uniq | awk '{print $1}' | cut -d 'x' -f2)
+echo "position_windows.sh: screen size $X x $Y"
+logger "position_windows.sh: screen size $X x $Y"
 
 # enum options for layout
 VERT_MAXED=1
@@ -39,8 +41,8 @@ function position {
 	echo "win id = " $WINID
 	# get workspace number to move to.
 	WORKSPACE=$(($2+INDEX))
-	echo "moving $1 to workspace $WORKSPACE"
-	logger "moving $1 to workspace $WORKSPACE"
+	echo "position_windows.sh: moving $1 to workspace $WORKSPACE"
+	logger "position_windows.sh: moving $1 to workspace $WORKSPACE"
 	wmctrl -i -r $WINID -t $WORKSPACE
 	# increment index if applicable.
 	if [ "$4" = true ]
@@ -52,18 +54,18 @@ function position {
 	# change window size based on arguments
 	#   if 3, make full screen
 	if [[ $3 -eq $FULLSCREEN ]]; then
-            echo "changing $1 to fullscreen: (wmctrl -i -r $WINID -b toggle,fullscreen)"
-            logger "changing $1 to fullscreen: (wmctrl -i -r $WINID -b toggle,fullscreen)"
+            echo "position_windows.sh: changing $1 to fullscreen: (wmctrl -i -r $WINID -b toggle,fullscreen)"
+            logger "position_windows.sh: changing $1 to fullscreen: (wmctrl -i -r $WINID -b toggle,fullscreen)"
 	    wmctrl -i -r $WINID -b toggle,fullscreen
 	elif [[ $3 -eq $VERT_HORZ_MAXED ]]; then
-            echo "changing $1 to maximized horz (wmctrl -i -r $WINID -e 0,0,0,$X,$Y)"
-            logger "changing $1 to maximized horz (wmctrl -i -r $WINID -e 0,0,0,$X,$Y)"
+            echo "position_windows.sh: changing $1 to maximized horz (wmctrl -i -r $WINID -e 0,0,0,$X,$Y)"
+            logger "position_windows.sh: changing $1 to maximized horz (wmctrl -i -r $WINID -e 0,0,0,$X,$Y)"
             # The -e option expects a list of comma separated integers: "gravity,X,Y,width,height"
 	    wmctrl -i -r $WINID -e 0,0,0,$X,$Y
 	elif [[ $3 -eq $VERT_MAXED ]]; then
 	    # if 1 make vertically maxed
-            echo "changing $1 to maximized vert (wmctrl -i -r $WINID -e $6,0,$5,$X,$Y)"
-            logger "changing $1 to maximized vert (wmctrl -i -r $WINID -e $6,0,$5,$X,$Y)"
+            echo "position_windows.sh: changing $1 to maximized vert (wmctrl -i -r $WINID -e $6,0,$5,$X,$Y)"
+            logger "position_windows.sh: changing $1 to maximized vert (wmctrl -i -r $WINID -e $6,0,$5,$X,$Y)"
 	    wmctrl -i -r $WINID -e 0,$6,0,$5,$Y
 	fi
 	sleep 0.5s
@@ -88,8 +90,8 @@ HALF=$(( $X / 2 ))
 #        program desktop_id
 #                  window_size      array_windows
 #                                         xSize ySize
-position zoom    7 $VERT_MAXED      false $HALF 0 &
-position docker  7 $VERT_MAXED      false $HALF $HALF &
+# position zoom    7 $VERT_MAXED      false $HALF 0 &
+# position docker  7 $VERT_MAXED      false $HALF $HALF &
 position podman  7 $VERT_MAXED      false $HALF 0 &
 position firefox 8 $VERT_HORZ_MAXED false $X    $Y &
 position signal  9 $VERT_MAXED      false $HALF 0 &
