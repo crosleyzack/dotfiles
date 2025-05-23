@@ -24,24 +24,5 @@ if [ -d ~/.bashrc.d ]; then
 fi
 unset rc
 
-# Make sure aliases don't run inside toolbx container
-if [[ -f /run/.toolboxenv ]]; then
-    toolbx_exports=(
-        podman
-        flatpak
-        gsettings
-        xrandr
-        wmctrl
-        pgrep
-        dconf
-        rpm-ostree
-    )
-
-    for cmd in "${toolbx_exports[@]}"; do
-        alias "${cmd}"="flatpak-spawn --host ${cmd} $*"
-    done
-    unset cmd toolbx_exports
-fi
-
 export HISTFILE="~/.bash_record"
 export MOZ_ENABLE_WAYLAND=1

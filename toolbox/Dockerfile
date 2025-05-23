@@ -17,6 +17,7 @@ RUN go install github.com/cloudspannerecosystem/spanner-cli@v0.11
 RUN go install github.com/tilt-dev/ctlptl/cmd/ctlptl@v0.8.39
 RUN go install github.com/bufbuild/buf/cmd/buf@v1.54
 RUN go install sigs.k8s.io/kind@latest
+RUN go install github.com/1player/host-spawn@latest
 RUN go install github.com/crosleyzack/xplr@latest
 # RUN go install github.com/charmbracelet/glow@v1.5
 
@@ -26,6 +27,15 @@ ENV OUTSIDE_DOCKER_HOST="172.17.0.1"
 
 # setup atuin for tracking history
 RUN curl --proto '=https' --tlsv1.2 -LsSf https://setup.atuin.sh | sh
+
+RUN ln -fs $(which host-spawn) /usr/sbin/podman
+RUN ln -fs $(which host-spawn) /usr/sbin/flatpak
+RUN ln -fs $(which host-spawn) /usr/sbin/rpm-ostree
+RUN ln -fs $(which host-spawn) /usr/sbin/gsettings
+RUN ln -fs $(which host-spawn) /usr/local/bin/xrandr
+RUN ln -fs $(which host-spawn) /usr/local/bin/wmctrl
+RUN ln -fs $(which host-spawn) /usr/local/bin/pgrep
+RUN ln -fs $(which host-spawn) /usr/local/bin/dconf
 
 # proxychains
 # RUN rm -rf /usr/local/sbin/proxychains
