@@ -11,7 +11,6 @@
     "key": "ctrl+/",
     "command": "editor.action.commentLine",
     "when": "editorTextFocus && !editorReadonly && editorHasSelection"
-    // Use line comment for selection groups
   },
   {
     "key": "ctrl+w ;",
@@ -187,14 +186,6 @@
     "command": "editor.action.inlineSuggest.commit",
     "when": "textInputFocus && inlineSuggestionHasIndentationLessThanTabSize && inlineSuggestionVisible && !editorTabMovesFocus"
   },
-  // {"key": "ctrl+w x", "command": "swap with next group" },
-  // {"key": "ctrl+w n", "command": "New empty window?" },
-  // { "key": "ctrl+w shift+k", "command": "current window to top full width" },
-  // { "key": "ctrl+w shift+j", "command": "current window to bottom full width" },
-  // { "key": "ctrl+w shift+h", "command": "current window to left full height" },
-  // { "key": "ctrl+w shift+l", "command": "current window to right full height" },
-  // { "key": "ctrl+w _", "command": "maximize current window height" },
-  // { "key": "ctrl+w |", "command": "maximize current window width" },
   {
     "key": "ctrl+alt+down",
     "command": "-workbench.action.files.newUntitledFile"
@@ -232,5 +223,13 @@
   {
     "key": "ctrl+pageup",
     "command": "-workbench.action.previousEditor"
-  },
+  }
+  // {"key": "ctrl+w x", "command": "swap with next group" },
+  // {"key": "ctrl+w n", "command": "New empty window?" },
+  // { "key": "ctrl+w shift+k", "command": "current window to top full width" },
+  // { "key": "ctrl+w shift+j", "command": "current window to bottom full width" },
+  // { "key": "ctrl+w shift+h", "command": "current window to left full height" },
+  // { "key": "ctrl+w shift+l", "command": "current window to right full height" },
+  // { "key": "ctrl+w _", "command": "maximize current window height" },
+  // { "key": "ctrl+w |", "command": "maximize current window width" },
 ]

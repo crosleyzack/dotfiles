@@ -1,9 +1,9 @@
 {
   "dev.containers.dockerPath": "/var/home/crosleyzack/.local/bin/podman-host",
   "dev.containers.dockerSocketPath": "/run/user/1000/podman/podman.sock",
+  "dev.containers.dockerComposePath": "podman compose",
   "extensions.experimental.affinity": {
     "vscodevim.vim": 1
-    // "asvetliakov.vscode-neovim": 1
   },
   "search.collapseResults": "alwaysCollapse",
   // Font settings
@@ -184,5 +184,5 @@
   "vim.vimrc.path": "$HOME/.vimrc",
   "vim.leader": ",",
   "go.formatTool": "gofmt",
-  "go.inlayHints.constantValues": true,
+  "go.inlayHints.constantValues": true
 }
