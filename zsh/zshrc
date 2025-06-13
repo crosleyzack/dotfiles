@@ -73,4 +73,6 @@ if [ -d $HOME/.atuin/bin ]; then
     . "$HOME/.atuin/bin/env"
 fi
 
+PATH="$PATH:/usr/sbin:$HOME/bin:/usr/local/sbin"
+
 source $ZSH/oh-my-zsh.sh
