@@ -9,6 +9,7 @@ export ZSH_CUSTOM=$ZSH/custom
 # export SPACESHIP_CONFIG="$ZSH_CUSTOM/themes/spaceship-prompt/spaceship.zsh"
 
 export OUTSIDE_DOCKER_HOST="172.17.0.1"
+export DOCKER_HOST="unix://$XDG_RUNTIME_DIR/podman/podman.sock"
 
 # if a .env file exists, source it
 ENV_FILE=$HOME/.env
