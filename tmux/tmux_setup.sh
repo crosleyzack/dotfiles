@@ -10,3 +10,5 @@ git clone https://github.com/erikw/tmux-powerline.git $PLUGINS_DIR/powerline
 git clone git@github.com:rickstaa/tmux-notify.git $PLUGINS_DIR/notify
 git clone git@github.com:MunifTanjim/tmux-mode-indicator.git $PLUGINS_DIR/indicator
 git clone git@github.com:tmux-plugins/tmux-yank.git $PLUGINS_DIR/yank
+
+echo "Plugins retrieved. Make sure to <PREFIX>+I in tmux for install"

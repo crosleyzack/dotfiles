@@ -9,19 +9,25 @@ tmux new-session -d
 FILE_PATH=$(realpath $BASH_SOURCE)
 DIR=$(dirname $FILE_PATH)
 
-PATH="$PATH:/usr/local/bin:/bin:/usr/bin:$HOME/.nix-profile/bin/"
+# PATH="$PATH:/usr/local/bin:/bin:/usr/bin:$HOME/.nix-profile/bin/"
 
-flatpak run app.zen_browser.zen > /dev/null &
-flatpak run com.spotify.Client > /dev/null &
-flatpak run org.signal.Signal > /dev/null &
-flatpak run com.visualstudio.code > /dev/null &
+# "flatpak run app.zen_browser.zen"
+# "flatpak run com.spotify.Client"
+# "flatpak run org.signal.Signal"
+# "flatpak run com.visualstudio.code"
+# "ptyxis -s -x '"toolbox run -c devs tmux\""
+declare -a progs=("firefox" "spotify" "slack" "code" "bitwarden" "gnome-terminal -e 'tmux'")
+printf '%s\n' "${progs[@]}"\
 
-# run terminal in toolbox
-# alacritty -e toolbox run -c devs tmux
-ptyxis -s -x "toolbox run -c devs tmux"
+## now loop through the above array
+for i in "${progs[@]}"
+do
+    echo "executing $i"
+    exec $i > /dev/null &
+done
 
 echo "Programs launched, sleeping"
-Sleep 7
+sleep 4
 echo "Sleep done, repositioning windows via $DIR/position_windows.sh"
 
 exec $DIR/position_windows.sh

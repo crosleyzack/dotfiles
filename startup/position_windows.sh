@@ -92,9 +92,10 @@ HALF=$(( $X / 2 ))
 #                                         xSize ySize
 # position zoom    7 $VERT_MAXED      false $HALF 0 &
 # position docker  7 $VERT_MAXED      false $HALF $HALF &
-position podman  7 $VERT_MAXED      false $HALF 0 &
-position firefox 8 $VERT_HORZ_MAXED false $X    $Y &
-position signal  9 $VERT_MAXED      false $HALF 0 &
-position spotify 9 $VERT_MAXED      false $HALF 0 &
-position slack   9 $VERT_MAXED      false $HALF $HALF &
-position code    1 $FULLSCREEN      true  $X    $Y &
+# position podman  7 $VERT_MAXED      false $HALF 0 &
+position bitwarden 7 $VERT_HORZ_MAXED false $X    $Y &
+position firefox   8 $VERT_HORZ_MAXED false $X    $Y &
+# position signal    9 $VERT_MAXED      false $HALF 0 &
+position spotify   9 $VERT_MAXED      false $HALF 0 &
+position slack     9 $VERT_MAXED      false $HALF $HALF &
+position code      1 $FULLSCREEN      true  $X    $Y &
