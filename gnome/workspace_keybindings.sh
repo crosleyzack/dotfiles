@@ -10,7 +10,7 @@ dconf write /org/gnome/mutter/dynamic-workspaces false
 dconf write /org/gnome/desktop/wm/preferences/num-workspaces 10
 
 # remove existing bindings
-declare -a keys=("<Super>1" "<Super>2" "<Super>3" "<Super>4" "<Super>5" "<Super>6" "<Super>7" "<Super>8" "<Super>9" "<Super>0" "<Super><Shift>1" "<Super><Shift>2" "<Super><Shift>3" "<Super><Shift>4" "<Super><Shift>5" "<Super><Shift>6" "<Super><Shift>7" "<Super><Shift>8" "<Super><Shift>9" "<Super><Shift>0" "<Super>Tab" "<Super><Shift>Tab" "<Super>a" "<Super><Shift>a" "<Super>l" "<Super>k" "<Super>j" "<Super>h" "<Super>s" "<Super>v" "<Super>Up" "<Super>Down" "<Super>z" "<Super>Return")
+declare -a keys=("<Super>1" "<Super>2" "<Super>3" "<Super>4" "<Super>5" "<Super>6" "<Super>7" "<Super>8" "<Super>9" "<Super>0" "<Super><Shift>1" "<Super><Shift>2" "<Super><Shift>3" "<Super><Shift>4" "<Super><Shift>5" "<Super><Shift>6" "<Super><Shift>7" "<Super><Shift>8" "<Super><Shift>9" "<Super><Shift>0" "<Shift><Super>1" "<Shift><Super>2" "<Shift><Super>3" "<Shift><Super>4" "<Shift><Super>5" "<Shift><Super>6" "<Shift><Super>7" "<Shift><Super>8" "<Shift><Super>9" "<Shift><Super>0""<Super>Tab" "<Super><Shift>Tab" "<Super>a" "<Super><Shift>a" "<Super>l" "<Super>k" "<Super>j" "<Super>h" "<Super>s" "<Super>v" "<Super>Up" "<Super>Down" "<Super>z" "<Super>Return")
 # printf '%s\n' "${keys[@]}"
 ## remove all keybdings
 for k in "${keys[@]}"
@@ -77,10 +77,6 @@ gsettings set org.gnome.desktop.wm.keybindings maximize "['<Super>Up']"
 gsettings set org.gnome.desktop.wm.keybindings unmaximize "['<Super>Down']"
 gsettings set org.gnome.desktop.wm.keybindings toggle-fullscreen "['<Super>f']"
 
-# Unbind move monitor
-echo "Removing unnecessary bindings"
-echo "Set other keybindings"
-
 # org.gnome.desktop.default-applications.terminal exec 'x-terminal-emulator'
 # org.gnome.desktop.default-applications.terminal exec-arg '-e'
 # TODO Set super + enter to open terminal.
@@ -92,11 +88,3 @@ gsettings set org.gnome.settings-daemon.plugins.media-keys terminal "['<Super>Re
 # gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom/ name terminal
 # gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom/ command $TERMINAL
 # gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom/ binding '<Super>Return'
-
-echo "Set terminal open keybindings"
-
-# Enable fractional scaling
-gsettings set org.gnome.mutter experimental-features "['scale-monitor-framebuffer']"
-# gsettings set org.gnome.mutter experimental-features "['x11-randr-fractional-scaling']"
-
-echo "Set fractional scaling"
