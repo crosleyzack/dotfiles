@@ -35,10 +35,10 @@
   },
   "go.useLanguageServer": true,
   "go.lintTool": "golint",
+  "go.lintOnSave": "workspace",
   "go.delveConfig": {},
   "go.toolsManagement.autoUpdate": true,
   "go.testTimeout": "200s",
-  
   // Debug settings
   "debug.openDebug": "openOnSessionStart",
   // language settings
@@ -102,7 +102,9 @@
     "typescript": true,
     "python": true
   },
-  "github.copilot.advanced": {},
+  "github.copilot.advanced": {
+    "authPermissions": "minimal"
+  },
   // "vs-kubernetes": {
   //   "vs-kubernetes.crd-code-completion": "disabled",
   //   "vscode-kubernetes.helm-path.linux": "$HOME/.local/state/vs-kubernetes/tools/helm/linux-amd64/helm"
@@ -153,7 +155,6 @@
     "**/node_modules": true,
     "venv": true,
     "*.sublime-*": true,
-    "env*": true,
     "**/tmp/**": true,
     "**/node_modules/**": true,
     "**/.git/objects/**": true,
@@ -184,5 +185,6 @@
   "vim.vimrc.path": "$HOME/.vimrc",
   "vim.leader": ",",
   "go.formatTool": "gofmt",
-  "go.inlayHints.constantValues": true
+  "go.inlayHints.constantValues": true,
+  "dev.containers.copyGitConfig": false
 }
