@@ -14,6 +14,11 @@ fi
 
 BASE_DIR=$(realpath $1)
 
+# Bash
+rm -f ~/.bashrc
+echo "Linking $HOME/.bashrc to $BASE_DIR/bash/.bashrc"
+ln -s $BASE_DIR/bash/.bashrc $HOME/.bashrc
+
 # Alacritty
 mkdir -p $CONFIG/alacritty
 rm -f $CONFIG/alacritty/alacritty.toml
