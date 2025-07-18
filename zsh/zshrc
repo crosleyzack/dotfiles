@@ -56,6 +56,8 @@ command -v direnv >/dev/null || eval "$(direnv hook zsh)"
 # Autocomplete kubectl
 [[ $commands[kubectl] ]] && source <(kubectl completion zsh)
 
+[[ "$TERM_PROGRAM" == "vscode" ]] && . "$(code --locate-shell-integration-path zsh)"
+
 # Setup nix
 [ -f "/etc/profile.d/nix.sh" ] && source "/etc/profile.d/nix.sh"
 [ -f "$HOME/.nix-profile/etc/profile.d/nix.sh" ] && source "$HOME/.nix-profile/etc/profile.d/nix.sh"
@@ -76,3 +78,6 @@ fi
 PATH="$PATH:/usr/sbin:$HOME/bin:/usr/local/sbin"
 
 source $ZSH/oh-my-zsh.sh
+
+autoload -U +X bashcompinit && bashcompinit
+complete -o nospace -C /usr/bin/terraform terraform

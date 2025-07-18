@@ -25,9 +25,9 @@ export PATH=$(go env GOPATH)/bin:$PATH
 # fi
 
 # setup npm location
-if [ -d $HOME/npm ]; then
+if [ -d $HOME/node ]; then
     # add to path
-    export PATH="$PATH:$HOME/.npm/bin"
+    export PATH="$PATH:$HOME/node/node_modules/.bin"
 fi
 
 # Add cargo if it exists

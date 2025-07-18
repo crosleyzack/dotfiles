@@ -10,7 +10,7 @@ dconf write /org/gnome/mutter/dynamic-workspaces false
 dconf write /org/gnome/desktop/wm/preferences/num-workspaces 10
 
 # remove existing bindings
-declare -a keys=("<Super>1" "<Super>2" "<Super>3" "<Super>4" "<Super>5" "<Super>6" "<Super>7" "<Super>8" "<Super>9" "<Super>0" "<Super><Shift>1" "<Super><Shift>2" "<Super><Shift>3" "<Super><Shift>4" "<Super><Shift>5" "<Super><Shift>6" "<Super><Shift>7" "<Super><Shift>8" "<Super><Shift>9" "<Super><Shift>0" "<Shift><Super>1" "<Shift><Super>2" "<Shift><Super>3" "<Shift><Super>4" "<Shift><Super>5" "<Shift><Super>6" "<Shift><Super>7" "<Shift><Super>8" "<Shift><Super>9" "<Shift><Super>0""<Super>Tab" "<Super><Shift>Tab" "<Super>a" "<Super><Shift>a" "<Super>l" "<Super>k" "<Super>j" "<Super>h" "<Super>s" "<Super>v" "<Super>Up" "<Super>Down" "<Super>z" "<Super>Return")
+declare -a keys=("<Super>1" "<Super>2" "<Super>3" "<Super>4" "<Super>5" "<Super>6" "<Super>7" "<Super>8" "<Super>9" "<Super>0" "<Super><Shift>1" "<Super><Shift>2" "<Super><Shift>3" "<Super><Shift>4" "<Super><Shift>5" "<Super><Shift>6" "<Super><Shift>7" "<Super><Shift>8" "<Super><Shift>9" "<Super><Shift>0" "<Shift><Super>1" "<Shift><Super>2" "<Shift><Super>3" "<Shift><Super>4" "<Shift><Super>5" "<Shift><Super>6" "<Shift><Super>7" "<Shift><Super>8" "<Shift><Super>9" "<Shift><Super>0" "<Super>Tab" "<Super><Shift>Tab" "<Super>a" "<Super><Shift>a" "<Super>l" "<Super>k" "<Super>j" "<Super>h" "<Super>s" "<Super>v" "<Super>Up" "<Super>Down" "<Super>z" "<Super>Return")
 # printf '%s\n' "${keys[@]}"
 ## remove all keybdings
 for k in "${keys[@]}"
