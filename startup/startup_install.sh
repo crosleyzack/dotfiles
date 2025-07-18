@@ -10,19 +10,23 @@ if which rpm-ostree > /dev/null; then
 fi
 
 # Create startup.desktop
-DESKTOP_FILE="$DIR_PATH/startup.desktop"
+DESKTOP_FILE="startup.desktop"
 rm -f $DESKTOP_FILE
 echo "[Desktop Entry]
 Type=Application
 Name=StartupScript
 Exec=$DIR_PATH/startup_program.sh
-OnlyShowIn=GNOME;" > $DESKTOP_FILE
+OnlyShowIn=GNOME;" > "$DIR_PATH/$DESKTOP_FILE"
 
 # link to generated startup script.
-mkdir -p $HOME/.config/autostart
-rm -f $HOME/.config/autostart/startup.desktop
-ln -s $DESKTOP_FILE $HOME/.config/autostart/startup.desktop
-# cp "$DIR_PATH/startup.desktop" $HOME/.config/autostart
+AUTOSTART_DIR="$HOME/.config/autostart"
+APP_DIR="$HOME/.local/share/applications"
+mkdir -p $AUTOSTART_DIR
+rm -f $AUTOSTART_DIR/startup.desktop
+ln -s "$DIR_PATH/$DESKTOP_FILE" $AUTOSTART_DIR/startup.desktop
+mkdir -p $APP_DIR
+rm -f $APP_DIR/startup.desktop
+ln -s "$DIR_PATH/$DESKTOP_FILE" $APP_DIR/startup.desktop
 
 echo "Startup configured!"
 

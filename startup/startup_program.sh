@@ -16,7 +16,7 @@ DIR=$(dirname $FILE_PATH)
 # "flatpak run org.signal.Signal"
 # "flatpak run com.visualstudio.code"
 # "ptyxis -s -x '"toolbox run -c devs tmux\""
-declare -a progs=("firefox" "spotify" "slack" "code" "bitwarden" "gnome-terminal -e 'tmux'")
+declare -a progs=("snap run firefox" "spotify" "slack" "code" "bitwarden" "gnome-terminal -e 'tmux'")
 printf '%s\n' "${progs[@]}"\
 
 ## now loop through the above array
