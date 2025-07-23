@@ -27,7 +27,7 @@ do
 done
 
 echo "Programs launched, sleeping"
-sleep 4
+sleep 5
 echo "Sleep done, repositioning windows via $DIR/position_windows.sh"
 
 exec $DIR/position_windows.sh

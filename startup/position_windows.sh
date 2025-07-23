@@ -56,17 +56,17 @@ function position {
 	if [[ $3 -eq $FULLSCREEN ]]; then
             echo "position_windows.sh: changing $1 to fullscreen: (wmctrl -i -r $WINID -b toggle,fullscreen)"
             logger "position_windows.sh: changing $1 to fullscreen: (wmctrl -i -r $WINID -b toggle,fullscreen)"
-	    wmctrl -i -r $WINID -b toggle,fullscreen
+	    wmctrl -i -r $WINID -b "toggle,fullscreen"
 	elif [[ $3 -eq $VERT_HORZ_MAXED ]]; then
             echo "position_windows.sh: changing $1 to maximized horz (wmctrl -i -r $WINID -e 0,0,0,$X,$Y)"
             logger "position_windows.sh: changing $1 to maximized horz (wmctrl -i -r $WINID -e 0,0,0,$X,$Y)"
             # The -e option expects a list of comma separated integers: "gravity,X,Y,width,height"
-	    wmctrl -i -r $WINID -e 0,0,0,$X,$Y
+	    wmctrl -i -r $WINID -e "0,0,0,$X,$Y"
 	elif [[ $3 -eq $VERT_MAXED ]]; then
 	    # if 1 make vertically maxed
             echo "position_windows.sh: changing $1 to maximized vert (wmctrl -i -r $WINID -e $6,0,$5,$X,$Y)"
             logger "position_windows.sh: changing $1 to maximized vert (wmctrl -i -r $WINID -e $6,0,$5,$X,$Y)"
-	    wmctrl -i -r $WINID -e 0,$6,0,$5,$Y
+	    wmctrl -i -r $WINID -e "0,$6,0,$5,$Y"
 	fi
 	sleep 0.5s
     done
@@ -83,10 +83,8 @@ FULLSCREEN=3
 # NOTE: looks like location might require calculation
 #  see https://github.com/jc00ke/move-to-next-monitor/blob/master/move-to-next-monitor
 
-
-
-THIRD=$(( $X / 3 ))
-HALF=$(( $X / 2 ))
+THIRD=$(($X / 3))
+HALF=$(($X / 2))
 #        program desktop_id
 #                  window_size      array_windows
 #                                         xSize ySize
