@@ -2,16 +2,7 @@
 // For all available commands, do:
 //  [Ctrl+P] > Open Default Keyboard Shortcuts(JSON) _or_ [Ctrl+F1] as defined below.
 [
-  {
-    "key": "ctrl+/",
-    "command": "-editor.action.blockComment",
-    "when": "editorTextFocus && !editorReadonly && editorHasSelection"
-  },
-  {
-    "key": "ctrl+/",
-    "command": "editor.action.commentLine",
-    "when": "editorTextFocus && !editorReadonly && editorHasSelection"
-  },
+  // window ops
   {
     "key": "ctrl+w ;",
     "command": "workbench.action.terminal.focus",
@@ -142,7 +133,6 @@
     "command": "workbench.action.moveActiveEditorGroupRight",
     "when": "editorFocus"
   },
-
   {
     "key": "ctrl+w z",
     "command": "workbench.action.toggleEditorWidths",
@@ -169,6 +159,11 @@
     "when": "editorFocus"
   },
   {
+    "key": "ctrl+w x",
+    "command": "workbench.action.compareEditor.swapSides",
+    "when": "editorFocus"
+  },
+  {
     "key": "ctrl+w shift+=",
     "command": "workbench.action.increaseViewHeight",
     "when": "editorFocus"
@@ -178,8 +173,22 @@
     "command": "workbench.action.files.newUntitledFile"
   },
   {
+    "key": "ctrl+w p",
+    "command": "workbench.action.openPreviousRecentlyUsedEditorInGroup"
+  },
+  {
     "key": "ctrl+w \\",
     "command": "workbench.action.showAllEditorsByMostRecentlyUsed"
+  },
+  {
+    "key": "ctrl+/",
+    "command": "-editor.action.blockComment",
+    "when": "editorTextFocus && !editorReadonly && editorHasSelection"
+  },
+  {
+    "key": "ctrl+/",
+    "command": "editor.action.commentLine",
+    "when": "editorTextFocus && !editorReadonly && editorHasSelection"
   },
   {
     "key": "tab",
@@ -190,6 +199,84 @@
     "key": "ctrl+alt+down",
     "command": "-workbench.action.files.newUntitledFile"
   },
+  // code debugging
+  {
+    "key": "ctrl+; a",
+    "command": "testing.debugAll",
+    "when": "editorTextFocus"
+  },
+  {
+    "key": "ctrl+; e",
+    "command": "testing.debugFailTests",
+    "when": "editorTextFocus"
+  },
+  {
+    "key": "ctrl+; l",
+    "command": "testing.debugLastRun",
+    "when": "editorTextFocus"
+  },
+  {
+    "key": "ctrl+; d",
+    "command": "testing.debugAtCursor",
+    "when": "editorTextFocus"
+  },
+  {
+    "key": "ctrl+; f",
+    "command": "testing.debugCurrentFile",
+    "when": "editorTextFocus"
+  },
+  {
+    "key": "ctrl+; b",
+    "command": "editor.debug.action.toggleBreakpoint",
+    "when": "editorTextFocus"
+  },
+  {
+    "key": "ctrl+; m",
+    "command": "editor.debug.action.editBreakpoint",
+    "when": "editorTextFocus"
+  },
+  {
+    "key": "ctrl+; w",
+    "command": "debug.setWatchExpression",
+    "when": "editorTextFocus"
+  },
+  // inactive, initializing, stopped, running
+  {
+    "key": "ctrl+c",
+    "command": "workbench.action.debug.continue",
+    "when": "inDebugMode && editorTextFocus && debugState == 'stopped'"
+  },
+  {
+    "key": "ctrl+r",
+    "command": "workbench.action.debug.restart",
+    "when": "inDebugMode && editorTextFocus && debugState != 'inactive'"
+  },
+  {
+    "key": "ctrl+d",
+    "command": "workbench.action.debug.disconnect",
+    "when": "inDebugMode && editorTextFocus && debugState != 'inactive'"
+  },
+  {
+    "key": "ctrl+p",
+    "command": "workbench.action.debug.pause",
+    "when": "inDebugMode && editorTextFocus && debugState != 'inactive'"
+  },
+  {
+    "key": "ctrl+s",
+    "command": "workbench.action.debug.stepOver",
+    "when": "inDebugMode && editorTextFocus && debugState == 'stopped'"
+  },
+  {
+    "key": "ctrl+i",
+    "command": "workbench.action.debug.stepInto",
+    "when": "inDebugMode && editorTextFocus && debugState == 'stopped'"
+  },
+  {
+    "key": "ctrl+o",
+    "command": "workbench.action.debug.stepOut",
+    "when": "inDebugMode && editorTextFocus && debugState == 'stopped'"
+  },
+  // other
   {
     "key": "q",
     "command": "editor.action.inlineSuggest.hide",
@@ -215,15 +302,9 @@
     "when": "editorFocus"
   },
   {
-    "key": "ctrl+w p",
-    "command": "workbench.action.openPreviousRecentlyUsedEditorInGroup"
-    // "when": "editorFocus"
-    // "command": "workbench.action.previousEditor"
-  },
-  {
     "key": "ctrl+pageup",
     "command": "-workbench.action.previousEditor"
-  }
+  },
   // {"key": "ctrl+w x", "command": "swap with next group" },
   // {"key": "ctrl+w n", "command": "New empty window?" },
   // { "key": "ctrl+w shift+k", "command": "current window to top full width" },
