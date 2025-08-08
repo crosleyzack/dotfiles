@@ -8,9 +8,7 @@
     editor = vim
 [color]
     ui = true
-# NOTE: don'e forward the entire github.com, as that will cause issues with go
-[url "ssh://git@github.com/censys"]
-    insteadOf = https://github.com/censys
+# NOTE: don't forward the entire github.com, as that will cause issues with go
 [url "ssh://git@github.com/crosleyzack"]
     insteadOf = https://github.com/crosleyzack
 [commit]
@@ -19,6 +17,7 @@
     # To debug, use GIT_TRACE=1
     unstage = reset HEAD --
     staged = diff --staged
+    uncommit = reset --soft HEAD^
     aliases = config --get-regexp '^alias\\.'
     yolo = push --force-with-lease
     # Get changes by the author
@@ -41,7 +40,7 @@
     # View last commit (more or less detail)
     last = log -1 HEAD
     details = log -1 -p --format=fuller
-    # remove lock in this repository. Use at own risk
+    # remove lock in this repository. WARN Use at own risk
     unlock = !rm -f .git/index.lock
     # Checks all commits to check all lines to get total number you committed. This gets _REALLY_ slow for large projects.
     lines-committed = !git ls-files | xargs -n1 git blame --line-porcelain | sed -n 's/^author //p' | uniq -ic | grep -iF "crosley" | awk '{s+=$1} END {print s}'
@@ -53,7 +52,6 @@
     main = !git symbolic-ref refs/remotes/origin/HEAD | cut -d'/' -f4
     # get commits from origin, rebase main, rebase current branch off of main.
     update = !BRANCH=$(git branch --show-current) && git checkout-m && git fetch && git rebase && git checkout $BRANCH # && git rebase-m
-    rc = rebase --continue
     checkout-m = !git checkout $(git main)
     rebase-m = !git rebase $(git main)
 [gpg]

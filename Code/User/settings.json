@@ -1,9 +1,10 @@
 {
-  "dev.containers.dockerPath": "/var/home/crosleyzack/.local/bin/podman-host",
-  "dev.containers.dockerSocketPath": "/run/user/1000/podman/podman.sock",
-  "dev.containers.dockerComposePath": "podman compose",
+  // "dev.containers.dockerPath": "/var/home/crosleyzack/.local/bin/podman-host",
+  // "dev.containers.dockerSocketPath": "/run/user/1000/podman/podman.sock",
+  // "dev.containers.dockerComposePath": "podman compose",
   "extensions.experimental.affinity": {
-    "vscodevim.vim": 1
+    "vscodevim.vim": 1,
+    "asvetliakov.vscode-neovim": 1
   },
   "search.collapseResults": "alwaysCollapse",
   // Font settings
@@ -39,8 +40,13 @@
   "go.delveConfig": {},
   "go.toolsManagement.autoUpdate": true,
   "go.testTimeout": "200s",
-  // Debug settings
-  "debug.openDebug": "openOnSessionStart",
+  // run once without caching
+  "go.testFlags": [
+    "-test.count=1",
+  ],
+  "go.formatTool": "gofmt",
+  "go.inlayHints.constantValues": true,
+  "go.inferGopath": true,
   // language settings
   "[go]": {
     "editor.foldingImportsByDefault": false,
@@ -52,40 +58,39 @@
   "[json]": {
     "editor.defaultFormatter": "vscode.json-language-features"
   },
-  "[javascript]": {
-    "editor.maxTokenizationLineLength": 2500,
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "[typescript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "[typescriptreact]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "typescript.updateImportsOnFileMove.enabled": "always",
-  "[jsonc]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "python.formatting.provider": "black",
+  // "[javascript]": {
+  //   "editor.maxTokenizationLineLength": 2500,
+  //   "editor.defaultFormatter": "esbenp.prettier-vscode"
+  // },
+  // "[typescript]": {
+  //   "editor.defaultFormatter": "esbenp.prettier-vscode"
+  // },
+  // "[typescriptreact]": {
+  //   "editor.defaultFormatter": "esbenp.prettier-vscode"
+  // },
+  // "typescript.updateImportsOnFileMove.enabled": "always",
+  // "[jsonc]": {
+  //   "editor.defaultFormatter": "esbenp.prettier-vscode"
+  // },
+  // "python.formatting.provider": "black",
   // "python.linting.flake8Args": ["--ignore=W293"],
   // "python.linting.pylintEnabled": true,
   // "python.linting.pylintArgs": ["--enable=W0614"],
-  "[python]": {
-    "defaultInterpreterPath": "python3",
-    "terminal.activateEnvInCurrentTerminal": true,
-    "editor.defaultFormatter": "ms-python.black-formatter",
-    "editor.formatOnSave": true
-    // "editor.showUnused": true,
-    // Turn this off, as it keeps removing imports.
-    // "source.organizeImports": "explicit",
-    // "source.unusedImports": "explicit",
-  },
+  // "[python]": {
+  //   "defaultInterpreterPath": "python3",
+  //   "terminal.activateEnvInCurrentTerminal": true,
+  //   "editor.defaultFormatter": "ms-python.black-formatter",
+  //   "editor.formatOnSave": true
+  //   "editor.showUnused": true,
+  //   // Turn this off, as it keeps removing imports.
+  //   "source.organizeImports": "explicit",
+  //   "source.unusedImports": "explicit",
+  // },
   // "black-formatter.showNotification": "onWarning",
-  "[yaml]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
+  // "[yaml]": {
+  //   "editor.defaultFormatter": "esbenp.prettier-vscode"
+  // },
   // "haskell.manageHLS": "GHCup",
-  "github.copilot.editor.enableAutoCompletions": true,
   "github.copilot.enable": {
     "*": true,
     "plaintext": false,
@@ -105,13 +110,28 @@
   "github.copilot.advanced": {
     "authPermissions": "minimal"
   },
+  "chat.commandCenter.enabled":false,
+  "workbench.settings.showAISearchToggle":false,
+  "github.copilot.chat.codesearch.enabled":false,
+  "chat.sendElementsToChat.enabled":false,
+  "chat.agent.enabled":false,
+  "chat.agent.maxRequests": 0,
+  "github.copilot.chat.agent.autoFix":false,
+  "github.copilot.chat.agent.runTasks":false,
+  "chat.mcp.enabled":false,
+  "github.copilot.chat.startDebugging.enabled": false,
+  "github.copilot.chat.copilotDebugCommand.enabled":false,
+  "github.copilot.chat.setupTests.enabled": false,
+  "notebook.experimental.generate": false,
+  "github.copilot.chat.edits.newNotebook.enabled": false,
+  "github.copilot.chat.notebook.followCellExecution.enabled":false,
   // "vs-kubernetes": {
   //   "vs-kubernetes.crd-code-completion": "disabled",
   //   "vscode-kubernetes.helm-path.linux": "$HOME/.local/state/vs-kubernetes/tools/helm/linux-amd64/helm"
   // },
-  "protoc": {
-    "options": ["--proto_path=$HOME/dev/pipeline/proto"]
-  },
+  // "protoc": {
+  //   "path": "$HOME/bin/protoc",
+  // },
   "workbench.startupEditor": "readme",
   "workbench.colorTheme": "GitHub Dark High Contrast",
   "workbench.colorCustomizations": {
@@ -167,24 +187,33 @@
   "workbench.reduceMotion": "on",
   "extensions.ignoreRecommendations": true,
   "githubPullRequests.pullBranch": "never",
-  "window.customTitleBarVisibility": "auto",
+  "window.customTitleBarVisibility": "never",
   "window.commandCenter": false,
   "workbench.layoutControl.enabled": false,
   "redhat.telemetry.enabled": false,
+  "vim.statusBarColorControl": false,
+  "vim.report": 2000,
+  "vim.showmodename": false,
   "vim.useSystemClipboard": true,
   "vim.highlightedyank.enable": true,
   "vim.history": 500,
   "vim.smartRelativeLine": true,
-  "vim.showMarksInGutter": true,
   "vim.autoindent": false,
   "vim.easymotionDimBackground": false,
   "vim.joinspaces": false,
   "vim.startofline": false,
   "vim.targets.smartQuotes.breakThroughLines": false,
-  "vim.vimrc.enable": true,
-  "vim.vimrc.path": "$HOME/.vimrc",
-  "vim.leader": ",",
-  "go.formatTool": "gofmt",
-  "go.inlayHints.constantValues": true,
-  "dev.containers.copyGitConfig": false
+  "vim.vimrc.enable": false,
+  // "vim.vimrc.path": "$HOME/.vimrc",
+  "vim.leader": "space",
+  "vim.easymotion": false,
+  "vim.incsearch": true,
+  "vim.useCtrlKeys": true,
+  "vim.hlsearch": true,
+  "dev.containers.copyGitConfig": false,
+  "terminal.integrated.suggest.enabled": true,
+  "terminal.integrated.defaultProfile.linux": "zsh",
+  "window.menuBarVisibility": "compact",
+  "vscode-neovim.neovimExecutablePaths.linux": "/home/zackary-crosley/bin/nvim",
+  "vscode-neovim.neovimExecutablePaths.darwin": "/home/zackary-crosley/bin/nvim",
 }
