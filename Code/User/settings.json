@@ -6,30 +6,49 @@
     "vscodevim.vim": 1,
     "asvetliakov.vscode-neovim": 1
   },
-  "search.collapseResults": "alwaysCollapse",
+  "workbench.startupEditor": "readme",
+  // themes and colors
+  "workbench.colorTheme": "GitHub Dark High Contrast",
+  "workbench.colorCustomizations": {
+    "tab.activeBackground": "#0b0b0b"
+  },
   // Font settings
   "editor.fontSize": 14.5,
-  "editor.fontFamily": "'Monaspace Neon', monospace",
-  "editor.fontLigatures": true,
+  "editor.fontFamily": "'Monaspice', monospace",
+  "editor.fontVariations": true,
+  "editor.fontLigatures": false,
   // Editor settings
   "editor.minimap.enabled": false,
+  "editor.largeFileOptimizations": true,
+  "editor.lineNumbers": "relative",
+  "editor.inlineSuggest.enabled": true,
+  "editor.bracketPairColorization.enabled": true,
+  "editor.hover.sticky": true,
+  "files.autoSave": "off",
+  // TODO reenable pending [issue](https://github.com/microsoft/vscode/issues/257711)
+  "editor.stickyScroll.enabled": false,
   // Tab vs Spaces
   "editor.insertSpaces": true,
   "editor.tabSize": 4,
   "editor.detectIndentation": true,
-  // Whitespace etc
+  // display settings
+  "window.restoreFullscreen": true,
+  "window.menuBarVisibility": "compact",
+  "window.density.editorTabHeight": "compact",
+  "workbench.editor.highlightModifiedTabs": true,
+  "workbench.editor.splitInGroupLayout": "horizontal",
+  "workbench.editor.splitSizing": "distribute",
+  // Whitespace
   "editor.renderWhitespace": "all",
   "editor.trimAutoWhitespace": true,
-  "editor.stickyScroll.enabled": true,
-  "editor.inlineSuggest.enabled": true,
-  "editor.bracketPairColorization.enabled": true,
-  "editor.hover.sticky": true,
-  "editor.lineNumbers": "relative",
   // folding
   "editor.folding": true,
   "editor.foldingHighlight": true,
   "editor.foldingImportsByDefault": false,
   "editor.foldingStrategy": "auto",
+  // search
+  "search.searchOnType": false,
+  "search.collapseResults": "alwaysCollapse",
   // Go settings
   "gopls": {
     "formatting.local": "github.com/censys"
@@ -40,8 +59,8 @@
   "go.delveConfig": {},
   "go.toolsManagement.autoUpdate": true,
   "go.testTimeout": "200s",
-  // run once without caching
   "go.testFlags": [
+    // run once without caching
     "-test.count=1",
   ],
   "go.formatTool": "gofmt",
@@ -49,58 +68,39 @@
   "go.inferGopath": true,
   // language settings
   "[go]": {
-    "editor.foldingImportsByDefault": false,
     "editor.codeLens": true,
-    "editor.insertSpaces": true,
-    "editor.formatOnSave": true,
     "editor.defaultFormatter": "golang.go"
   },
-  "[json]": {
-    "editor.defaultFormatter": "vscode.json-language-features"
-  },
-  // "[javascript]": {
-  //   "editor.maxTokenizationLineLength": 2500,
-  //   "editor.defaultFormatter": "esbenp.prettier-vscode"
-  // },
-  // "[typescript]": {
-  //   "editor.defaultFormatter": "esbenp.prettier-vscode"
-  // },
-  // "[typescriptreact]": {
-  //   "editor.defaultFormatter": "esbenp.prettier-vscode"
-  // },
-  // "typescript.updateImportsOnFileMove.enabled": "always",
-  // "[jsonc]": {
-  //   "editor.defaultFormatter": "esbenp.prettier-vscode"
-  // },
-  // "python.formatting.provider": "black",
-  // "python.linting.flake8Args": ["--ignore=W293"],
-  // "python.linting.pylintEnabled": true,
-  // "python.linting.pylintArgs": ["--enable=W0614"],
-  // "[python]": {
-  //   "defaultInterpreterPath": "python3",
-  //   "terminal.activateEnvInCurrentTerminal": true,
-  //   "editor.defaultFormatter": "ms-python.black-formatter",
-  //   "editor.formatOnSave": true
-  //   "editor.showUnused": true,
-  //   // Turn this off, as it keeps removing imports.
-  //   "source.organizeImports": "explicit",
-  //   "source.unusedImports": "explicit",
-  // },
-  // "black-formatter.showNotification": "onWarning",
-  // "[yaml]": {
-  //   "editor.defaultFormatter": "esbenp.prettier-vscode"
-  // },
-  // "haskell.manageHLS": "GHCup",
+  // vim
+  "vim.statusBarColorControl": false,
+  "vim.report": 2000,
+  "vim.showmodename": false,
+  "vim.useSystemClipboard": true,
+  "vim.highlightedyank.enable": true,
+  "vim.history": 500,
+  "vim.smartRelativeLine": true,
+  "vim.autoindent": false,
+  "vim.easymotionDimBackground": false,
+  "vim.joinspaces": false,
+  "vim.startofline": false,
+  "vim.targets.smartQuotes.breakThroughLines": false,
+  "vim.leader": "space",
+  "vim.easymotion": false,
+  "vim.incsearch": false,
+  "vim.useCtrlKeys": true,
+  "vim.hlsearch": true,
+  "vim.vimrc.enable": false,
+  // "vim.vimrc.path": "$HOME/.vimrc",
+  "dev.containers.copyGitConfig": false,
+  "terminal.integrated.suggest.enabled": true,
+  "terminal.integrated.defaultProfile.linux": "zsh",
+  "terminal.integrated.fontFamily": "'Monaspice', monospace",
+  // various efficiency settings
+  // chat / ai
   "github.copilot.enable": {
-    "*": true,
-    "plaintext": false,
-    "markdown": true,
-    "scminput": false,
-    "yaml": false,
+    "*": false,
     "dockerfile": true,
     "go": true,
-    "json": true,
-    "jsonc": true,
     "makefile": true,
     "shellscript": true,
     "sql": true,
@@ -111,42 +111,36 @@
     "authPermissions": "minimal"
   },
   "chat.commandCenter.enabled":false,
-  "workbench.settings.showAISearchToggle":false,
-  "github.copilot.chat.codesearch.enabled":false,
-  "chat.sendElementsToChat.enabled":false,
   "chat.agent.enabled":false,
   "chat.agent.maxRequests": 0,
   "github.copilot.chat.agent.autoFix":false,
   "github.copilot.chat.agent.runTasks":false,
   "chat.mcp.enabled":false,
+  "notebook.experimental.generate": false,
+  "workbench.settings.showAISearchToggle":false,
+  "github.copilot.chat.codesearch.enabled":false,
+  "chat.sendElementsToChat.enabled":false,
   "github.copilot.chat.startDebugging.enabled": false,
   "github.copilot.chat.copilotDebugCommand.enabled":false,
   "github.copilot.chat.setupTests.enabled": false,
-  "notebook.experimental.generate": false,
   "github.copilot.chat.edits.newNotebook.enabled": false,
   "github.copilot.chat.notebook.followCellExecution.enabled":false,
-  // "vs-kubernetes": {
-  //   "vs-kubernetes.crd-code-completion": "disabled",
-  //   "vscode-kubernetes.helm-path.linux": "$HOME/.local/state/vs-kubernetes/tools/helm/linux-amd64/helm"
-  // },
-  // "protoc": {
-  //   "path": "$HOME/bin/protoc",
-  // },
-  "workbench.startupEditor": "readme",
-  "workbench.colorTheme": "GitHub Dark High Contrast",
-  "workbench.colorCustomizations": {
-    "tab.activeBackground": "#0b0b0b"
-  },
+  // telemetry and noise
+  "telemetry.telemetryLevel": "crash",
+  "telemetry.feedback.enabled": false,
+  "telemetry.editStats.enabled": false,
+  "workbench.reduceMotion": "on",
+  "window.customTitleBarVisibility": "never",
+  "window.commandCenter": false,
+  "workbench.layoutControl.enabled": false,
+  "search.followSymlinks": false,
+  "extensions.autoUpdate": false,
+  "extensions.ignoreRecommendations": true,
+  "diffEditor.codeLens": false,
   "explorer.autoReveal": false,
-  "window.restoreFullscreen": true,
-  "window.density.editorTabHeight": "compact",
-  "workbench.editor.highlightModifiedTabs": true,
-  "workbench.editor.splitInGroupLayout": "horizontal",
-  "workbench.editor.splitSizing": "distribute",
-  "diffEditor.codeLens": true,
   "git.openRepositoryInParentFolders": "never",
-  // "workbench.experimental.settingsProfiles.enabled": true
-  // efficiency improvements
+  "githubPullRequests.pullBranch": "never",
+  // ignore unnecessary files
   "files.watcherExclude": {
     "**/.git/objects/**": true,
     "**/.git/subtree-cache/**": true,
@@ -181,39 +175,4 @@
     "**/.git/subtree-cache/**": true,
     "**/dist/**": true
   },
-  "telemetry.telemetryLevel": "crash",
-  "extensions.autoUpdate": false,
-  "search.followSymlinks": false,
-  "workbench.reduceMotion": "on",
-  "extensions.ignoreRecommendations": true,
-  "githubPullRequests.pullBranch": "never",
-  "window.customTitleBarVisibility": "never",
-  "window.commandCenter": false,
-  "workbench.layoutControl.enabled": false,
-  "redhat.telemetry.enabled": false,
-  "vim.statusBarColorControl": false,
-  "vim.report": 2000,
-  "vim.showmodename": false,
-  "vim.useSystemClipboard": true,
-  "vim.highlightedyank.enable": true,
-  "vim.history": 500,
-  "vim.smartRelativeLine": true,
-  "vim.autoindent": false,
-  "vim.easymotionDimBackground": false,
-  "vim.joinspaces": false,
-  "vim.startofline": false,
-  "vim.targets.smartQuotes.breakThroughLines": false,
-  "vim.vimrc.enable": false,
-  // "vim.vimrc.path": "$HOME/.vimrc",
-  "vim.leader": "space",
-  "vim.easymotion": false,
-  "vim.incsearch": true,
-  "vim.useCtrlKeys": true,
-  "vim.hlsearch": true,
-  "dev.containers.copyGitConfig": false,
-  "terminal.integrated.suggest.enabled": true,
-  "terminal.integrated.defaultProfile.linux": "zsh",
-  "window.menuBarVisibility": "compact",
-  "vscode-neovim.neovimExecutablePaths.linux": "/home/zackary-crosley/bin/nvim",
-  "vscode-neovim.neovimExecutablePaths.darwin": "/home/zackary-crosley/bin/nvim",
 }

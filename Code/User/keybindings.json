@@ -2,52 +2,7 @@
 // For all available commands, do:
 //  [Ctrl+P] > Open Default Keyboard Shortcuts(JSON) _or_ [Ctrl+F1] as defined below.
 [
-  // window ops
-  {
-    "key": "ctrl+w ;",
-    "command": "workbench.action.terminal.focus",
-    "when": "editorFocus"
-  },
-  {
-    "key": "ctrl+w ;",
-    "command": "workbench.action.focusActiveEditorGroup",
-    "when": "terminalFocus"
-  },
-  {
-    "key": "ctrl+w h",
-    "command": "workbench.action.focusLeftGroup",
-    "when": "editorFocus"
-  },
-  {
-    "key": "ctrl+w j",
-    "command": "workbench.action.focusBelowGroup",
-    "when": "editorFocus"
-  },
-  {
-    "key": "ctrl+w k",
-    "command": "workbench.action.focusAbove",
-    "when": "editorFocus"
-  },
-  {
-    "key": "ctrl+w l",
-    "command": "workbench.action.focusRightGroup",
-    "when": "editorFocus"
-  },
-  {
-    "key": "ctrl+w l",
-    "command": "workbench.action.focusActiveEditorGroup",
-    "when": "sideBarFocus"
-  },
-  {
-    "key": "ctrl+w j",
-    "command": "workbench.action.nextSideBarView",
-    "when": "sideBarFocus"
-  },
-  {
-    "key": "ctrl+w k",
-    "command": "workbench.action.previousSideBarView",
-    "when": "sideBarFocus"
-  },
+  // window navigation, based on https://neovim.io/doc/user/windows.html
   {
     "key": "ctrl+w s",
     "command": "workbench.action.splitEditorRight",
@@ -59,12 +14,18 @@
     "when": "editorFocus"
   },
   {
-    "key": "ctrl+\\",
-    "command": "-workbench.action.splitEditor"
+    "key": "ctrl+w ctrl+n",
+    "command": "workbench.action.files.newUntitledFile"
   },
   {
     "key": "ctrl+w q",
     "command": "workbench.action.closeActiveEditor",
+  },
+  // ctrl+w c ???
+  {
+    // close all other editors in this group
+    "key": "ctrl+w o",
+    "command": "workbench.action.closeOtherEditors",
     "when": "editorFocus"
   },
   {
@@ -73,9 +34,23 @@
     "when": "editorFocus"
   },
   {
-    // close all other editors in this group
-    "key": "ctrl+w o",
-    "command": "workbench.action.closeOtherEditors",
+    "key": "ctrl+w k",
+    "command": "workbench.action.focusAbove",
+    "when": "editorFocus"
+  },
+  {
+    "key": "ctrl+w j",
+    "command": "workbench.action.focusBelowGroup",
+    "when": "editorFocus"
+  },
+  {
+    "key": "ctrl+w h",
+    "command": "workbench.action.focusLeftGroup",
+    "when": "editorFocus"
+  },
+  {
+    "key": "ctrl+w l",
+    "command": "workbench.action.focusRightGroup",
     "when": "editorFocus"
   },
   {
@@ -99,9 +74,9 @@
     "when": "editorFocus"
   },
   {
-    "key": "ctrl+w =",
-    "command": "workbench.action.evenEditorWidths",
-    "when": "editorTextFocus"
+    "key": "ctrl+w p",
+    "command": "workbench.action.openPreviousRecentlyUsedEditorInGroup",
+    "when": "editorFocus"
   },
   {
     "key": "ctrl+w r",
@@ -114,13 +89,18 @@
     "when": "editorFocus"
   },
   {
-    "key": "ctrl+w shift+j",
-    "command": "workbench.action.moveActiveEditorGroupDown",
+    "key": "ctrl+w x",
+    "command": "workbench.action.compareEditor.swapSides",
     "when": "editorFocus"
   },
   {
     "key": "ctrl+w shift+k",
     "command": "workbench.action.moveActiveEditorGroupUp",
+    "when": "editorFocus"
+  },
+  {
+    "key": "ctrl+w shift+j",
+    "command": "workbench.action.moveActiveEditorGroupDown",
     "when": "editorFocus"
   },
   {
@@ -134,33 +114,13 @@
     "when": "editorFocus"
   },
   {
-    "key": "ctrl+w z",
-    "command": "workbench.action.toggleEditorWidths",
-    "when": "editorFocus"
-  },
-  {
-    "key": "ctrl+w shift+,",
-    "command": "workbench.action.decreaseViewWidth",
-    "when": "editorFocus"
-  },
-  {
-    "key": "ctrl+w shift+-",
-    "command": "workbench.action.toggleSidebarVisibility",
-    "when": "editorFocus"
-  },
-  {
-    "key": "ctrl+w shift+.",
-    "command": "workbench.action.increaseViewWidth",
-    "when": "editorFocus"
+    "key": "ctrl+w =",
+    "command": "workbench.action.evenEditorWidths",
+    "when": "editorTextFocus"
   },
   {
     "key": "ctrl+w -",
     "command": "workbench.action.decreaseViewHeight",
-    "when": "editorFocus"
-  },
-  {
-    "key": "ctrl+w x",
-    "command": "workbench.action.compareEditor.swapSides",
     "when": "editorFocus"
   },
   {
@@ -169,16 +129,52 @@
     "when": "editorFocus"
   },
   {
-    "key": "ctrl+w ctrl+n",
-    "command": "workbench.action.files.newUntitledFile"
+    "key": "ctrl+w shift+.",
+    "command": "workbench.action.increaseViewWidth",
+    "when": "editorFocus"
   },
   {
-    "key": "ctrl+w p",
-    "command": "workbench.action.openPreviousRecentlyUsedEditorInGroup"
+    "key": "ctrl+w shift+,",
+    "command": "workbench.action.decreaseViewWidth",
+    "when": "editorFocus"
+  },
+  {
+    "key": "ctrl+w shift+\\",
+    "command": "workbench.action.editorLayoutSingle",
+    "when": "editorFocus"
+  },
+  // additional commands
+  {
+    "key": "ctrl+w ;",
+    "command": "workbench.action.terminal.focus",
+    "when": "editorFocus"
+  },
+  {
+    "key": "ctrl+w ;",
+    "command": "workbench.action.focusActiveEditorGroup",
+    "when": "terminalFocus"
+  },
+  {
+    "key": "ctrl+\\",
+    "command": "-workbench.action.splitEditor"
+  },
+  {
+    "key": "ctrl+w z",
+    "command": "workbench.action.toggleEditorWidths",
+    "when": "editorFocus"
   },
   {
     "key": "ctrl+w \\",
     "command": "workbench.action.showAllEditorsByMostRecentlyUsed"
+  },
+  {
+    "key": "ctrl+w tab",
+    "command": "workbench.action.nextEditorInGroup",
+    "when": "editorFocus"
+  },
+  {
+    "key": "ctrl+w shift+tab",
+    "command": "workbench.action.previousEditorInGroup"
   },
   {
     "key": "ctrl+/",
@@ -201,27 +197,33 @@
   },
   // code debugging
   {
-    "key": "ctrl+; a",
-    "command": "testing.debugAll",
-    "when": "editorTextFocus"
+    // based on https://neovim.io/doc/user/windows.html#CTRL-W_%7D
+    "key": "ctrl+; ]",
+    "command": "editor.action.marker.next",
+    "when": "editorFocus"
   },
   {
-    "key": "ctrl+; e",
-    "command": "testing.debugFailTests",
-    "when": "editorTextFocus"
+    "key": "ctrl+; shift+]",
+    "command": "editor.action.marker.prev",
+    "when": "editorFocus"
   },
   {
-    "key": "ctrl+; l",
-    "command": "testing.debugLastRun",
-    "when": "editorTextFocus"
+    "key": "ctrl+; '",
+    "command": "editor.action.revealDefinitionAside",
+    "when": "editorFocus"
+  },
+  {
+    "key": "ctrl+; shift+'",
+    "command": "editor.action.peekTypeDefinition",
+    "when": "editorFocus"
   },
   {
     "key": "ctrl+; d",
-    "command": "testing.debugAtCursor",
+    "command": "testing.debugSelected",
     "when": "editorTextFocus"
   },
   {
-    "key": "ctrl+; f",
+    "key": "ctrl+; shift+d",
     "command": "testing.debugCurrentFile",
     "when": "editorTextFocus"
   },
@@ -231,7 +233,7 @@
     "when": "editorTextFocus"
   },
   {
-    "key": "ctrl+; m",
+    "key": "ctrl+; e",
     "command": "editor.debug.action.editBreakpoint",
     "when": "editorTextFocus"
   },
@@ -240,41 +242,36 @@
     "command": "debug.setWatchExpression",
     "when": "editorTextFocus"
   },
-  // inactive, initializing, stopped, running
-  {
-    "key": "ctrl+c",
+  // actions based on https://github.com/mfussenegger/nvim-dap?tab=readme-ov-file#usage
+  { // ▶
+    "key": "ctrl+l",
     "command": "workbench.action.debug.continue",
     "when": "inDebugMode && editorTextFocus && debugState == 'stopped'"
   },
-  {
+  { // ↷
+    "key": "ctrl+h",
+    "command": "workbench.action.debug.stepOver",
+    "when": "inDebugMode && editorTextFocus && debugState == 'stopped'"
+  },
+  { // ↓
+    "key": "ctrl+j",
+    "command": "workbench.action.debug.stepInto",
+    "when": "inDebugMode && editorTextFocus && debugState == 'stopped'"
+  },
+  { // ↑
+    "key": "ctrl+k",
+    "command": "workbench.action.debug.stepOut",
+    "when": "inDebugMode && editorTextFocus && debugState == 'stopped'"
+  },
+  { // ↺
     "key": "ctrl+r",
     "command": "workbench.action.debug.restart",
     "when": "inDebugMode && editorTextFocus && debugState != 'inactive'"
   },
   {
-    "key": "ctrl+d",
+    "key": "ctrl+q",
     "command": "workbench.action.debug.disconnect",
     "when": "inDebugMode && editorTextFocus && debugState != 'inactive'"
-  },
-  {
-    "key": "ctrl+p",
-    "command": "workbench.action.debug.pause",
-    "when": "inDebugMode && editorTextFocus && debugState != 'inactive'"
-  },
-  {
-    "key": "ctrl+s",
-    "command": "workbench.action.debug.stepOver",
-    "when": "inDebugMode && editorTextFocus && debugState == 'stopped'"
-  },
-  {
-    "key": "ctrl+i",
-    "command": "workbench.action.debug.stepInto",
-    "when": "inDebugMode && editorTextFocus && debugState == 'stopped'"
-  },
-  {
-    "key": "ctrl+o",
-    "command": "workbench.action.debug.stepOut",
-    "when": "inDebugMode && editorTextFocus && debugState == 'stopped'"
   },
   // other
   {
@@ -283,34 +280,22 @@
     "when": "inlineSuggestionVisible"
   },
   {
-    "key": "ctrl+shift+j",
-    "command": "editor.action.joinLines",
-    "when": "editorFocus && editorHasSelection"
-  },
-  {
     "key": "ctrl+f1",
     "command": "workbench.action.openDefaultKeybindingsFile"
-  },
-  {
-    "key": "ctrl+w ]",
-    "command": "editor.action.revealDefinitionAside",
-    "when": "editorFocus"
-  },
-  {
-    "key": "ctrl+w shift+]",
-    "command": "editor.action.peekTypeDefinition",
-    "when": "editorFocus"
   },
   {
     "key": "ctrl+pageup",
     "command": "-workbench.action.previousEditor"
   },
-  // {"key": "ctrl+w x", "command": "swap with next group" },
-  // {"key": "ctrl+w n", "command": "New empty window?" },
+  {
+    "key": "ctrl+shift+/",
+    "command": "workbench.action.openGlobalKeybindings",
+    "when": "editorFocus"
+  },
+
   // { "key": "ctrl+w shift+k", "command": "current window to top full width" },
   // { "key": "ctrl+w shift+j", "command": "current window to bottom full width" },
   // { "key": "ctrl+w shift+h", "command": "current window to left full height" },
   // { "key": "ctrl+w shift+l", "command": "current window to right full height" },
   // { "key": "ctrl+w _", "command": "maximize current window height" },
-  // { "key": "ctrl+w |", "command": "maximize current window width" },
 ]
