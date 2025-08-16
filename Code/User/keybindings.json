@@ -174,7 +174,34 @@
   },
   {
     "key": "ctrl+w shift+tab",
-    "command": "workbench.action.previousEditorInGroup"
+    "command": "workbench.action.previousEditorInGroup",
+    "when": "editorFocus"
+  },
+  {
+    "key": "ctrl+w `",
+    "command": "workbench.action.focusSideBar",
+    // TODO no activeEditorGroupFirst
+    // "when": "activeEditorGroupLast"
+  },
+  {
+    "key": "ctrl+w l",
+    "command": "workbench.action.focusFirstEditorGroup",
+    "when": "sideBarFocus"
+  },
+  {
+    "key": "ctrl+w h",
+    "command": "workbench.action.focusLastEditorGroup",
+    "when": "sideBarFocus"
+  },
+  {
+    "key": "ctrl+w j",
+    "command": "workbench.action.nextSideBarView",
+    "when": "sideBarFocus"
+  },
+  {
+    "key": "ctrl+w k",
+    "command": "workbench.action.previousSideBarView",
+    "when": "sideBarFocus"
   },
   {
     "key": "ctrl+/",
