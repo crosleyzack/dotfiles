@@ -2,6 +2,19 @@
 // For all available commands, do:
 //  [Ctrl+P] > Open Default Keyboard Shortcuts(JSON) _or_ [Ctrl+F1] as defined below.
 [
+  // remove stuff we don't want
+  {
+    "key": "ctrl+\\",
+    "command": "-workbench.action.splitEditor"
+  },
+  {
+    "key": "ctrl+j",
+    "command": "-workbench.action.togglePanel"
+  },
+  {
+    "key": "ctrl+b",
+    "command": "-workbench.action.toggleSidebarVisibility"
+  },
   // window navigation, based on https://neovim.io/doc/user/windows.html
   {
     "key": "ctrl+w s",
@@ -20,6 +33,7 @@
   {
     "key": "ctrl+w q",
     "command": "workbench.action.closeActiveEditor",
+    "when": "editorFocus"
   },
   // ctrl+w c ???
   {
@@ -116,7 +130,7 @@
   {
     "key": "ctrl+w =",
     "command": "workbench.action.evenEditorWidths",
-    "when": "editorTextFocus"
+    "when": "editorFocus"
   },
   {
     "key": "ctrl+w -",
@@ -150,13 +164,13 @@
     "when": "editorFocus"
   },
   {
+    "key": "ctrl+w shift+;",
+    "command": "workbench.action.togglePanel",
+  },
+  {
     "key": "ctrl+w ;",
     "command": "workbench.action.focusActiveEditorGroup",
     "when": "terminalFocus"
-  },
-  {
-    "key": "ctrl+\\",
-    "command": "-workbench.action.splitEditor"
   },
   {
     "key": "ctrl+w z",
@@ -184,15 +198,21 @@
     // "when": "activeEditorGroupLast"
   },
   {
+    "key": "ctrl+w shift+`",
+    "command": "workbench.action.toggleSidebarVisibility",
+    // TODO no activeEditorGroupFirst
+    // "when": "activeEditorGroupLast"
+  },
+  {
     "key": "ctrl+w l",
     "command": "workbench.action.focusFirstEditorGroup",
     "when": "sideBarFocus"
   },
-  {
-    "key": "ctrl+w h",
-    "command": "workbench.action.focusLastEditorGroup",
-    "when": "sideBarFocus"
-  },
+  // {
+  //   "key": "ctrl+w h",
+  //   "command": "workbench.action.focusLastEditorGroup",
+  //   "when": "sideBarFocus"
+  // },
   {
     "key": "ctrl+w j",
     "command": "workbench.action.nextSideBarView",
@@ -235,15 +255,24 @@
     "when": "editorFocus"
   },
   {
-    "key": "ctrl+; '",
+    "key": "ctrl+; shift+p",
     "command": "editor.action.revealDefinitionAside",
     "when": "editorFocus"
   },
   {
-    "key": "ctrl+; shift+'",
+    "key": "ctrl+; p",
     "command": "editor.action.peekTypeDefinition",
     "when": "editorFocus"
   },
+  {
+    "key": "ctrl+; `",
+    "command": "editor.action.inlineSuggest.trigger",
+    "when": "editorFocus"
+  },
+  // {
+  //   "key": "ctrl+; shift+`",
+  //   "command": "claude-code.runClaude",
+  // },
   {
     "key": "ctrl+; d",
     "command": "testing.debugSelected",
@@ -267,6 +296,11 @@
   {
     "key": "ctrl+; w",
     "command": "debug.setWatchExpression",
+    "when": "editorTextFocus"
+  },
+  {
+    "key": "ctrl+; f",
+    "command": "editor.toggleFoldRecursively",
     "when": "editorTextFocus"
   },
   // actions based on https://github.com/mfussenegger/nvim-dap?tab=readme-ov-file#usage
@@ -319,7 +353,6 @@
     "command": "workbench.action.openGlobalKeybindings",
     "when": "editorFocus"
   },
-
   // { "key": "ctrl+w shift+k", "command": "current window to top full width" },
   // { "key": "ctrl+w shift+j", "command": "current window to bottom full width" },
   // { "key": "ctrl+w shift+h", "command": "current window to left full height" },

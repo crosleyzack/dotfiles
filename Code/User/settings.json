@@ -6,6 +6,7 @@
     "vscodevim.vim": 1,
     "asvetliakov.vscode-neovim": 1
   },
+  "workbench.secondarySideBar.defaultVisibility": "hidden",
   "workbench.startupEditor": "readme",
   // themes and colors
   "workbench.colorTheme": "GitHub Dark High Contrast",
@@ -25,6 +26,11 @@
   "editor.bracketPairColorization.enabled": true,
   "editor.hover.sticky": true,
   "files.autoSave": "off",
+  "editor.formatOnPaste": true,
+  "editor.formatOnSave": true,
+  "editor.rulers": [
+    120
+  ],
   // TODO reenable pending [issue](https://github.com/microsoft/vscode/issues/257711)
   "editor.stickyScroll.enabled": false,
   // Tab vs Spaces
@@ -110,21 +116,21 @@
   "github.copilot.advanced": {
     "authPermissions": "minimal"
   },
-  "chat.commandCenter.enabled":false,
-  "chat.agent.enabled":false,
+  "chat.commandCenter.enabled": false,
+  "chat.agent.enabled": false,
   "chat.agent.maxRequests": 0,
-  "github.copilot.chat.agent.autoFix":false,
-  "github.copilot.chat.agent.runTasks":false,
-  "chat.mcp.enabled":false,
+  "github.copilot.chat.agent.autoFix": false,
+  "github.copilot.chat.agent.runTasks": false,
+  "chat.mcp.enabled": false,
   "notebook.experimental.generate": false,
-  "workbench.settings.showAISearchToggle":false,
-  "github.copilot.chat.codesearch.enabled":false,
-  "chat.sendElementsToChat.enabled":false,
+  "workbench.settings.showAISearchToggle": false,
+  "github.copilot.chat.codesearch.enabled": false,
+  "chat.sendElementsToChat.enabled": false,
   "github.copilot.chat.startDebugging.enabled": false,
-  "github.copilot.chat.copilotDebugCommand.enabled":false,
+  "github.copilot.chat.copilotDebugCommand.enabled": false,
   "github.copilot.chat.setupTests.enabled": false,
   "github.copilot.chat.edits.newNotebook.enabled": false,
-  "github.copilot.chat.notebook.followCellExecution.enabled":false,
+  "github.copilot.chat.notebook.followCellExecution.enabled": false,
   // telemetry and noise
   "telemetry.telemetryLevel": "crash",
   "telemetry.feedback.enabled": false,
