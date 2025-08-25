@@ -60,6 +60,9 @@ git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $ZSH_CUSTOM/p
 rm -rf $ZSH_CUSTOM/plugins/zsh-autosuggestions
 git clone https://github.com/zsh-users/zsh-autosuggestions $ZSH_CUSTOM/plugins/zsh-autosuggestions
 
+# setup atuin
+curl --proto '=https' --tlsv1.2 -LsSf https://setup.atuin.sh | sh
+
 # install toolbox
 # mkdir -p "$HOME/.zsh"
 # git clone --depth=1 https://github.com/CrosleyZack/spaceship-toolbox.git "$HOME/.zsh/spaceship-toolbx"
