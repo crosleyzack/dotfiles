@@ -54,6 +54,13 @@ if [ -d $HOME/.local/bin ]; then
     export PATH="$PATH:$HOME/.local/bin"
 fi
 
+# add pyenv to path if exists
+if [ -d $HOME/.pyenv ]; then
+    export PYENV_ROOT="$HOME/.pyenv"
+    export PATH="$PATH:$PYENV_ROOT/bin"
+    eval "$(pyenv init - zsh)"
+fi
+
 typeset -U PATH path
 
 jdiff() {
