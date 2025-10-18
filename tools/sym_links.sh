@@ -105,17 +105,23 @@ echo "Linking /etc/nix/nix.conf to $BASE_DIR/nix/nix.conf"
 sudo mkdir -p /etc/nix/
 sudo ln -s $BASE_DIR/nix/nix.conf /etc/nix/nix.conf
 
-# Nixpkgs
+# Nix conf
+sudo rm -f $HOME/.config/nix/nix.conf
+echo "Linking $HOME/.config/nix/nix.conf to $BASE_DIR/nix/nix.conf"
+sudo mkdir -p $HOME/.config/nix
+sudo ln -s $BASE_DIR/nix/nix.conf $HOME/.config/nix/nix.conf
+
+# Nixpkgs conf
 sudo rm -f $HOME/.config/nixpkgs/config.nix
 echo "Linking $HOME/.config/nixpkgs/config.nix to $BASE_DIR/nix/config.nix"
 sudo mkdir -p $HOME/.config/nixpkgs
 sudo ln -s $BASE_DIR/nix/config.nix $HOME/.config/nixpkgs/config.nix
 
 # nix home manager
-sudo rm -f $HOME/.config/home-manager/home.nix
-echo "Linking $HOME/.config/home-manager/home.nix to $BASE_DIR/nix/home.nix"
-sudo mkdir -p $HOME/.config/home-manager
-sudo ln -s $BASE_DIR/nix/home.nix $HOME/.config/home-manager/home.nix
+# sudo rm -f $HOME/.config/home-manager/home.nix
+# echo "Linking $HOME/.config/home-manager/home.nix to $BASE_DIR/nix/home.nix"
+# sudo mkdir -p $HOME/.config/home-manager
+# sudo ln -s $BASE_DIR/nix/home.nix $HOME/.config/home-manager/home.nix
 
 # distrobox
 sudo rm -f $HOME/distrobox.ini

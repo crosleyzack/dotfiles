@@ -1,17 +1,16 @@
 # Nix package manager
 
-Install and use nix package manager and home manager to get newer library versions than are available on debian, as well as have these configurations be fully reproducible.
+Install and use nix package manager to have fully reproducible libraries.
 
-After changing `home.nix`, run `home-manager switch`
+After changing `pkgs.nix`, run `nix-env -i -f pkgs.nix` to setup packages.
 
-To clean up old generations, run:
-```
-nix-collect-garbage
-```
+Run `nix-env -u` to update packages
+
+To clean up old generations, run `nix-collect-garbage`
 
 ## install_nix.sh
 
-Setup nix package manager and home manager.
+Setup nix package manager.
 
 ## uninstall.sh
 
@@ -19,14 +18,6 @@ Remove nix from system.
 
 https://nixos.org/manual/nix/stable/installation/uninstall
 
-## config.nix
+## TODO
 
-Settings for nix package manager
-
-## home.nix
-
-Settings for nix home manager
-
-## others
-
-Works in progress
+Setup and use home manager
