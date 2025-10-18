@@ -1,9 +1,10 @@
 #!/bin/bash
 
+# https://nix.dev/manual/nix/2.32/installation/uninstall.html
+
 rm -rf /nix/
 rm -rf ~/.nix-channels ~/.nix-defexpr ~/.nix-profile
 sudo rm -rf /etc/nix /etc/profile.d/nix.sh /etc/tmpfiles.d/nix-daemon.conf /nix ~root/.nix-channels ~root/.nix-defexpr ~root/.nix-profile
-
 
 sudo systemctl stop nix-daemon.service
 sudo systemctl disable nix-daemon.socket nix-daemon.service
