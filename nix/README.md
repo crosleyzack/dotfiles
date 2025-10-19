@@ -2,17 +2,15 @@
 
 Install and use nix package manager to have fully reproducible libraries.
 
-After changing `pkgs.nix`, run `nix-env -i -f pkgs.nix` to setup packages.
+Run `install.sh` to setup nix on this computer. This uses this single user version.
+
+After making any desired updates to `pkgs.nix`, run `nix-env -i -f pkgs.nix` to setup packages.
 
 Run `nix-env -u` to update packages
 
 To clean up old generations, run `nix-collect-garbage`
 
-## install_nix.sh
-
-Setup nix package manager.
-
-## uninstall.sh
+## nuke.sh
 
 Remove nix from system.
 
