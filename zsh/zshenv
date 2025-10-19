@@ -66,3 +66,5 @@ typeset -U PATH path
 jdiff() {
     diff <(jq --sort-keys <<< $1) <(jq --sort-keys <<< $2)
 }
+
+if [ -e /home/crosleyzack/.nix-profile/etc/profile.d/nix.sh ]; then . /home/crosleyzack/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
