@@ -1,3 +1,0 @@
-# Slack configuration
-
-Just color scheme for now...
