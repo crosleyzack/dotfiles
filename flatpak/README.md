@@ -1,1 +1,1 @@
-Currently unused, possible future use in place of nix
+Installs containerized programs alongside nix programs

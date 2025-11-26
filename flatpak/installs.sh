@@ -8,21 +8,11 @@ declare -a packages=(
     "com.spotify.Client"
     "com.slack.Slack"
     "org.signal.Signal"
-    "com.bitwarden.desktop"
+    "me.proton.Mail"
+    "me.proton.Pass"
     "md.obsidian.Obsidian"
-    "com.visualstudio.code"
     "app.zen_browser.zen"
-    "org.mozilla.firefox"
 )
-# com.usebruno.Bruno
-#
-# io.neovim.nvim
-# org.mozilla.firefox
-# org.chromium.Chromium
-# us.zoom.Zoom
-# https://github.com/flathub/us.zoom.Zoom/issues/437
-# flatpak update --commit=786cd52f8219276edd0184f3c6fa0ca7041c3814369fe378dc068a0864b049a9 us.zoom.Zoom
-# flatpak mask us.zoom.Zoom
 
 ## now loop through the above array
 for i in "${packages[@]}"
