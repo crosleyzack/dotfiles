@@ -16,6 +16,7 @@ fi
 
 # Add nixpkgs stable and unstable
 if $SETUP_CHANNEL; then
+    # nix-channel --remove unstable
     nix-channel --remove nixpkgs
     nix-channel --add "https://channels.nixos.org/nixos-$VERSION" nixpkgs
     nix-channel --update

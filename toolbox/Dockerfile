@@ -16,12 +16,16 @@ RUN go install github.com/wagoodman/dive@v0.12
 RUN go install github.com/fullstorydev/grpcurl/cmd/grpcurl@v1.9
 RUN go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
 RUN go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
+RUN go install github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-grpc-gateway@latest
+RUN go install github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2@latest
 RUN go install github.com/cloudspannerecosystem/spanner-cli@v0.11
 RUN go install github.com/tilt-dev/ctlptl/cmd/ctlptl@v0.8.39
 RUN go install github.com/bufbuild/buf/cmd/buf@v1.54
 RUN go install sigs.k8s.io/kind@latest
 RUN go install github.com/1player/host-spawn@latest
 RUN go install github.com/crosleyzack/xplr@latest
+RUN go install github.com/iximiuz/cdebug@latest
+# TODO gitsign, crane, cdebug
 # RUN go install github.com/charmbracelet/glow@v1.5
 
 # turn off ryuk for test containers

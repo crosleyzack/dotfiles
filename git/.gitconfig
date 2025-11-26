@@ -11,8 +11,6 @@
 # NOTE: don't forward the entire github.com, as that will cause issues with go
 [url "ssh://git@github.com/crosleyzack"]
     insteadOf = https://github.com/crosleyzack
-[commit]
-    template = $HOME/.gitmessage
 [alias]
     # To debug, use GIT_TRACE=1
     unstage = reset HEAD --
@@ -54,5 +52,6 @@
     update = !BRANCH=$(git branch --show-current) && git checkout-m && git fetch && git rebase && git checkout $BRANCH # && git rebase-m
     checkout-m = !git checkout $(git main)
     rebase-m = !git rebase $(git main)
+    setup-signing = !git config --local commit.gpgsign true && git config --local tag.gpgsign true && git config --local gpg.x509.program gitsign && git config --local gpg.format x509 && git config --local gitsign.connectorID https://accounts.google.com
 [gpg]
     format = ssh

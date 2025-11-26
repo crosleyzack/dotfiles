@@ -13,14 +13,16 @@ rm -rf "$BAZECOR"
 mkdir -p $BAZECOR
 TEMP="$HOME/TEMP"
 mkdir -p $TEMP
-IMAGE="$TEMP/image"
+IMAGE="$TEMP/bazecor"
 rm -f $IMAGE
 #   Download to Temp
-curl -L https://github.com/Dygmalab/Bazecor/releases/download/v1.6.5/Bazecor-1.6.5-x64.AppImage -o $IMAGE
-# https://github.com/Dygmalab/Bazecor/releases/download/v1.7.0/Bazecor-1.7.0-x64.AppImage -o $IMAGE
+curl -L https://github.com/Dygmalab/Bazecor/releases/download/v1.7.0/Bazecor-1.7.0-x64.AppImage -o $IMAGE
 chmod a+x $IMAGE
 #   Extract image
 cd $TEMP && ./image --appimage-extract
+sudo chown root:root squashfs-root/chrome-sandbox
+sudo chmod 4755 squashfs-root/chrome-sandbox
+./squashfs-root/AppRun
 #   Copy to final location
 cp -a squashfs-root/. $BAZECOR
 # Create Desktop Entry

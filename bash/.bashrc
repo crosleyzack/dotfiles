@@ -35,6 +35,10 @@ export MOZ_ENABLE_WAYLAND=1
 
 [[ -f ~/.bash-preexec.sh ]] && source ~/.bash-preexec.sh;
 
+if [ -d $HOME/.local/bin/env ]; then
+   source $HOME/.local/bin/env
+fi;
+
 if [ -d $HOME/.atuin/bin ]; then
-   eval "$(atuin init zsh)"
+   eval "$(atuin init bash)"
 fi;
