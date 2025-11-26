@@ -51,7 +51,6 @@ is_installed python
 if [ "true" = "$INSTALLED" ]
 then
     python -m pip install --upgrade wheel pip setuptools virtualenv
-    cd ~/.pyenv && git pull
 fi
 
 # update snap
@@ -62,11 +61,11 @@ then
 fi
 
 # update nix
-is_installed home-manager
+is_installed nix-channel
 if [ "true" = "$INSTALLED" ]
 then
     nix-channel --update
-    home-manager switch
+    # nix-collect-garbage -d
 fi
 
 # update flatpak
