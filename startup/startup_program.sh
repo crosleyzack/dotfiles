@@ -12,9 +12,9 @@ DIR=$(dirname $FILE_PATH)
 # PATH="$PATH:/usr/local/bin:/bin:/usr/bin:$HOME/.nix-profile/bin/"
 
 # work
-# declare -a progs=("snap run firefox" "spotify" "slack" "code" "bitwarden" "gnome-terminal -e 'tmux'")
+# declare -a progs=("code --disable-gpu" "snap run firefox" "snap run spotify" "snap run slack" "snap run proton-pass" "snap run obsidian" "gnome-terminal -- tmux")
 # personal
-declare -a progs=("firefox" "flatpak run md.obsidian.Obsidian" "flatpak run me.proton.Mail" "flatpak run me.proton.Pass" "flatpak run org.signal.Signal" "ptyxis -e /usr/bin/zsh -c tmux")
+declare -a progs=("firefox" "code" "flatpak run md.obsidian.Obsidian" "flatpak run me.proton.Mail" "flatpak run me.proton.Pass" "flatpak run org.signal.Signal" "ptyxis -e /usr/bin/zsh -c tmux")
 printf '%s\n' "${progs[@]}"\
 
 ## now loop through the above array
