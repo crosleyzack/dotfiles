@@ -11,12 +11,10 @@ DIR=$(dirname $FILE_PATH)
 
 # PATH="$PATH:/usr/local/bin:/bin:/usr/bin:$HOME/.nix-profile/bin/"
 
-# "flatpak run app.zen_browser.zen"
-# "flatpak run com.spotify.Client"
-# "flatpak run org.signal.Signal"
-# "flatpak run com.visualstudio.code"
-# "ptyxis -s -x '"toolbox run -c devs tmux\""
-declare -a progs=("snap run firefox" "spotify" "slack" "code" "bitwarden" "gnome-terminal -e 'tmux'")
+# work
+# declare -a progs=("snap run firefox" "spotify" "slack" "code" "bitwarden" "gnome-terminal -e 'tmux'")
+# personal
+declare -a progs=("firefox" "flatpak run md.obsidian.Obsidian" "flatpak run me.proton.Mail" "flatpak run me.proton.Pass" "flatpak run org.signal.Signal" "ptyxis -e /usr/bin/zsh -c tmux")
 printf '%s\n' "${progs[@]}"\
 
 ## now loop through the above array
@@ -24,6 +22,7 @@ for i in "${progs[@]}"
 do
     echo "executing $i"
     exec $i > /dev/null &
+    sleep .1s
 done
 
 echo "Programs launched, sleeping"

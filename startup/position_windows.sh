@@ -68,7 +68,7 @@ function position {
             logger "position_windows.sh: changing $1 to maximized vert (wmctrl -i -r $WINID -e $6,0,$5,$X,$Y)"
 	    wmctrl -i -r $WINID -e "0,$6,0,$5,$Y"
 	fi
-	sleep 0.5s
+	sleep .5s
     done
 }
 
@@ -88,12 +88,13 @@ HALF=$(($X / 2))
 #        program desktop_id
 #                  window_size      array_windows
 #                                         xSize ySize
-# position zoom    7 $VERT_MAXED      false $HALF 0 &
-# position docker  7 $VERT_MAXED      false $HALF $HALF &
-# position podman  7 $VERT_MAXED      false $HALF 0 &
-position bitwarden 7 $VERT_HORZ_MAXED false $X    $Y &
-position firefox   8 $VERT_HORZ_MAXED false $X    $Y &
-# position signal    9 $VERT_MAXED      false $HALF 0 &
-position spotify   9 $VERT_MAXED      false $HALF 0 &
-position slack     9 $VERT_MAXED      false $HALF $HALF &
-position code      1 $FULLSCREEN      true  $X    $Y &
+position firefox     8 $VERT_HORZ_MAXED false $X    $Y &
+position code        1 $FULLSCREEN      true  $X    $Y &
+# personal
+position mail.Proton 5 $VERT_HORZ_MAXED false $X    $Y &
+position obsidian    6 $VERT_HORZ_MAXED false $X    $Y &
+position pass.Proton 7 $VERT_HORZ_MAXED false $X    $Y &
+position signal      9 $VERT_HORZ_MAXED false $HALF 0 &
+# work
+position spotify     9 $VERT_MAXED      false $HALF 0 &
+position slack       9 $VERT_MAXED      false $HALF $HALF &
