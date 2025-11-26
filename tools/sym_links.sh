@@ -15,15 +15,9 @@ fi
 BASE_DIR=$(realpath $1)
 
 # Bash
-rm -f ~/.bashrc
+rm -f $HOME/.bashrc
 echo "Linking $HOME/.bashrc to $BASE_DIR/bash/.bashrc"
 ln -s $BASE_DIR/bash/.bashrc $HOME/.bashrc
-
-# Alacritty
-mkdir -p $CONFIG/alacritty
-rm -f $CONFIG/alacritty/alacritty.toml
-echo "Linking $CONFIG/alacritty/alacritty.toml to $BASE_DIR/alacritty/alacritty.toml"
-ln -s $BASE_DIR/alacritty/alacritty.toml $CONFIG/alacritty/alacritty.toml
 
 # VS Code
 mkdir -p $CONFIG/Code/User
