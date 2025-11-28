@@ -18,8 +18,6 @@ echo "ZSH=$ZSH"
 export ZSH_CUSTOM=$ZSH/custom
 echo "ZSH_CUSTOM=$ZSH_CUSTOM"
 
-
-
 read -p "Continue? (Y/N): " confirm && [[ $confirm == [nN] || $confirm == [nN][oO] ]] && exit
 
 # Setup oh my zsh

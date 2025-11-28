@@ -13,14 +13,14 @@ To setup on new computer:
 3. If on `gnome`, setup sudo-i3 environment and desired settings:
     - Run `gnome/workspace_keybindings.sh` and `gnome/gnome_settings.sh`
 4. Setup desired program settings:
-    - Run `tools/sym_links.sh` to use config files in dotfiles repo.
+    - Run `utils/sym_links.sh` to use config files in dotfiles repo.
 5. To setup default launch programs in Ubuntu:
     - Run `startup/startup_install.sh`
 6. If emacs is desired:
     - Install emacs
     - Pull emacs config from https://github.com/CrosleyZack/emacs_config.git
 
-To keep everything updated, run `tools/update.sh`.
+To keep everything updated, run `utils/update.sh`.
 
 ## Security
 

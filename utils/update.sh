@@ -3,7 +3,7 @@
 # Script to update machine fully
 
 FILE="${BASH_SOURCE%/*}"
-source "$FILE/../tools/install_tools.sh"
+source "$FILE/../utils/installed.sh"
 
 # Apt packages
 is_installed apt

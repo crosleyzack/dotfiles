@@ -20,7 +20,9 @@ fi
 # add sbins to path
 PATH="$PATH:/usr/sbin:$HOME/bin:/usr/local/sbin"
 
-export PATH=$(go env GOPATH)/bin:$PATH 
+if [ -d $HOME/go ]; then
+    export PATH=$(go env GOPATH)/bin:$PATH 
+fi
 
 # if gcloud is defined, set access token env variable
 # if [ -n $(command -v gcloud) ]; then
