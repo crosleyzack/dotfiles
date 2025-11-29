@@ -1,5 +1,18 @@
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME="spaceship"
+export ZSH_THEME="spaceship"
+
+# setup zsh completion
+autoload -Uz compinit && compinit
+autoload -U +X bashcompinit && bashcompinit
+
+# Which plugins would you like to load?
+# Standard plugins can be found in $ZSH/plugins/
+# Custom plugins may be added to $ZSH_CUSTOM/plugins/
+plugins=( git spaceship-vi-mode zsh-syntax-highlighting zsh-autosuggestions z )
+
+if [ -f $ZSH/oh-my-zsh.sh ]; then
+    source $ZSH/oh-my-zsh.sh;
+fi
 
 # Ensure mozilla firefox works on wayland
 export MOZ_ENABLE_WAYLAND=1
@@ -14,20 +27,14 @@ bindkey -v
 export RPS1="%{$reset_color%}"
 
 # Setup nix
-# [ -f "$HOME/.nix-profile/etc/profile.d/nix.sh" ] && source "$HOME/.nix-profile/etc/profile.d/nix.sh"
-[ -f "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh" ] && source "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh"
-
-# Which plugins would you like to load?
-# Standard plugins can be found in $ZSH/plugins/
-# Custom plugins may be added to $ZSH_CUSTOM/plugins/
-plugins=( git spaceship-vi-mode zsh-syntax-highlighting zsh-autosuggestions z )
-
-autoload -Uz compinit
-compinit
+if [ -f $HOME/.nix-profile/etc/profile.d/nix.sh ]; then
+    source $HOME/.nix-profile/etc/profile.d/nix.sh;
+fi
+if [ -f $HOME/.nix-profile/etc/profile.d/hm-session-vars.sh ]; then
+    source $HOME/.nix-profile/etc/profile.d/hm-session-vars.sh;
+fi
 
 # Aliases
-# add alias shortcut for proxychains
-# alias pc="proxychains"
 # alias for easy tmux cleanup
 alias tmux-cleanup='for x in $(tmux list-sessions | grep -E -i "^[[:digit:]]" | awk -F ":" "{print \$1}"); do tmux kill-session -t $x; done'
 # setup toolbox helper
@@ -38,23 +45,12 @@ alias devbox='toolbox run -c devs tmux'
 alias jwt='jq -R "split(\".\") | .[0],.[1] | @base64d | fromjson"'
 
 # Indicate authentication for kubectl
-export USE_GKE_GCLOUD_AUTH_PLUGIN=True
-
-# setup pyenv, if installed 
-# export PYENV_ROOT="$HOME/.pyenv"
-# command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
-# eval "$(pyenv init -)"
-# eval "$(pyenv virtualenv-init -)"
+export USE_GKE_GCLOUD_AUTH_PLUGIN=true
 
 # setup nvm, if installed
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && source "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && source "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
-# Set history by session
-# unsetopt inc_append_history
-# unsetopt share_history
-# setopt APPEND_HISTORY
 
 # setup direnv, if isntalled
 command -v direnv >/dev/null || eval "$(direnv hook zsh)" 
@@ -80,10 +76,6 @@ fi
 if [ -d $HOME/.local/bin/env ]; then
     source "$HOME/.local/bin/env"
 fi
-
-source $ZSH/oh-my-zsh.sh
-
-autoload -U +X bashcompinit && bashcompinit
 
 # Use atuin
 if [ -d $HOME/.atuin/bin ]; then
