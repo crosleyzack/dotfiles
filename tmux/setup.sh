@@ -11,4 +11,9 @@ git clone git@github.com:rickstaa/tmux-notify.git $PLUGINS_DIR/notify
 git clone git@github.com:MunifTanjim/tmux-mode-indicator.git $PLUGINS_DIR/indicator
 git clone git@github.com:tmux-plugins/tmux-yank.git $PLUGINS_DIR/yank
 
-echo "Plugins retrieved. Make sure to <PREFIX>+I in tmux for install"
+if [ -f $PLUGINS_DIR/tpm/bin/install_plugins ]; then
+    echo "Installing plugins...";
+    $PLUGINS_DIR/tpm/bin/install_plugins;
+else
+    echo "Make sure to <PREFIX>+I in tmux for install";
+fi
