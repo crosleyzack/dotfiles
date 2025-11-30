@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # NOTE: this can also be run to update nix version. Simply change `VERSION` below to the appropriate value. See https://nixos.wiki/wiki/Nix_channels
-VERSION="25.05"
+VERSION="25.11"
 SETUP_CHANNEL=true
 INSTALL_HOME_MANAGER=false
 
@@ -16,7 +16,7 @@ fi
 
 # Add nixpkgs stable and unstable
 if $SETUP_CHANNEL; then
-    # nix-channel --remove unstable
+    nix-channel --remove unstable
     nix-channel --remove nixpkgs
     nix-channel --add "https://channels.nixos.org/nixos-$VERSION" nixpkgs
     nix-channel --update
