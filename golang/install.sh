@@ -8,4 +8,5 @@ fi
 
 # install packages only available via go install
 go install \
-    github.com/crosleyzack/xplr@latest
+    github.com/crosleyzack/xplr@latest \
+    github.com/protoc-gen/protoc-gen-openapiv3@latest

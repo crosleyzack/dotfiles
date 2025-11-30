@@ -16,6 +16,10 @@ Remove nix from system.
 
 https://nixos.org/manual/nix/stable/installation/uninstall
 
+## Debugging
+
+- `error: this derivation has bad 'meta.outputsToInstall'`: Run `nix-env --rollback && nix-env -i -f pkgs.nix`
+
 ## TODO
 
 Setup and use home manager
