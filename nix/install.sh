@@ -1,15 +1,15 @@
 #!/bin/bash
 
 # NOTE: this can also be run to update nix version. Simply change `VERSION` below to the appropriate value. See https://nixos.wiki/wiki/Nix_channels
-VERSION="25.11"
-SETUP_CHANNEL=true
-INSTALL_HOME_MANAGER=false
+VERSION="${NIX_VERSION:-25.11}"
+SETUP_CHANNEL="${SETUP_NIX_CHANNEL:-true}"
+INSTALL_HOME_MANAGER="${SETUP_HOME_MANAGER:-false}"
+INSTALL_NIX_PKGS="${SETUP_NIX_PKGS:-false}"
 
 # Install nix package manager
 if [[ -z "$(which nix-env)" ]]; then
     echo "NIX not installed, installing"
-    # see https://nixos.org/download/
-    sh <(curl --proto '=https' --tlsv1.2 -L https://nixos.org/nix/install) --no-daemon
+    sh <(curl --proto '=https' --tlsv1.2 -L https://nixos.org/nix/install) --no-daemon --yes
     # source after install
     source $HOME/.nix-profile/etc/profile.d/nix.sh
 fi
@@ -31,3 +31,12 @@ if $INSTALL_HOME_MANAGER; then
     echo "Home manager installed, the command to setup may not work until after a restart"
     nix-shell '<home-manager>' -A install
 fi
+
+# Install home manager
+if $INSTALL_NIX_PKGS; then
+    FILE_PATH=$(realpath $BASH_SOURCE)
+    DIR=$(dirname $FILE_PATH)
+    nix-env -irf ./pkgs.nix 
+fi
+
+echo "\nInstall completed. Relaunch shell to use nix\n"
