@@ -34,9 +34,7 @@ fi
 
 # Install home manager
 if $INSTALL_NIX_PKGS; then
-    FILE_PATH=$(realpath $BASH_SOURCE)
-    DIR=$(dirname $FILE_PATH)
-    nix-env -irf ./pkgs.nix 
+    nix-env -iA nixpkgs.myPackages
 fi
 
 echo "\nInstall completed. Relaunch shell to use nix\n"
