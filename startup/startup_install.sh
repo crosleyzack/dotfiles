@@ -5,8 +5,14 @@ FILE_PATH=$(realpath $BASH_SOURCE)
 DIR_PATH=$(dirname $FILE_PATH)
 # echo "DIR_PATH = $DIR_PATH"
 
-if which rpm-ostree > /dev/null; then
-  rpm-ostree install xrandr wmctrl
+if [ ! -f "$(command -v wmctrl)" ]; then
+    echo "wmctrl must be installed for startup program to work"
+    exit 1
+fi
+
+if [ ! -f "$(command -v xrandr)" ]; then
+    echo "xrandr must be installed for startup program to work"
+    exit 1
 fi
 
 # Create startup.desktop
