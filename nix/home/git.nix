@@ -2,13 +2,6 @@
 
 {
   programs = {
-      bash = {
-          enable = true;
-          historyFile = "~/bash_record";
-          sessionVariables = {
-              MOZ_ENABLE_WAYLAND = 1;
-          };
-      };
       git = {
           enable = true;
           lfs = {
@@ -50,6 +43,15 @@
                   setup-signing = "!git config --local commit.gpgsign true && git config --local tag.gpgsign true && git config --local gpg.x509.program gitsign && git config --local gpg.format x509 && git config --local gitsign.connectorID https://accounts.google.com";
               };
           }; 
+      };
+      gh = {
+          enable = true;
+          settings = {
+              editor = "vim";
+              git_protocol = "ssh";
+              color_labels = "enabled";
+              spinner = "enabled";
+          };
       };
   };
 }

@@ -17,6 +17,13 @@
             source $HOME/.nix-profile/etc/profile.d/nix.sh
           '';
       };
+      vim = {
+          enable = true;
+          defaultEditor = true;
+          settings = {
+              relativenumber = true;
+          };
+      };
       atuin = {
           enable = true;
           enableZshIntegration = true;
@@ -60,6 +67,7 @@
             autoload -U +X bashcompinit && bashcompinit
             source $HOME/.nix-profile/etc/profile.d/hm-session-vars.sh
             source $HOME/.nix-profile/etc/profile.d/nix.sh
+            test -f $HOME/.env && source $HOME/.env 
           '';
       };
   };

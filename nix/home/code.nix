@@ -4,6 +4,7 @@
   programs = {
       vscode = {
           enable = true;
+          mutableExtensionsDir = false;
           profiles = {
               main = {
                   extensions = with pkgs; [
