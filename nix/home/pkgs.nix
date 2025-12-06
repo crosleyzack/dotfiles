@@ -25,6 +25,7 @@
         leiningen
         golint
         gopls
+        gotools
         go-task
         dive 
         protobuf
