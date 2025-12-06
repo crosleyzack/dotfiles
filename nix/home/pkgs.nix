@@ -5,6 +5,7 @@
     packages = with pkgs; [
         # vscode
         # tmux
+        gcc
         jq
         yq
         # direnv
@@ -22,7 +23,7 @@
         leiningen
         golint
         gopls
-        delve
+        # delve
         go-task
         dive 
         protobuf
