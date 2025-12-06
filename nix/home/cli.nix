@@ -12,6 +12,7 @@
           sessionVariables = {
               MOZ_ENABLE_WAYLAND = 1;
           };
+          # ensure nix and go packages are available in shell
           bashrcExtra = ''
             source $HOME/.nix-profile/etc/profile.d/hm-session-vars.sh
             source $HOME/.nix-profile/etc/profile.d/nix.sh
@@ -52,6 +53,7 @@
           enableCompletion = true;
           autosuggestion.enable = true;
           syntaxHighlighting.enable = true;
+          # vim commands in command line
           defaultKeymap = "viins";
           envExtra = ''
             export MOZ_ENABLE_WAYLAND=1
@@ -63,6 +65,7 @@
           shellAliases = {
               devbox = "toolbox run -c devs tmux";
           };
+          # ensure nix and go packages are available in shell
           completionInit = ''
             autoload -Uz compinit && compinit
             autoload -U +X bashcompinit && bashcompinit

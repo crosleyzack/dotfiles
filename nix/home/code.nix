@@ -349,14 +349,16 @@
                   ];
                   userSettings = {
                     "window.newWindowProfile" = "main";
-                    "workbench.colorTheme" = "One Dark Pro Night Flat"; # theming
+                    # theming
+                    "workbench.colorTheme" = "One Dark Pro Night Flat";
                     "editor.fontFamily" = "'Monaspice', monospace";
                     "editor.fontSize" = 14.5;
                     "editor.fontVariations" = true;
                     "editor.fontLigatures" = false;
                     "editor.bracketPairColorization.enabled" = true;
                     "terminal.integrated.fontFamily" = "'Monaspice', monospace";
-                    "extensions.experimental.affinity" = { # vim settings
+                    # vim bindings
+                    "extensions.experimental.affinity" = {
                         "vscodevim.vim" = 1;
                         "asvetliakov.vscode-neovim" = 1;
                     };
@@ -378,7 +380,8 @@
                     "vim.useCtrlKeys" = true;
                     "vim.hlsearch" = true;
                     "vim.vimrc.enable" = false;
-                    "editor.detectIndentation" = true; # editor configuration
+                    # editor configuration
+                    "editor.detectIndentation" = true;
                     "editor.inlineSuggest.enabled" = true;
                     "editor.largeFileOptimizations" = true;
                     "editor.lineNumbers" = "relative";
@@ -407,9 +410,12 @@
                     "workbench.secondarySideBar.defaultVisibility" = "hidden";
                     "workbench.startupEditor" = "readme";
                     "dev.containers.copyGitConfig" = false;
+                    # for fedora machines
+                    # "dev.containers.dockerPath" = "podman";
                     "terminal.integrated.suggest.enabled" = true;
                     "terminal.integrated.defaultProfile.linux" = "zsh";
-                    "gopls" = { # go settings
+                    # go settings
+                    "gopls" = {
                         "formatting.local" = "github.com/chainguard-dev";
                     };
                     "go.useLanguageServer" = true;
@@ -428,7 +434,8 @@
                         "editor.codeLens" = true;
                         "editor.defaultFormatter" = "golang.go";
                     };
-                    "chat.mcp.access" = "none"; # effeciency improvements
+                    # disable a bunch of stuff for efficiency
+                    "chat.mcp.access" = "none";
                     "chat.commandCenter.enabled" = false;
                     "chat.agent.enabled" = false;
                     "chat.agent.maxRequests" = 0;

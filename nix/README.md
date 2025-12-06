@@ -22,6 +22,8 @@ Home Manager will not only install packages, but configure programs like zsh, vs
 
 Use `home-manager switch` to update packages.
 
+Use `home-manager expire-generations "<expire time>` to delete old home manager generations
+
 ## nuke.sh
 
 Remove nix from system.

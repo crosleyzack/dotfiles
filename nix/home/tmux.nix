@@ -4,14 +4,16 @@
   programs = {
       tmux = {
           enable = true;
-          keyMode = "vi";
-          prefix = "C-w";
           baseIndex = 0;
           historyLimit = 1000000;
           shell = "${pkgs.zsh}/bin/zsh";
           terminal = "tmux-256color";
+          # use vi mode with C-w to mirror nvim bindings
+          keyMode = "vi";
+          prefix = "C-w";
           plugins = with pkgs; [
             {
+                # save out tmux state
                 plugin = tmuxPlugins.resurrect;
                 extraConfig = ''
                     set -g @resurrect-strategy-vim 'session'
@@ -21,6 +23,7 @@
                 '';
             }
             {
+                # reload tmux state automatically on launch
                 plugin = tmuxPlugins.continuum;
                 extraConfig = ''
                     set -g @continuum-restore 'on'
@@ -29,6 +32,7 @@
                 '';
             }
             {
+                # block copy from tmux
                 plugin = tmuxPlugins.yank;
                 extraConfig = ''
                     bind -T copy-mode-vi v send -X begin-selection
@@ -36,6 +40,7 @@
                 '';
             }
             {
+                # color scheme
                 plugin = tmuxPlugins.tmux-nova;
                 extraConfig = ''
                     set -g @plugin 'o0th/tmux-nova'

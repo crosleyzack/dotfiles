@@ -11,12 +11,12 @@ declare -a packages=(
     "io.podman_desktop.PodmanDesktop"
     "org.gimp.GIMP"
     "com.spotify.Client"
-    "com.slack.Slack"
     "org.signal.Signal"
     "me.proton.Mail"
     "me.proton.Pass"
     "md.obsidian.Obsidian"
-    "app.zen_browser.zen"
+    "com.valvesoftware.Steam"
+    "org.librecad.librecad"
 )
 
 ## now loop through the above array

@@ -3,15 +3,17 @@
 {
   home = {
     packages = with pkgs; [
+        # setup elsewhere
         # vscode
         # tmux
+        # direnv
+        # git
+        # git-lfs
+        # atuin
         gcc
         jq
         yq
-        # direnv
         cmake
-        # git
-        # git-lfs
         gitsign
         github-runner
         tor   
@@ -23,7 +25,6 @@
         leiningen
         golint
         gopls
-        # delve
         go-task
         dive 
         protobuf
@@ -37,7 +38,6 @@
         kind
         htop
         ctop
-        # atuin
         tldr
         nix-info
         wmctrl
@@ -69,6 +69,7 @@
   programs.go = {
     enable = true;
     packages = {
+      # install xplr v0.2.2
       "github.com/crosleyzack/xplr" = builtins.fetchTarball {
         url = "https://github.com/crosleyzack/xplr/archive/refs/tags/v0.2.2.tar.gz";
         sha256 = "sha256:1vs14qk0hbmhb8p89c84cmb2hamba8y42jf40dwv25pf37g342vv";
