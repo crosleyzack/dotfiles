@@ -8,6 +8,7 @@
               main = {
                   extensions = with pkgs; [
                     vscode-extensions.golang.go
+                    vscode-extensions.vscodevim.vim
                     vscode-extensions.ms-vscode-remote.remote-containers
                     vscode-extensions.hashicorp.terraform
                     vscode-extensions.ms-python.python
