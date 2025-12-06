@@ -20,7 +20,6 @@
         kubectl
         kubectx
         leiningen
-        go
         golint
         gopls
         delve
@@ -65,5 +64,14 @@
         nerd-fonts.monaspace
         bazecor
     ];
+  };
+  programs.go = {
+    enable = true;
+    packages = {
+      "github.com/crosleyzack/xplr" = builtins.fetchTarball {
+        url = "https://github.com/crosleyzack/xplr/archive/refs/tags/v0.2.2.tar.gz";
+        sha256 = "sha256:1vs14qk0hbmhb8p89c84cmb2hamba8y42jf40dwv25pf37g342vv";
+      };
+    };
   };
 }
