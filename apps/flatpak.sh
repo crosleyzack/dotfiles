@@ -1,5 +1,10 @@
 #!/bin/bash
 
+if [[ -z "$(which flatpak)" ]]; then
+    echo "flatpak not installed"
+    exit 1
+fi
+
 flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
 
 declare -a packages=(
@@ -19,4 +24,3 @@ for i in "${packages[@]}"
 do
     flatpak install flathub $i
 done
-

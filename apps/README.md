@@ -1,7 +1,11 @@
-# Flatpak
+# Apps
 
 Installs containerized programs alongside nix programs
 
-### installs.sh
+### flatpak.sh
 
 Install default flatpak programs
+
+### snap.sh
+
+Install default snap programs
