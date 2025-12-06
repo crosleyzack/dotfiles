@@ -45,13 +45,6 @@
           ];
           extraConfig = ''
             set -g history-file "$HOME/.config/tmux/history"
-            # remove unused bindings
-            unbind '"'
-            unbind %
-            unbind c
-            unbind &
-            unbind !
-            unbind @
             # add useful aliases
             set -s command-alias[6] "aliases=show-options command-alias"
             set -s command-alias[7] ns='new -s'
