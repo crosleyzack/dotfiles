@@ -3,6 +3,7 @@
 {
   imports = [
     ./home/pkgs.nix
+    ./home/go.nix
     ./home/cli.nix
     ./home/git.nix
     ./home/tmux.nix
