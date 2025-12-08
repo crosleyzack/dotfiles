@@ -10,61 +10,72 @@
         # git
         # git-lfs
         # atuin
-        gcc
         jq
         yq
+        htop
+        tldr
+        glow
         cmake
+        ranger    
+        man-db   
+        slides
+        wmctrl
+        nix-info
+        step-cli         
+        xorg.xrandr
+        yubikey-manager
+        nerd-fonts.monaspace
+        # networking
+        tor
+        nmap
+        gping
+        httpie
+        posting
+        proxychains
+        # cloud
+        redis  
+        sqlite
+        postgresql
+        cloudflared
+        google-cloud-sdk
+        google-cloud-sql-proxy
+        # github
+        codeowners
+        cosign
         gitsign
         github-runner
-        tor   
-        proxychains
-        nmap
+        # containers
+        ctop
+        dive 
+        kind
         helm
+        crane
+        ctlptl
         kubectl
         kubectx
-        leiningen
+        terraform
+        terraform-docs
+        docker-credential-gcr
+        # languages
+        uv
+        gcc
         golint
         gopls
         gotools
         go-task
-        dive 
-        protobuf
+        leiningen
+        # protobuf
+        buf
         grpcurl
+        protobuf
         grpc-gateway
         protoc-gen-go
         protoc-gen-go-grpc
-        ctlptl
-        buf
-        man-db   
-        kind
-        htop
-        ctop
-        tldr
-        nix-info
-        wmctrl
-        xorg.xrandr
-        yubikey-manager
-        crane
-        redis  
-        google-cloud-sql-proxy
-        google-cloud-sdk
-        postgresql
-        sqlite
-        httpie
-        posting
-        ranger    
-        cloudflared
-        gping
-        uv
-        apko
-        codeowners
-        cosign
-        docker-credential-gcr
-        step-cli         
-        terraform
-        terraform-docs slides glow
-        nerd-fonts.monaspace
+        # programs
         bazecor
+        # chainguard
+        apko
+        melange
     ];
   };
 }
