@@ -72,8 +72,7 @@
       direnv = {
           enable = true;
           enableZshIntegration = true;
-          # TODO investigate this later
-          nix-direnv.enable = false;
+          nix-direnv.enable = true;
       };
       starship = {
           enable = true;

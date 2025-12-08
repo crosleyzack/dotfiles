@@ -8,13 +8,14 @@
           profiles = {
               main = {
                   extensions = with pkgs; [
-                    vscode-extensions.golang.go
+                    vscode-extensions.mkhl.direnv
                     vscode-extensions.vscodevim.vim
-                    vscode-extensions.ms-vscode-remote.remote-containers
-                    vscode-extensions.hashicorp.terraform
-                    vscode-extensions.ms-python.python
-                    vscode-extensions.zxh404.vscode-proto3
                     vscode-extensions.zhuangtongfa.material-theme
+                    vscode-extensions.ms-vscode-remote.remote-containers
+                    vscode-extensions.golang.go
+                    vscode-extensions.ms-python.python
+                    vscode-extensions.hashicorp.terraform
+                    vscode-extensions.zxh404.vscode-proto3
                   ];
                   keybindings = [
                     {
