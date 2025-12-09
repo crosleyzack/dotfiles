@@ -9,7 +9,7 @@
   "workbench.secondarySideBar.defaultVisibility": "hidden",
   "workbench.startupEditor": "readme",
   // themes and colors
-  "workbench.colorTheme": "GitHub Dark High Contrast",
+  "workbench.colorTheme": "One Dark Pro Night Flat",
   "workbench.colorCustomizations": {
     "tab.activeBackground": "#0b0b0b"
   },
