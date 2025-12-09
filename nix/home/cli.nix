@@ -16,7 +16,7 @@
           bashrcExtra = ''
             source $HOME/.nix-profile/etc/profile.d/hm-session-vars.sh
             source $HOME/.nix-profile/etc/profile.d/nix.sh
-            export PATH="$PATH:$HOME/go/bin"
+            export PATH="$PATH:$HOME/go/bin:$HOME/.local/bin"
           '';
       };
       vim = {
@@ -106,7 +106,7 @@
             source $HOME/.nix-profile/etc/profile.d/hm-session-vars.sh
             source $HOME/.nix-profile/etc/profile.d/nix.sh
             test -f $HOME/.env && source $HOME/.env 
-            export PATH="$PATH:$HOME/go/bin"
+            export PATH="$PATH:$HOME/go/bin:$HOME/.local/bin"
           '';
       };
   };
