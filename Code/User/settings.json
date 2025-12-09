@@ -99,7 +99,12 @@
   // "vim.vimrc.path": "$HOME/.vimrc",
   "dev.containers.copyGitConfig": false,
   "terminal.integrated.suggest.enabled": true,
-  "terminal.integrated.defaultProfile.linux": "zsh",
+  "terminal.integrated.profiles.linux": {
+    "nix-zsh": {
+        "path": "/home/zackary-crosley/.nix-profile/bin/zsh"
+    }
+  },
+  "terminal.integrated.defaultProfile.linux": "nix-zsh",
   "terminal.integrated.fontFamily": "'Monaspice', monospace",
   // various efficiency settings
   // chat / ai
@@ -121,7 +126,6 @@
   "chat.agent.maxRequests": 0,
   "github.copilot.chat.agent.autoFix": false,
   "github.copilot.chat.agent.runTasks": false,
-  "chat.mcp.enabled": false,
   "notebook.experimental.generate": false,
   "workbench.settings.showAISearchToggle": false,
   "github.copilot.chat.codesearch.enabled": false,
@@ -181,4 +185,6 @@
     "**/.git/subtree-cache/**": true,
     "**/dist/**": true
   },
+  "chat.mcp.access": "none",
+  "claudeCode.preferredLocation": "sidebar",
 }
