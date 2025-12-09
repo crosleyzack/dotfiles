@@ -61,9 +61,10 @@
         gcc
         golint
         gopls
+        gotests
         gotools
         go-task
-        leiningen
+        golangci-lint
         # protobuf
         buf
         grpcurl
