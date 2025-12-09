@@ -35,6 +35,7 @@
         # cloud
         redis  
         sqlite
+        mysql84
         postgresql
         cloudflared
         google-cloud-sdk
