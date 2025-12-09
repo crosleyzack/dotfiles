@@ -8,7 +8,7 @@
   programs = {
       bash = {
           enable = true;
-          historyFile = "~/bash_record";
+          historyFile = "$HOME/bash_record";
           sessionVariables = {
               MOZ_ENABLE_WAYLAND = 1;
           };
