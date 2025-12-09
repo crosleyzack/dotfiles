@@ -20,6 +20,7 @@
                     set -g @resurrect-capture-pane-contents 'on'
                     set -g @resurrect-save '!'
                     set -g @resurrect-restore '@'
+                    set -g @resurrect-dir '$HOME/.tmux/resurrect.save'
                 '';
             }
             {
