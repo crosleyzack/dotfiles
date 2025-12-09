@@ -16,6 +16,7 @@
                     vscode-extensions.ms-python.python
                     vscode-extensions.hashicorp.terraform
                     vscode-extensions.zxh404.vscode-proto3
+                    vscode-extensions.github.copilot
                   ];
                   keybindings = [
                     {
@@ -412,7 +413,7 @@
                     "workbench.startupEditor" = "readme";
                     "dev.containers.copyGitConfig" = false;
                     # for fedora machines
-                    # "dev.containers.dockerPath" = "podman";
+                    "dev.containers.dockerPath" = "podman";
                     "terminal.integrated.suggest.enabled" = true;
                     "terminal.integrated.defaultProfile.linux" = "zsh";
                     # go settings
