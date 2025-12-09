@@ -18,6 +18,7 @@ declare -a backups=(
     "$HOME/.profile"
     "$HOME/.vscode/extensions"
     "$HOME/.config/atuin/config.toml"
+    "$HOME/.config/gh/config.yml"
 )
 declare -a removes=(
     "$HOME/.oh-my-zsh"
