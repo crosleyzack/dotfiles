@@ -36,6 +36,7 @@
         codeowners
         cosign
         gitsign
+        pre-commit
         github-runner
         # containers
         ctop
