@@ -8,6 +8,8 @@
     ./home/git.nix
     ./home/tmux.nix
     ./home/code.nix
+    # packages for work computer
+    ./home/work.nix
   ];
 
   home = {

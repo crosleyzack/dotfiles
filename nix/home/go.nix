@@ -1,6 +1,16 @@
 { pkgs, ... }:
 
 {
+  home.packages = with pkgs; [
+    gcc
+    golint
+    gopls
+    gotests
+    gotools
+    go-tools
+    go-task
+    golangci-lint
+  ];
   programs.go = {
     enable = true;
     packages = {
