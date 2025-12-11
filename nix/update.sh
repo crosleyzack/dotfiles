@@ -3,16 +3,12 @@
 FILE_PATH=$(realpath $BASH_SOURCE)
 DIR_PATH=$(dirname $FILE_PATH)
 
-echo "Make sure the home directory is correct and vscode is disabled if on Ubuntu"
-read -p "Do you want to continue? (y/n) " yn
+if [ ! -f $DIR_PATH/home.nix ]; then
+    echo "home.nix not found, run `ln -s <file>.nix home.nix` with correct file"
+    exit 1
+fi
 
-case $yn in
-    y ) echo ok, we will proceed;;
-    n ) echo exiting...;
-        exit;;
-    * ) echo invalid response;
-        exit 1;;
-esac
+nix-channel --update
 
 rm -f $HOME/.config/home-manager/home.nix
 rm -rf $HOME/.config/home-manager/home
@@ -21,5 +17,4 @@ cp -Lr $DIR_PATH/home $HOME/.config/home-manager/home
 # this file tends to cause problems, remove it
 rm $HOME/.config/atuin/config.toml
 
-nix-channel --update
 home-manager switch

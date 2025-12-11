@@ -1,6 +1,7 @@
 { pkgs, ... }:
 
 let
+  # TODO install protoc@29.3, protoc-gen-go@1.34.2, protoc-gen-go-grpc@1.5.1
   protocPkgs = import (builtins.fetchTarball {
     url = "https://github.com/NixOS/nixpkgs/archive/f62d6734af4581af614cab0f2aa16bcecfc33c11.tar.gz";
     sha256 = "sha256:10w5c44wyjf29kb2r5pgqy8bahaq46a9lba2wybipkqk293zkdpr";
@@ -39,7 +40,7 @@ in
     # TODO install from protocGenGoPkgs
     # protoc-gen-go
     # myProtocGenGo
-    protoc-gen-go-grpc
+    # protoc-gen-go-grpc
     # apks
     apko
     melange
