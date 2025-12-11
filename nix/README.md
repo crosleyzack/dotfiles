@@ -4,9 +4,9 @@ Install and use nix package manager to have fully reproducible libraries.
 
 ## Create home.nix
 
-For work computer, do `ln -s home.nix framework.nix`
+For work computer, do `ln -s framework.nix home.nix`
 
-For home computer, do `ln -s home.nix lenovo.nix`
+For home computer, do `ln -s lenovo.nix home.nix`
 
 ## Setting up barebones Nix
 
