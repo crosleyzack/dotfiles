@@ -7,19 +7,16 @@
     ./home/cli.nix
     ./home/git.nix
     ./home/tmux.nix
-    ./home/code.nix
     # packages for work computer
     ./home/work.nix
+    # vscode doesn't work on this computer
+    # ./home/code.nix
   ];
 
   home = {
-    username = "crosleyzack";
-    homeDirectory = "/home/crosleyzack";
+    username = "zackary.crosley";
+    homeDirectory = "/home/zcakary.crosley";
     stateVersion = "25.11";
-    # for fedora machines
-    # shellAliases = {
-    #  docker = "podman";
-    #};
     shell.enableShellIntegration = true;
   };
 

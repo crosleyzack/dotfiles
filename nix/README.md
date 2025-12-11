@@ -2,6 +2,12 @@
 
 Install and use nix package manager to have fully reproducible libraries.
 
+## Create home.nix
+
+For work computer, do `ln -s home.nix framework.nix`
+
+For home computer, do `ln -s home.nix lenovo.nix`
+
 ## Setting up barebones Nix
 
 Run `SETUP_CHANNEL=true INSTALL_HOME_MANAGER=false INSTALL_NIX_PKGS=true ./install.sh` to setup nix on this computer without home manager.

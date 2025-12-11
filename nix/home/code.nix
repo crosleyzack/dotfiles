@@ -4,8 +4,8 @@
   programs = {
       vscode = {
           # NOTE: does not work on ubuntu!
-          # enable = true;
-          # mutableExtensionsDir = false;
+          enable = true;
+          mutableExtensionsDir = false;
           profiles = {
               main = {
                   extensions = with pkgs; [
