@@ -33,7 +33,6 @@
         proxychains
         cloudflared
         # github
-        codeowners
         cosign
         gitsign
         pre-commit
