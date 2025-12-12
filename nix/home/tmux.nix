@@ -41,6 +41,11 @@
                 '';
             }
             {
+                plugin = tmuxPlugins.sessionist;
+            }
+            # TODO add tmux open
+            # plugin = tmuxPlugins.open;
+            {
                 # color scheme
                 plugin = tmuxPlugins.tmux-nova;
                 extraConfig = ''

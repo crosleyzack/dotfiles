@@ -102,7 +102,11 @@
           envExtra = ''
             export USE_GKE_GCLOUD_AUTH_PLUGIN=true
             export OUTSIDE_DOCKER_HOST="172.17.0.1"
-         '';
+          '';
+          setOptions = [
+            "NO_BEEP"
+            "INC_APPEND_HISTORY"
+          ];
           history.path = "$HOME/.zsh_record";
           shellAliases = {
               devbox = "toolbox run -c devs tmux";
