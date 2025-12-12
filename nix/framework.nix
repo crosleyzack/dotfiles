@@ -17,6 +17,14 @@
     username = "zackary-crosley";
     homeDirectory = "/home/zackary-crosley";
     stateVersion = "25.11";
+    sessionVariables = {
+      MOZ_ENABLE_WAYLAND = 1;
+      EDITOR = "vim";
+    };
+    sessionPath = [
+      "$HOME/go/bin"
+      "$HOME/.local/bin"
+    ];
     shell.enableShellIntegration = true;
   };
 

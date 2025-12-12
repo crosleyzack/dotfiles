@@ -19,6 +19,14 @@
     shellAliases = {
       docker = "podman";
     };
+    sessionVariables = {
+      MOZ_ENABLE_WAYLAND = 1;
+      EDITOR = "vim";
+    };
+    sessionPath = [
+      "$HOME/go/bin"
+      "$HOME/.local/bin"
+    ];
     shell.enableShellIntegration = true;
   };
 
