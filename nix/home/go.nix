@@ -10,6 +10,8 @@
     gotools
     go-tools
     go-task
+    # for pprof
+    graphviz
     golangci-lint
   ];
   programs.go = {
