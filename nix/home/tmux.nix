@@ -51,6 +51,8 @@
                 extraConfig = ''
                     set -g @plugin 'o0th/tmux-nova'
                     set -g @nova-nerdfonts true
+                    set -g @nova-segment-zoomed "#{?window_zoomed_flag,[Z],}"
+                    set -g @nova-segments-0-right "zoomed"
                 '';
             }
           ];
