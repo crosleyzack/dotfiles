@@ -28,6 +28,9 @@
       "$HOME/.local/bin"
     ];
     shell.enableShellIntegration = true;
+    shellAliases = {
+      ls = "ls --color=auto";
+    };
   };
 
   # allow non-free packages to be installed, like terraform

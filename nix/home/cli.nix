@@ -68,6 +68,11 @@
               search_mode = "fuzzy";
           };
       };
+      dircolors = {
+        enable = true;
+        enableBashIntegration = true;
+        enableZshIntegration = true;
+      };
       direnv = {
           enable = true;
           enableZshIntegration = true;
