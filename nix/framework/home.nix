@@ -2,13 +2,13 @@
 
 {
   imports = [
-    ./home/pkgs.nix
-    ./home/go.nix
-    ./home/cli.nix
-    ./home/git.nix
-    ./home/tmux.nix
+    ../shared/pkgs.nix
+    ../shared/go.nix
+    ../shared/cli.nix
+    ../shared/git.nix
+    ../shared/tmux.nix
     # packages for work computer
-    ./home/work.nix
+    ../shared/work.nix
     # vscode doesn't work on this computer
     # ./home/code.nix
   ];
