@@ -2,13 +2,20 @@
 
 {
   imports = [
-    ../shared/pkgs.nix
-    ../shared/go.nix
-    ../shared/cli.nix
-    ../shared/git.nix
-    ../shared/tmux.nix
-    ../shared/code.nix
-    # ../shared/work.nix
+    ../pkgs/atuin.nix
+    ../pkgs/bash.nix
+    ../pkgs/code.nix
+    ../pkgs/dircolors.nix
+    ../pkgs/direnv.nix
+    ../pkgs/gh.nix
+    ../pkgs/git.nix
+    ../pkgs/go.nix
+    ../pkgs/pkgs.nix
+    ../pkgs/starship.nix
+    ../pkgs/tmux.nix
+    ../pkgs/vim.nix
+    # ../pkgs/work.nix
+    ../pkgs/zsh.nix
   ];
 
   home = {

@@ -2,15 +2,21 @@
 
 {
   imports = [
-    ../shared/pkgs.nix
-    ../shared/go.nix
-    ../shared/cli.nix
-    ../shared/git.nix
-    ../shared/tmux.nix
-    # packages for work computer
-    ../shared/work.nix
-    # vscode doesn't work on this computer
-    # ./home/code.nix
+    ../pkgs/atuin.nix
+    ../pkgs/bash.nix
+    # vscode doesn't work on this computer via nix
+    # ../pkgs/code.nix
+    ../pkgs/dircorlors.nix
+    ../pkgs/direnv.nix
+    ../pkgs/gh.nix
+    ../pkgs/git.nix
+    ../pkgs/go.nix
+    ../pkgs/pkgs.nix
+    ../pkgs/starship.nix
+    ../pkgs/tmux.nix
+    ../pkgs/vim.nix
+    ../pkgs/work.nix
+    ../pkgs/zsh.nix
   ];
 
   home = {
