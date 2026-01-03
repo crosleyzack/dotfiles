@@ -1,3 +1,5 @@
+<img alt="gitleaks badge" src="https://img.shields.io/badge/protected%20by-gitleaks-blue">
+
 # Dotfiles
 
 Configuration files for my linux system, for everything except Emacs.
@@ -8,19 +10,14 @@ To setup on new computer:
 
 1. Pull repository.
 2. Install packages
-    - Install [nix](https://nixos.org/download/) using `nix/install_nix.sh`
-    - Install packages with `nix-env -i -f nix/pkgs.nix`
-3. If on `gnome`, setup sudo-i3 environment and desired settings:
-    - Run `gnome/workspace_keybindings.sh` and `gnome/gnome_settings.sh`
-4. Setup desired program settings:
-    - Run `utils/sym_links.sh` to use config files in dotfiles repo.
-5. To setup default launch programs in Ubuntu:
-    - Run `startup/startup_install.sh`
-6. If emacs is desired:
-    - Install emacs
-    - Pull emacs config from https://github.com/CrosleyZack/emacs_config.git
+    - Install [nix](https://nixos.org/download/) using [nix/install.sh](nix/install.sh)
+    - See [nix/README.md](nix/README.md) for more details
+3. If using `gnome`, setup sudo-i3 environment and desired settings:
+    - Run [gnome/workspace_keybindings.sh](gnome/workspace_keybindings.sh) and [gnome/gnome_settings.sh](gnome/gnome_settings.sh)
+4. To setup default launch programs:
+    - Run [startup/startup_install.sh](startup/startup_install.sh)
 
-To keep everything updated, run `utils/update.sh`.
+To keep everything updated, run [utils/update.sh](utils/update.sh)
 
 ## Security
 
@@ -32,5 +29,3 @@ To keep everything updated, run `utils/update.sh`.
 ## TODO
 
 - cleanup
-
-<img alt="gitleaks badge" src="https://img.shields.io/badge/protected%20by-gitleaks-blue">
