@@ -11,4 +11,4 @@ fi
 nix-channel --update
 
 # home-manager switch 
-cd $DIR_PATH/system && home-manager switch --flake .
+cd $DIR_PATH/system && home-manager switch -b backup --flake .
