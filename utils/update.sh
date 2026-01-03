@@ -1,6 +1,8 @@
 #!/bin/bash
 
 # Script to update machine fully
+FILE_PATH=$(realpath $BASH_SOURCE)
+DIR_PATH=$(dirname $FILE_PATH)
 
 # Apt packages
 if [ -x "$(command -v apt)" ]; then
@@ -52,7 +54,7 @@ fi
 
 # home manager update
 if [ -x "$(command -v home-manager)" ]; then
-    home-manager switch
+    bash $DIR_PATH/../nix/update.sh
 fi
 
 # update flatpak
