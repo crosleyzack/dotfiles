@@ -1,4 +1,5 @@
 {
+    # TODO REMOVE
     allowUnfree = true;
     packageOverrides = pkgs: with pkgs; {
         myPackages = pkgs.buildEnv {
