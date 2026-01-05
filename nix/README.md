@@ -31,7 +31,15 @@ Use `home-manager expire-generations "<expire time>` to delete old home manager 
 - `nuke.sh`: Remove nix from system. (See https://nixos.org/manual/nix/stable/installation/uninstall)
 - `remove_configs.sh`: remove all config files from system (~/.config, etc)
 
-## Resources
+## systems
+
+<div>
+    <a href="lenovo"><img height="40" width="40" src="https://cdn.simpleicons.org/lenovo/white" style="vertical-align:middle"/></a>
+    &nbsp;&nbsp;
+    <a href="framework"><img height="30" width="30" src="https://cdn.simpleicons.org/framework/white" style="vertical-align:middle"/></a>
+</div>
+
+## resources
 - https://ianthehenry.com/posts/how-to-learn-nix/declarative-user-environment/
 - https://cloudcrafters.cloud/blog/nix-package-manager-create-reproducible-development-environments-that-actually-work/
 - https://surma.dev/things/nix-explained/
