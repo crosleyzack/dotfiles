@@ -1,4 +1,4 @@
-# Nix package manager
+# <img height="30" width="30" src="https://cdn.simpleicons.org/nixos/white" style="vertical-align:middle"/> Nix package manager
 
 Install and use nix package manager to have fully reproducible libraries.
 

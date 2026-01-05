@@ -1,4 +1,4 @@
-# Gnome
+# <img height="30" width="30" src="https://cdn.simpleicons.org/gnome/white" style="vertical-align:middle"/> Gnome
 
 Files for setting up gnome environments.
 

@@ -1,6 +1,6 @@
-# Code
+# <img height="30" width="30" src="https://cdn.simpleicons.org/vscodium/white" style="vertical-align:middle"/> VSCode
 
-Details for setting up and configuring VSCode
+Details for setting up and configuring VSCode, if not managed through Nix
 
 ### User
 
