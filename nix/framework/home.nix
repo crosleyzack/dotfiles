@@ -25,6 +25,7 @@
     stateVersion = "25.11";
     sessionVariables = {
       MOZ_ENABLE_WAYLAND = 1;
+      NIX_SYSTEM_ID = "framework";
       EDITOR = "vim";
     };
     sessionPath = [

@@ -27,6 +27,7 @@
       docker = "podman";
     };
     sessionVariables = {
+      NIX_SYSTEM_ID = "lenovo";
       MOZ_ENABLE_WAYLAND = 1;
       EDITOR = "vim";
     };

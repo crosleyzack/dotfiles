@@ -11,10 +11,17 @@ DIR=$(dirname $FILE_PATH)
 
 # PATH="$PATH:/usr/local/bin:/bin:/usr/bin:$HOME/.nix-profile/bin/"
 
-# work
-# declare -a progs=("code --disable-gpu" "snap run firefox" "snap run spotify" "snap run slack" "snap run proton-pass" "snap run obsidian" "gnome-terminal -- tmux")
-# personal
-declare -a progs=("firefox" "code" "flatpak run md.obsidian.Obsidian" "flatpak run me.proton.Mail" "flatpak run me.proton.Pass" "flatpak run org.signal.Signal" "ptyxis -e /usr/bin/zsh -c tmux")
+# NIX_SYSTEM_ID set by nix home manager for each computer
+case $NIX_SYSTEM_ID in
+    framework)
+        # work
+        declare -a progs=("code --disable-gpu" "snap run firefox" "snap run spotify" "snap run slack" "snap run proton-pass" "snap run obsidian" "gnome-terminal -- tmux")
+    ;;
+    *)
+        # default
+        declare -a progs=("firefox" "code" "flatpak run md.obsidian.Obsidian" "flatpak run me.proton.Mail" "flatpak run me.proton.Pass" "flatpak run org.signal.Signal" "ptyxis -e /usr/bin/zsh -c tmux")
+    ;;
+esac
 printf '%s\n' "${progs[@]}"\
 
 ## now loop through the above array
