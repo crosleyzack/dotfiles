@@ -48,6 +48,8 @@ in
     # myProtocGenGo
     # protoc-gen-go-grpc
     # apks
+    syft
+    grype
     apko
     melange
     # ai

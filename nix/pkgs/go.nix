@@ -4,15 +4,18 @@
   home.packages = with pkgs; [
     gcc
     glibc
-    golint
     gopls
+    gosec
+    golint
     gotests
     gotools
     go-tools
     go-task
+    capslock
+    govulncheck
+    golangci-lint
     # for pprof
     graphviz
-    golangci-lint
   ];
   programs.go = {
     enable = true;
