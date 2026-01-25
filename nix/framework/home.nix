@@ -16,6 +16,7 @@
     ../pkgs/tmux.nix
     ../pkgs/vim.nix
     ../pkgs/work.nix
+    ../pkgs/xplr.nix
     ../pkgs/zsh.nix
   ];
 
