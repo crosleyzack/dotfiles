@@ -12,10 +12,11 @@ DIR=$(dirname $FILE_PATH)
 # PATH="$PATH:/usr/local/bin:/bin:/usr/bin:$HOME/.nix-profile/bin/"
 
 # NIX_SYSTEM_ID set by nix home manager for each computer
+NIX_SYSTEM_ID=framework
 case $NIX_SYSTEM_ID in
     framework)
         # work
-        declare -a progs=("code --disable-gpu" "snap run firefox" "snap run spotify" "snap run slack" "snap run proton-pass" "snap run obsidian" "gnome-terminal -- tmux")
+        declare -a progs=("code" "snap run firefox" "snap run spotify" "snap run slack" "snap run proton-pass" "snap run obsidian" "gnome-terminal")
     ;;
     *)
         # default
