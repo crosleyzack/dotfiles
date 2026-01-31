@@ -8,7 +8,7 @@ let
     src = pkgs.fetchFromGitHub {
       owner = "crosleyzack";
       repo = "xplr";
-      rev = "v0.2.5"; # The specific Git tag or commit hash
+      rev = "v${version}"; # The specific Git tag or commit hash
       sha256 = "sha256-ex0ya6drPoC0GhCtlBm2Wz0Qo3RPxBQwSkHU3XUozag=";
     };
 

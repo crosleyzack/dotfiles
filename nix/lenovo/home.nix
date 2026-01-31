@@ -11,6 +11,7 @@
     ../pkgs/git.nix
     ../pkgs/go.nix
     ../pkgs/pkgs.nix
+    ../pkgs/protobuf.nix
     ../pkgs/starship.nix
     ../pkgs/tmux.nix
     ../pkgs/vim.nix
