@@ -16,7 +16,7 @@ NIX_SYSTEM_ID=framework
 case $NIX_SYSTEM_ID in
     framework)
         # work
-        declare -a progs=("code" "snap run firefox" "snap run spotify" "snap run slack" "snap run proton-pass" "snap run obsidian" "gnome-terminal")
+        declare -a progs=("code" "snap run firefox" "snap run slack" "snap run proton-pass" "snap run obsidian" "gnome-terminal")
     ;;
     *)
         # default

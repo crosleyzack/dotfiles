@@ -21,6 +21,7 @@
         slides
         wmctrl
         nix-info
+        codeowners
         xorg.xrandr
         yubikey-manager
         nerd-fonts.monaspace
