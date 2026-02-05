@@ -7,7 +7,7 @@ DIR_PATH=$(dirname $FILE_PATH)
 # Apt packages
 if [ -x "$(command -v apt)" ]; then
     sudo apt update
-    sudo apt dist-upgrade
+    sudo apt dist-upgrade --yes
     sudo apt autoremove
     sudo apt autoclean
     sudo apt clean
@@ -15,7 +15,7 @@ fi
 
 # dnf packages
 if [ -x "$(command -v dnf)" ]; then
-    sudo dnf upgrade
+    sudo dnf upgrade -y
     sudo dnf distro-sync
 fi
 

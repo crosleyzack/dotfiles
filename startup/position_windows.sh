@@ -11,6 +11,12 @@ EXTERNAL="XWAYLAND0"
 # Get desktop size. See https://askubuntu.com/questions/584688/how-can-i-get-the-monitor-resolution-using-the-command-line
 X=$(xrandr --current | grep '*' | uniq | awk '{print $1}' | cut -d 'x' -f1)
 Y=$(xrandr --current | grep '*' | uniq | awk '{print $1}' | cut -d 'x' -f2)
+
+if [[ -z "$Y" || -z "$X" ]]; then
+    echo "position_windows.sh: invalid screen size $X x $Y"
+    logger "position_windows.sh: invalid screen size $X x $Y"
+    exit 1
+fi
 echo "position_windows.sh: screen size $X x $Y"
 logger "position_windows.sh: screen size $X x $Y"
 
