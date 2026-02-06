@@ -26,12 +26,10 @@
         yubikey-manager
         nerd-fonts.monaspace
         # networking
-        tor
         nmap
         gping
         httpie
         posting
-        proxychains
         cloudflared
         # github
         cosign

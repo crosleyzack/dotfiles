@@ -1,7 +1,18 @@
+{ pkgs, ... }:
+
+{
+  home.packages = with pkgs; [
+    tor
+    proxychains
+  ];
+  # config file
+  home.file.proxychains = {
+    enable = true;
+    target = ".proxychains/proxychains.conf";
+    text = ''
 # proxychains.conf  VER 4
 #
 #        HTTP, SOCKS4, SOCKS5 tunneling proxifier with DNS.
-#	
 
 # The option below identifies how the ProxyList is treated.
 # only one option should be uncommented at time,
@@ -113,4 +124,6 @@ localnet 127.0.0.0/255.0.0.0
 # meanwhile
 # defaults set to "tor"
 socks4 	127.0.0.1 9050
-
+    '';
+  };
+}
