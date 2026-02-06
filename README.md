@@ -12,9 +12,7 @@ To setup on new computer:
 2. Install packages
     - Install [nix](https://nixos.org/download/) using [nix/install.sh](nix/install.sh)
     - See [nix/README.md](nix/README.md) for more details
-3. If using `gnome`, setup sudo-i3 environment and desired settings:
-    - Run [gnome/workspace_keybindings.sh](gnome/workspace_keybindings.sh) and [gnome/gnome_settings.sh](gnome/gnome_settings.sh)
-4. To setup default launch programs:
+3. To setup default launch programs:
     - Run [startup/startup_install.sh](startup/startup_install.sh)
 
 To keep everything updated, run [utils/update.sh](utils/update.sh)

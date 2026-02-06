@@ -23,7 +23,21 @@
                       insteadOf = "https://github.com/crosleyzack";
                   };
               };
-              gpg.format = "ssh";
+              # always sign
+              commit = {
+                gpgsign = true;
+                status = true;
+              };
+              tag = {
+                gpgsign = true;
+                forceSignAnnotated = true;
+              };
+              gitsign.connectorID = "https://accounts.google.com";
+              gpg = {
+                format = "x509";
+                x509.program = "gitsign";
+              };
+              # setup aliases for convenience
               alias = {
                   unstage = "reset HEAD --";
                   staged = "diff --staged";

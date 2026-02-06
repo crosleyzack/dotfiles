@@ -1,17 +1,23 @@
 { pkgs, ... }:
 
 {
+  # This sets up the gnome environment to preferred settings, a
+  #  pseudo-i3 environment with fixed desktops and shortcuts to
+  #  move between them
   dconf.settings = {
+      # fractional scaling for modern display environment
       "org/gnome/mutter" = {
         experimental-features = [
             "scale-monitor-framebuffer"
         ];
         edge-tiling = false;
       };
+      # turn off animations for performance
       "org/gnome/desktop/interface" = {
         enable-animations = false;
         color-scheme      = "prefer-dark";
       };
+      # fixed 10 workspaces like i3 environment
       "org/gnome/desktop/wm/preferences" = {
         num-workspaces = 10;
       };
@@ -43,7 +49,7 @@
         cycle-windows-backward = ["<Super><Shift>Tab"];
         cycle-group            = ["<Super>a"];
         cycle-group-backward   = ["<Super><Shift>a"];
-        # move windows to location in window
+        # move windows to location within workspace
         move-to-side-e        = ["<Super>l"];
         move-to-side-n        = ["<Super>k"];
         move-to-side-s        = ["<Super>j"];
@@ -54,6 +60,7 @@
         unmaximize            = ["<Super>Down"];
         toggle-fullscreen     = ["<Super>f"];
       };
+      # autohide sidebar, you don't need it
       "org/gnome/shell/extensions/dash-to-dock" = {
         dock-fixed  = false;
         intellihide = true;

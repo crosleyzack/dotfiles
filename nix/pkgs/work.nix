@@ -1,24 +1,5 @@
 { pkgs, ... }:
 
-let
-  # TODO install :
-  # protoc@29.3
-  # protoc-gen-go@v1.34.2
-  # protoc-gen-go-grpc@v1.5.1
-  # protoc-gen-grpc-gateway@v2.22.0
-  # protoc-gen-openapiv2@v2.22.0
-  # github.com/wlynch/codeowners@43ee129097bf93824225b5e9e764780af55c269d
-  protocPkgs = import (builtins.fetchTarball {
-    url = "https://github.com/NixOS/nixpkgs/archive/f62d6734af4581af614cab0f2aa16bcecfc33c11.tar.gz";
-    sha256 = "sha256:10w5c44wyjf29kb2r5pgqy8bahaq46a9lba2wybipkqk293zkdpr";
-  });
-  myProtoc = protocPkgs.protobuf;
-  protocGenGoPkgs = import (builtins.fetchTarball {
-    url = "https://github.com/NixOS/nixpkgs/archive/2c36ece932b8c0040893990da00034e46c33e3e7.tar.gz";
-    sha256 = "sha256:10w5c44wyjf29kb2r5pgqy8bahaq46a9lba2wybipkqk293zkdpr";
-  });
-  myProtocGenGo = protocGenGoPkgs.protoc-gen-go;
-in
 {
   home.packages = with pkgs; [
     step-cli

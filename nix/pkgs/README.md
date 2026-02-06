@@ -19,4 +19,5 @@ Contains all the various tools for setup via nix
     <img height="30" width="30" src="https://cdn.simpleicons.org/postgresql/white" style="vertical-align:middle;padding:2"/>
     <img height="30" width="30" src="https://cdn.simpleicons.org/redis/white" style="vertical-align:middle;padding:2"/>
     <img height="30" width="30" src="https://cdn.simpleicons.org/terraform/white" style="vertical-align:middle;padding:2"/>
+    <img height="30" width="30" src="https://cdn.simpleicons.org/gnome/white" style="vertical-align:middle;padding:2"/>
 </div>
