@@ -9,8 +9,9 @@ tmux new-session -d
 FILE_PATH=$(realpath $BASH_SOURCE)
 DIR=$(dirname $FILE_PATH)
 
-# PATH="$PATH:/usr/local/bin:/bin:/usr/bin:$HOME/.nix-profile/bin/"
-
+# TODO find better way to do this. The value set by nix home
+# manager is not working, likely because this is not run in
+# user environment.
 # NIX_SYSTEM_ID set by nix home manager for each computer
 NIX_SYSTEM_ID=framework
 case $NIX_SYSTEM_ID in
@@ -34,7 +35,7 @@ do
 done
 
 echo "Programs launched, sleeping"
-sleep 5
+sleep 9
 echo "Sleep done, repositioning windows via $DIR/position_windows.sh"
 
 exec $DIR/position_windows.sh

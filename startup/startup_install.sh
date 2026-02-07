@@ -35,14 +35,3 @@ rm -f $APP_DIR/startup.desktop
 ln -s "$DIR_PATH/$DESKTOP_FILE" $APP_DIR/startup.desktop
 
 echo "Startup configured!"
-
-### OLD attempt crontab
-# COMMAND="$DIR_PATH/startup_program.sh"
-# echo "Adding command $COMMAND to startup"
-#write out current crontab
-# crontab -l > mycron
-#echo new cron into cron file
-# echo "@reboot $COMMAND" >> mycron
-#install new cron file
-# crontab mycron
-# rm mycron
