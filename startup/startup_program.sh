@@ -13,7 +13,8 @@ DIR=$(dirname $FILE_PATH)
 # manager is not working, likely because this is not run in
 # user environment.
 # NIX_SYSTEM_ID set by nix home manager for each computer
-NIX_SYSTEM_ID=framework
+NIX_SYSTEM_ID="${NIX_SYSTEM_ID:-framework}"
+
 case $NIX_SYSTEM_ID in
     framework)
         # work

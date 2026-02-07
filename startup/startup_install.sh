@@ -15,13 +15,19 @@ if [ ! -f "$(command -v xrandr)" ]; then
     exit 1
 fi
 
+COMMAND="$DIR_PATH/startup_program.sh"
+if [[ -n "$NIX_SYSTEM_ID" ]]; then
+    # if we have a nix system id, add that to our command
+    COMMAND="env NIX_SYSTEM_ID=$NIX_SYSTEM_ID $COMMAND"
+fi
+
 # Create startup.desktop
 DESKTOP_FILE="startup.desktop"
 rm -f $DESKTOP_FILE
 echo "[Desktop Entry]
 Type=Application
 Name=StartupScript
-Exec=$DIR_PATH/startup_program.sh
+Exec=$COMMAND
 OnlyShowIn=GNOME;" > "$DIR_PATH/$DESKTOP_FILE"
 
 # link to generated startup script.
