@@ -2,7 +2,7 @@
 
 # Dotfiles
 
-Configuration files for my linux system, for everything except Emacs.
+Configuration files for my linux system
 
 ## New Computer Setup
 
@@ -27,4 +27,10 @@ To keep everything updated, run [utils/update.sh](utils/update.sh)
 
 ## TODO
 
-- cleanup
+- Look into moving Lenovo to Silverblue + Nix
+- set default mic and camera to usb webcam
+- get [Code](./Code) via nix working on framework
+- move [dygma](./dygma) to nix
+- remove [toolbox](./toolbox) in favor of nix-shell
+- is [firefox](./firefox) still necessary?
+- remove [docker](./docker) and [pulse](./pulse)

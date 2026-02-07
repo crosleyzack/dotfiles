@@ -14,6 +14,24 @@ fi
 
 BASE_DIR=$(realpath $1)
 
+# Docker
+if [ -f "$BASE_DIR/docker/daemon.json" ]; then
+    sudo rm -f /etc/docker/daemon.json
+    sudo mkdir -p /etc/docker
+    echo "Linking /etc/docker/deamon.json to $BASE_DIR/docker/daemon.json"
+    sudo ln -s $BASE_DIR/docker/daemon.json /etc/docker/daemon.json
+fi
+
+# Nix conf
+if [ -f "$BASE_DIR/nix/nix.conf" ]; then
+    mkdir -p $HOME/.config/nix
+    rm -f $HOME/.config/nix/nix.conf
+    echo "Linking $HOME/.config/nix/nix.conf to $BASE_DIR/nix/nix.conf"
+    ln -s $BASE_DIR/nix/nix.conf $HOME/.config/nix/nix.conf
+fi
+
+# NOTE: everything below this no longer exists and can be removed
+
 # Bash
 if [ -f "$BASE_DIR/bash/.bashrc" ]; then
     rm -f $HOME/.bashrc
@@ -36,7 +54,7 @@ if [ -f "$BASE_DIR/Code/User/settings.json" ]; then
 fi
 
 # Tmux
-if [ -f "$BASE_DIR/.config/tmux/tmux.conf" ]; then
+if [ -f "$BASE_DIR/tmux/tmux.conf" ]; then
     mkdir -p $HOME/.config/tmux
     rm -f $HOME/.config/tmux/tmux.conf
     echo "Linking $HOME/.config/tmux/tmux.conf to $BASE_DIR/tmux/tmux.conf"
@@ -60,14 +78,6 @@ if [ -f "$BASE_DIR/zsh/spaceship.zsh" ]; then
     rm -f $HOME/.config/spaceship.zsh
     echo "Linking $HOME/.config/spaceship.zsh to $BASE_DIR/zsh/spaceship.zsh"
     ln -s $BASE_DIR/zsh/spaceship.zsh $HOME/.config/spaceship.zsh
-fi
-
-# Docker
-if [ -f "$BASE_DIR/docker/daemon.json" ]; then
-    sudo rm -f /etc/docker/daemon.json
-    sudo mkdir -p /etc/docker
-    echo "Linking /etc/docker/deamon.json to $BASE_DIR/docker/daemon.json"
-    sudo ln -s $BASE_DIR/docker/daemon.json /etc/docker/daemon.json
 fi
 
 # GHC
@@ -123,14 +133,6 @@ if [ -f "$BASE_DIR/nvim/init.vim" ]; then
     echo "Linking $HOME/.config/nvim/init.vim to $BASE_DIR/nvim/init.vim"
     mkdir -p $HOME/.config/nvim
     ln -s $BASE_DIR/nvim/init.vim $HOME/.config/nvim/init.vim
-fi
-
-# Nix conf
-if [ -f "$BASE_DIR/nix/nix.conf" ]; then
-    mkdir -p $HOME/.config/nix
-    rm -f $HOME/.config/nix/nix.conf
-    echo "Linking $HOME/.config/nix/nix.conf to $BASE_DIR/nix/nix.conf"
-    ln -s $BASE_DIR/nix/nix.conf $HOME/.config/nix/nix.conf
 fi
 
 # Nixpkgs conf

@@ -2,9 +2,8 @@
 
 # NOTE: this can also be run to update nix version. Simply change `VERSION` below to the appropriate value. See https://nixos.wiki/wiki/Nix_channels
 VERSION="${NIX_VERSION:-25.11}"
-SETUP_CHANNEL="${SETUP_NIX_CHANNEL:-false}"
+SETUP_CHANNEL="${SETUP_NIX_CHANNEL:-true}"
 INSTALL_HOME_MANAGER="${SETUP_HOME_MANAGER:-true}"
-INSTALL_NIX_PKGS="${SETUP_NIX_PKGS:-false}"
 
 # get dir containing this file
 FILE_PATH=$(realpath $BASH_SOURCE)
@@ -56,14 +55,6 @@ if $INSTALL_HOME_MANAGER; then
 
     echo "INFO: installing packages for $SYSNAME"
     cd system && home-manager switch -b backup --flake .
-fi
-
-# Install packages without home manager
-if $INSTALL_NIX_PKGS; then
-    mkdir -p $HOME/.config/nixpkgs
-    rm -f $HOME/.config/nixpkgs/config.nix
-    ln -s $DIR_PATH/config.nix $HOME/.config/nixpkgs/config.nix
-    nix-env -iA nixpkgs.myPackages
 fi
 
 echo "\nInstall completed. Relaunch shell to use nix\n"

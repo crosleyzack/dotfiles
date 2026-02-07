@@ -4,7 +4,7 @@ Useful tools for managing dotfiles
 
 ### devices.sh
 
-Changes device settings, currently jsut prevents touchpad from "saving power".
+Changes device settings, currently just prevents touchpad from "saving power". (TODO make sure this still works)
 
 ### sym_links.sh
 
