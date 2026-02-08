@@ -27,10 +27,10 @@ To keep everything updated, run [utils/update.sh](utils/update.sh)
 
 ## TODO
 
-- Look into moving Lenovo to Silverblue + Nix
 - set default mic and camera to usb webcam
 - get [Code](./Code) via nix working on framework
-- move [dygma](./dygma) to nix
-- remove [toolbox](./toolbox) in favor of nix-shell
+- remove [pulse](./pulse)
 - is [firefox](./firefox) still necessary?
-- remove [docker](./docker) and [pulse](./pulse)
+- move [dygma](./dygma) to nix?
+- remove [toolbox](./toolbox) in favor of nix-shell?
+- Look into moving Lenovo to Silverblue + Nix

@@ -6,15 +6,6 @@ Useful tools for managing dotfiles
 
 Changes device settings, currently just prevents touchpad from "saving power". (TODO make sure this still works)
 
-### sym_links.sh
-
-Creates sym links across system to files in `dotfiles`. Similar in goal to GNU Stow.
-
 ### update.sh
 
 Updates system including `apt`, `nix`, `python`, and more.
-
-# installed.sh
-
-Has tools to verify if a binary is installed and in path
-

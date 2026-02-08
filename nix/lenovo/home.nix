@@ -5,6 +5,7 @@
     ../pkgs/atuin.nix
     ../pkgs/bash.nix
     ../pkgs/code.nix
+    ../pkgs/containers.nix
     ../pkgs/dircolors.nix
     ../pkgs/direnv.nix
     ../pkgs/gh.nix
