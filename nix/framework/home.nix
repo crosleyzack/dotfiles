@@ -5,7 +5,7 @@
     ../pkgs/atuin.nix
     ../pkgs/bash.nix
     # vscode doesn't work on this computer via nix
-    # ../pkgs/code.nix
+    ../pkgs/code.nix
     ../pkgs/containers.nix
     ../pkgs/dircolors.nix
     ../pkgs/direnv.nix
