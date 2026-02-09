@@ -9,16 +9,13 @@ tmux new-session -d
 FILE_PATH=$(realpath $BASH_SOURCE)
 DIR=$(dirname $FILE_PATH)
 
-# TODO find better way to do this. The value set by nix home
-# manager is not working, likely because this is not run in
-# user environment.
 # NIX_SYSTEM_ID set by nix home manager for each computer
 NIX_SYSTEM_ID="${NIX_SYSTEM_ID:-framework}"
-
+echo "NIX_SYSTEM_ID=$NIX_SYSTEM_ID"
 case $NIX_SYSTEM_ID in
     framework)
         # work
-        declare -a progs=("code" "snap run firefox" "snap run slack" "snap run proton-pass" "snap run obsidian" "gnome-terminal")
+        declare -a progs=("/home/zackary-crosley/.nix-profile/bin/code" "snap run firefox" "snap run slack" "snap run proton-pass" "snap run obsidian" "gnome-terminal")
     ;;
     *)
         # default

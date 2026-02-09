@@ -27,6 +27,8 @@ rm -f $DESKTOP_FILE
 echo "[Desktop Entry]
 Type=Application
 Name=StartupScript
+Terminal=false
+Path=$DIR_PATH
 Exec=$COMMAND
 OnlyShowIn=GNOME;" > "$DIR_PATH/$DESKTOP_FILE"
 
