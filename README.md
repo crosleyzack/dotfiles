@@ -20,7 +20,7 @@ To keep everything updated, run [utils/update.sh](utils/update.sh)
 
 ## Security
 
-1. Use distribution with [SELinux](https://en.wikipedia.org/wiki/Security-Enhanced_Linux#Adoption)
+1. Use distribution with [SELinux or AppArmor](https://en.wikipedia.org/wiki/Security-Enhanced_Linux#Adoption)
 2. Setup whole drive encryption on Linux install using LUKS (prompted during install)
 3. Run `sudo visudo` to add line `Defaults timestamp_timeout=1`, limiting sudo sign in to one minute (defaults to five minutes)
 4. Setup [gitsign](https://docs.sigstore.dev/cosign/signing/gitsign/) to sign git commits
@@ -28,7 +28,6 @@ To keep everything updated, run [utils/update.sh](utils/update.sh)
 ## TODO
 
 - set default mic and camera to usb webcam
-- get [Code](./Code) via nix working on framework
 - remove [pulse](./pulse)
 - is [firefox](./firefox) still necessary?
 - move [dygma](./dygma) to nix?

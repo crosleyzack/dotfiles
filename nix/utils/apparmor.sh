@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# Fix vscode error:
+# AppArmor will initially block running vscode installed from nix due to the permissions on the sandbox binary:
 # [66700:0209/101041.044195:FATAL:sandbox/linux/suid/client/setuid_sandbox_host.cc:169] The SUID sandbox helper binary was found, but is not configured correctly. Rather than run without sandboxing I'm aborting now. You need to make sure that /nix/store/g9vfy3ab76xqnry71jdc5jgw4h3is85g-vscode-1.106.2/lib/vscode/chrome-sandbox is owned by root and has mode 4755.
-# still blocked by apparmor_restrict_unprivileged_userns
+# This sets up a rule allowing user namespace to run nix installed vscode
 
 DEST=/etc/apparmor.d/nix.store.vscode
 
@@ -18,16 +18,14 @@ if [ -f $DEST ]; then
     sudo rm -f /etc/apparmor.d/disable/nix.store.vscode
 fi
 
-
-# create profile
 FILE=$(cat <<EOF
 # allow nix installed sandbox
 abi <abi/4.0>,
 include <tunables/global>
 
 # Profile for Nix-installed VSCode
-# The 'flags=(unconfined)' effectively makes this profile a named placeholder
-# that allows everything, but importantly enables user namespaces.
+# For file paths matching '/nix/store/**/...', allow requests from user namespace (userns)
+# This allows the SUID chrome sandbox to run
 profile nix_vscode /nix/store/**{/bin/code,/lib/vscode/code,/lib/vscode/chrome-sandbox} flags=(unconfined) {
   userns,
 }
