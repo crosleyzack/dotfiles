@@ -5,13 +5,13 @@
     packages = with pkgs; [
       # general utils
       jq
-      yq
       htop
       tldr
       glow
       cmake
-      ranger    
-      man-db   
+      yq-go
+      ranger
+      man-db
       slides
       wmctrl
       nix-info
