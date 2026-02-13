@@ -1,5 +1,5 @@
 {
-    description = "My Home Manager Flake";
+    description = "Lenovo Linux Home Manager Flake";
 
     inputs = {
         nixpkgs.url = "github:nixos/nixpkgs/release-25.11";

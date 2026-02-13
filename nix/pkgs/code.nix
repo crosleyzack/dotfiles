@@ -18,6 +18,7 @@
                     vscode-extensions.hashicorp.terraform
                     vscode-extensions.zxh404.vscode-proto3
                     vscode-extensions.github.copilot
+                    vscode-extensions.anthropic.claude-code
                   ];
                   keybindings = [
                     {
