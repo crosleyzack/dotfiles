@@ -23,6 +23,8 @@ Use `home-manager expire-generations "<expire time>` to delete old home manager 
     <a href="lenovo"><img height="40" width="40" src="https://cdn.simpleicons.org/lenovo/white" style="vertical-align:middle"/></a>
     &nbsp;&nbsp;
     <a href="framework"><img height="30" width="30" src="https://cdn.simpleicons.org/framework/white" style="vertical-align:middle"/></a>
+    &nbsp;&nbsp;
+    <a href="google"><img height="30" width="30" src="https://cdn.simpleicons.org/google/white" style="vertical-align:middle"/></a>
 </div>
 
 ## resources

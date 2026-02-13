@@ -52,6 +52,7 @@ if $INSTALL_HOME_MANAGER; then
     SYSNAME="$(sudo dmidecode -s system-manufacturer| awk '{print tolower($0)}')"
     [ "$SYSNAME" == "framework" ] && ln -s $DIR_PATH/framework $DIR_PATH/system
     [ "$SYSNAME" == "lenovo" ] && ln -s $DIR_PATH/lenovo $DIR_PATH/system
+    [ "$SYSNAME" == "google" ] && ln -s $DIR_PATH/google $DIR_PATH/system
 
     echo "INFO: installing packages for $SYSNAME"
     cd system && home-manager switch -b backup --flake .
