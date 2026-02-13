@@ -20,10 +20,10 @@ if [[ -z "$(which nix-env)" ]]; then
 
     # install
     sh <(curl --proto '=https' --tlsv1.2 -L https://nixos.org/nix/install) --no-daemon --yes
-
-    # source after install
-    source $HOME/.nix-profile/etc/profile.d/nix.sh
 fi
+
+# ensure nix has been sourced
+source $HOME/.nix-profile/etc/profile.d/nix.sh
 
 # Add nixpkgs stable and unstable
 if $SETUP_CHANNEL; then
@@ -47,8 +47,10 @@ if $INSTALL_HOME_MANAGER; then
 
     # install home manager
     nix-shell '<home-manager>' -A install
+    source $HOME/.nix-profile/etc/profile.d/hm-session-vars.sh
 
     # setup system link, depending on system name
+    rm -f $DIR_PATH/system
     SYSNAME="$(sudo dmidecode -s system-manufacturer| awk '{print tolower($0)}')"
     [ "$SYSNAME" == "framework" ] && ln -s $DIR_PATH/framework $DIR_PATH/system
     [ "$SYSNAME" == "lenovo" ] && ln -s $DIR_PATH/lenovo $DIR_PATH/system
