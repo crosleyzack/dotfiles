@@ -1,6 +1,13 @@
 { pkgs, ... }:
 
 {
+  home.packages = with pkgs; [
+    cosign
+    gitsign
+    codeowners
+    pre-commit
+    github-runner
+  ];
   programs = {
       git = {
           enable = true;

@@ -1,6 +1,11 @@
 { pkgs, ... }:
 
 {
+  home.packages = with pkgs; [
+    # packages that only apply with window managers
+    wmctrl
+    xorg.xrandr
+  ];
   # This sets up the gnome environment to preferred settings, a
   #  pseudo-i3 environment with fixed desktops and shortcuts to
   #  move between them

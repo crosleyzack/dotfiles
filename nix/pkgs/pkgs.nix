@@ -13,10 +13,7 @@
       ranger
       man-db
       slides
-      wmctrl
       nix-info
-      codeowners
-      xorg.xrandr
       yubikey-manager
       nerd-fonts.monaspace
       # networking
@@ -25,11 +22,6 @@
       httpie
       posting
       cloudflared
-      # github
-      cosign
-      gitsign
-      pre-commit
-      github-runner
       # languages
       uv
       # programs
