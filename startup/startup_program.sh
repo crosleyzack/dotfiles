@@ -1,5 +1,58 @@
 #!/bin/bash
 
+################################################################################
+# Startup Program Launcher
+#
+# Purpose:
+#   Automatically launches a predefined set of applications on system startup
+#   and positions them on specific workspaces using the position_windows.sh
+#   script.
+#
+# Behavior:
+#   1. Starts a detached tmux session in the background
+#   2. Determines which system profile to use based on NIX_SYSTEM_ID:
+#      - "framework": Launches work setup (Nix VSCode, Snap apps, gnome-terminal)
+#      - Default: Launches personal setup (Flatpak apps, ptyxis terminal)
+#   3. Launches all applications in the selected profile:
+#      - Each program is executed in the background
+#      - Output is redirected to /dev/null
+#      - 0.1 second delay between launches
+#   4. Waits 9 seconds for applications to fully start
+#   5. Executes position_windows.sh to arrange windows on workspaces
+#
+# System Profiles:
+#
+#   Framework (work):
+#   - VSCode (from Nix)
+#   - Firefox (Snap)
+#   - Slack (Snap)
+#   - Proton Pass (Snap)
+#   - Obsidian (Snap)
+#   - GNOME Terminal
+#
+#   Default (personal):
+#   - Firefox
+#   - VSCode
+#   - Obsidian (Flatpak)
+#   - Proton Mail (Flatpak)
+#   - Proton Pass (Flatpak)
+#   - Signal (Flatpak)
+#   - Ptyxis terminal with tmux
+#
+# Environment Variables:
+#   NIX_SYSTEM_ID - System identifier (default: "framework")
+#                   Set by Nix home-manager configuration
+#
+# Prerequisites:
+#   - tmux installed on host system
+#   - position_windows.sh in the same directory
+#   - Applications specified in the profile must be installed
+#
+# Note:
+#   This script is designed to be called by startup_install.sh or configured
+#   as a startup application in your desktop environment.
+################################################################################
+
 # restart tmux session detatched
 # This requires tmux exist on the host, however doing the `toolbox run -c devs tmux`
 # alone results in ressurect not running. Ideally, will find a way to make this

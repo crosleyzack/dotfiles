@@ -1,5 +1,41 @@
 #!/bin/bash
 
+################################################################################
+# YubiKey Factory Reset Script
+#
+# Purpose:
+#   Resets all applications on a YubiKey to factory defaults. This is a
+#   destructive operation that will erase all stored credentials and keys.
+#
+# Behavior:
+#   1. Lists all connected YubiKeys using ykman
+#   2. Selects target device (auto-select if only one, or use provided serial)
+#   3. Prompts for confirmation before proceeding
+#   4. Resets the following YubiKey applications to factory defaults:
+#      - FIDO/FIDO2 (WebAuthn and U2F)
+#      - HSM Auth
+#      - OATH (TOTP/HOTP)
+#      - OpenPGP
+#      - PIV (smart card)
+#
+# Usage:
+#   ./reset.sh [serial_number]
+#
+# Arguments:
+#   $1 - Optional YubiKey serial number (required if multiple devices connected)
+#
+# Environment Variables:
+#   None
+#
+# Prerequisites:
+#   - ykman (YubiKey Manager CLI) installed
+#   - YubiKey device connected
+#
+# WARNING:
+#   This operation is IRREVERSIBLE. All credentials, keys, and certificates
+#   stored on the YubiKey will be permanently deleted.
+################################################################################
+
 readarray -t DEVICES< <(ykman list --serials)
 LEN=${#DEVICES[@]}
 echo "DEVICES=${DEVICES[@]}, length=$LEN"

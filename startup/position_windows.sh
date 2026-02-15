@@ -1,5 +1,48 @@
 #!/bin/bash
 
+################################################################################
+# Automatic Window Positioning Script
+#
+# Purpose:
+#   Automatically positions and sizes application windows on specific virtual
+#   desktops/workspaces upon system startup or when manually executed.
+#
+# Behavior:
+#   1. Detects current screen resolution using xrandr
+#   2. Defines a position() function that:
+#      - Finds all windows matching a given application name
+#      - Moves each window to a specified workspace
+#      - Resizes/maximizes windows according to specified layout:
+#        * FULLSCREEN (3): Full screen mode
+#        * VERT_HORZ_MAXED (2): Maximized both vertically and horizontally
+#        * VERT_MAXED (1): Vertically maximized with custom width and position
+#   3. Executes positioning commands for predefined applications:
+#      - Firefox (workspace 8, maximized)
+#      - VS Code (workspace 1, fullscreen, multiple windows on successive desktops)
+#      - Proton Mail (workspace 5, maximized)
+#      - Obsidian (workspace 6, maximized)
+#      - Proton Pass (workspace 7, maximized)
+#      - Signal (workspace 9, half width)
+#      - Spotify (workspace 9, half width, left side)
+#      - Slack (workspace 9, half width, right side)
+#
+# Environment Variables:
+#   None
+#
+# Prerequisites:
+#   - wmctrl (window manager control tool)
+#   - xrandr (X11 display configuration tool)
+#   - X Window System (not Wayland-only)
+#
+# Usage:
+#   Run manually or configure as a startup application in your desktop
+#   environment (e.g., GNOME Startup Applications, KDE Autostart)
+#
+# Note:
+#   This script works on X11 and XWayland sessions but may have limited
+#   functionality on pure Wayland sessions.
+################################################################################
+
 # To use, set as a program to run on OS start. This can be done on Ubuntu
 #	in Applications > Statup Applications
 # Note: This script should work on any X Window Manager system.

@@ -1,5 +1,48 @@
 #!/bin/bash
 
+################################################################################
+# Universal System Update Script
+#
+# Purpose:
+#   Performs a comprehensive system update across all installed package
+#   managers, programming language toolchains, and application frameworks.
+#
+# Behavior:
+#   Detects and updates all available package managers and tools on the system:
+#
+#   Package Managers:
+#   - apt (Debian/Ubuntu): update, dist-upgrade, autoremove, clean
+#   - dnf (Fedora/RHEL): upgrade, distro-sync
+#   - snap: refresh all snaps
+#   - flatpak: update all flatpaks
+#   - nix: update channels (with optional garbage collection)
+#   - homebrew: update formulae and casks
+#
+#   Development Tools:
+#   - rustup: update Rust toolchain
+#   - python pip: upgrade pip, wheel, setuptools, virtualenv
+#
+#   Configuration Management:
+#   - ansible: run packages playbook
+#   - home-manager: switch to latest configuration
+#
+#   Applications:
+#   - vscode: update all extensions
+#   - oh-my-zsh: update framework and plugins
+#   - atuin: update shell history tool
+#
+# Environment Variables:
+#   None
+#
+# Prerequisites:
+#   - Sudo privileges (required for system package managers)
+#   - Individual tools must be installed for their respective updates
+#
+# Note:
+#   This script is safe to run on any system - it only updates tools that
+#   are actually installed. Missing tools are silently skipped.
+################################################################################
+
 # Script to update machine fully
 FILE_PATH=$(realpath $BASH_SOURCE)
 DIR_PATH=$(dirname $FILE_PATH)

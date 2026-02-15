@@ -1,5 +1,40 @@
 #!/bin/bash
 
+################################################################################
+# Bazecor (Dygma Keyboard Configurator) Installation Script
+#
+# Purpose:
+#   Downloads and installs Bazecor, the configuration software for Dygma
+#   keyboards (Raise, Defy). Creates a desktop entry for easy access.
+#
+# Behavior:
+#   1. Downloads Bazecor v1.7.0 AppImage from GitHub releases
+#   2. Extracts the AppImage to access its contents
+#   3. Configures chrome-sandbox permissions for proper execution
+#   4. Copies extracted files to ~/programs/bazecor
+#   5. Creates a .desktop file for desktop environment integration
+#   6. Symlinks the desktop file to ~/.local/share/applications
+#   7. Updates the desktop database
+#
+# Environment Variables:
+#   None
+#
+# Prerequisites:
+#   - curl (for downloading)
+#   - Sudo privileges (for sandbox permissions and desktop database update)
+#   - PolicyKit packages (optional, for better privilege management):
+#     sudo apt-get install policykit-1-gnome policykit-1 libpolkit-agent-1-dev
+#
+# Installed To:
+#   ~/programs/bazecor/
+#
+# Desktop Entry:
+#   ~/.local/share/applications/bazecor.desktop
+#
+# DEPRECATED:
+#   This script is deprecated. Use Nix package manager for installation instead.
+################################################################################
+
 echo "NOTE: now deprecated, use nix"
 
 # Install requirements
