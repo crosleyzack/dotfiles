@@ -21,7 +21,6 @@
       gping
       httpie
       posting
-      cloudflared
       # languages
       uv
       # programs

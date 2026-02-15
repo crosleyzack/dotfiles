@@ -80,6 +80,8 @@ in
 {
   # install the above protobuf packages into user profile
   home.packages = [
+    pkgs.buf
+    pkgs.grpcurl
     protoc-29
     protoc-gen-go
     protoc-gen-go-grpc

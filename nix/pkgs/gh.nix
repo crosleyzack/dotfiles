@@ -1,6 +1,9 @@
 { pkgs, ... }:
 
 {
+  home.packages = with pkgs; [
+    github-runner
+  ];
   programs = {
       gh = {
           enable = true;

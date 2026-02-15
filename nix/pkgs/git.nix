@@ -6,7 +6,6 @@
     gitsign
     codeowners
     pre-commit
-    github-runner
   ];
   programs = {
       git = {
