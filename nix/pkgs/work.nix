@@ -16,6 +16,7 @@
     grpcurl
     syft
     grype
+    trivy
     apko
     melange
     # ai
