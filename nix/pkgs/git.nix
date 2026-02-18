@@ -51,15 +51,17 @@
                   aliases = "config --get-regexp '^alias\\.'";
                   yolo = "push --force-with-lease";
                   by = "!f() { git log --author=$1; }; f";
-                  # show the most recent ten branches
-                  recent = "for-each-ref --count=10 --sort=-committerdate refs/heads/ --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(contents:subject) (%(color:green)%(committerdate:short)%(color:reset))'";
+                  # show the most recent N branches, defaults to 10
+                  recent = "!git for-each-ref --count=\${@-10} --sort=-committerdate refs/heads/ --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(contents:subject) (%(color:green)%(committerdate:short)%(color:reset))' #";
                   # create a new branch upstream and push to it
                   upstream = "push -u origin HEAD";
                   wash = "clean -fdx";
-                  last = "log -1 HEAD";
+                  # get last N commits, defaults to 1
+                  last = "!git log -\${@-1} HEAD #";
                   # show all changes from main
                   changes = "!git diff $(git main) -- .";
-                  details = "log -1 -p --format=fuller";
+                  # get detailed version of last N commits, defaults to 1
+                  details = "!git log -\${@-1} -p --format=fuller #";
                   tree = "log --all --graph --oneline --decorate --simplify-by-decoration --abbrev-commit";
                   main = "!git symbolic-ref refs/remotes/origin/HEAD | cut -d'/' -f4";
                   update = "!BRANCH=$(git branch --show-current) && git checkout-m && git fetch && git rebase && git checkout $BRANCH # && git rebase-m";
