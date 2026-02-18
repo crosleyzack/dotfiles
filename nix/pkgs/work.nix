@@ -7,6 +7,7 @@
     redis  
     sqlite
     mysql84
+    azure-cli
     postgresql
     terraform
     terraform-docs
