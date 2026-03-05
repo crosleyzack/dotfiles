@@ -3,8 +3,9 @@
 {
   home.packages = with pkgs; [
     ctop
-    dive 
+    dive
     kind
+    oras
     crane
     ctlptl
     kubectl
