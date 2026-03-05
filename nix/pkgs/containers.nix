@@ -5,11 +5,11 @@
     ctop
     dive 
     kind
-    helm
     crane
     ctlptl
     kubectl
     kubectx
+    kubernetes-helm
   ];
   # config file
   home.file.docker = {

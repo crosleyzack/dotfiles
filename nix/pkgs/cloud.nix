@@ -16,5 +16,6 @@
   ];
   home.shellAliases = {
     "gcpu" = "gcloud auth login --update-adc";
+    "terru" = "terraform init && terraform apply -auto-approve";
   };
 }
