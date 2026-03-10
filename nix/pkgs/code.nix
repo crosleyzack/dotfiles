@@ -361,6 +361,15 @@
                     "editor.fontLigatures" = false;
                     "editor.bracketPairColorization.enabled" = true;
                     "terminal.integrated.fontFamily" = "'Monaspice', monospace";
+                    "terminal.integrated.suggest.enabled" = true;
+                    "terminal.integrated.shellIntegration.enabled" = true;
+                    "terminal.integrated.profile.linux" = {
+                      "zsh_nix" = {
+                        "path" = "$HOME/.nix-profile/bin/zsh";
+                        "icon" = "terminal";
+                      };
+                    };
+                    "terminal.integrated.defaultProfile.linux" = "zsh_nix";
                     # vim bindings
                     "extensions.experimental.affinity" = {
                         "vscodevim.vim" = 1;
@@ -416,8 +425,6 @@
                     "dev.containers.copyGitConfig" = false;
                     # for fedora machines
                     "dev.containers.dockerPath" = "podman";
-                    "terminal.integrated.suggest.enabled" = true;
-                    "terminal.integrated.defaultProfile.linux" = "zsh";
                     # go settings
                     "gopls" = {
                         "formatting.local" = "github.com/chainguard-dev";
