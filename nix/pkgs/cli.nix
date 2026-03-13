@@ -6,7 +6,6 @@
       jq
       htop
       tldr
-      glow
       cmake
       yq-go
       ranger
@@ -14,6 +13,7 @@
       slides
       ripgrep
       nix-info
+      # mermaid-cli
       # network
       nmap
       gping

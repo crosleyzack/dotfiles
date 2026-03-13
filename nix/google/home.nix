@@ -10,6 +10,7 @@
     ../pkgs/direnv.nix
     ../pkgs/gh.nix
     ../pkgs/git.nix
+    ../pkgs/glow.nix
     ../pkgs/go.nix
     ../pkgs/pkgs.nix
     ../pkgs/protobuf.nix
