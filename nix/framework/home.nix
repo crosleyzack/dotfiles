@@ -6,6 +6,7 @@
     ../pkgs/bash.nix
     ../pkgs/code.nix
     ../pkgs/cli.nix
+    ../pkgs/claude.nix
     ../pkgs/cloud.nix
     ../pkgs/containers.nix
     ../pkgs/dircolors.nix
