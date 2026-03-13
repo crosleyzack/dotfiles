@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ config, pkgs, ... }:
 
 {
   programs = {
@@ -365,7 +365,7 @@
                     "terminal.integrated.shellIntegration.enabled" = true;
                     "terminal.integrated.profile.linux" = {
                       "zsh_nix" = {
-                        "path" = "$HOME/.nix-profile/bin/zsh";
+                        "path" = "${config.home.homeDirectory}/.nix-profile/bin/zsh";
                         "icon" = "terminal";
                       };
                     };
@@ -424,7 +424,7 @@
                     "workbench.startupEditor" = "readme";
                     "dev.containers.copyGitConfig" = false;
                     # for fedora machines
-                    "dev.containers.dockerPath" = "podman";
+                    # "dev.containers.dockerPath" = "podman";
                     # go settings
                     "gopls" = {
                         "formatting.local" = "github.com/chainguard-dev";
