@@ -353,6 +353,7 @@
                   ];
                   userSettings = {
                     "window.newWindowProfile" = "main";
+                    "window.profilePerWindow" = false;
                     # theming
                     "workbench.colorTheme" = "One Dark Pro Night Flat";
                     "editor.fontFamily" = "'Monaspice', monospace";
@@ -415,6 +416,7 @@
                     "editor.stickyScroll.enabled" = true;
                     "editor.tabSize" = 4;
                     "window.restoreFullscreen" = true;
+                    "window.restoreWindows" = "folders";
                     "window.menuBarVisibility" = "compact";
                     "window.density.editorTabHeight" = "compact";
                     "workbench.editor.highlightModifiedTabs" = true;
