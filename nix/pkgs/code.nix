@@ -3,7 +3,8 @@
 {
   programs = {
       vscode = {
-          # NOTE: does not work on ubuntu!
+          # NOTE: requires apparmor to be configured
+          # see dotfiles/nix/utils/apparmor.s
           enable = true;
           mutableExtensionsDir = false;
           profiles = {

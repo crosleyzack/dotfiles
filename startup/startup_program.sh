@@ -68,11 +68,11 @@ echo "NIX_SYSTEM_ID=$NIX_SYSTEM_ID"
 case $NIX_SYSTEM_ID in
     framework)
         # work
-        declare -a progs=("/home/zackary-crosley/.nix-profile/bin/code" "snap run firefox" "snap run slack" "snap run proton-pass" "snap run obsidian" "gnome-terminal")
+        declare -a progs=("/home/zackary-crosley/.nix-profile/bin/code --profile main" "snap run firefox" "snap run slack" "snap run proton-pass" "snap run obsidian" "gnome-terminal")
     ;;
     *)
         # default
-        declare -a progs=("firefox" "code" "flatpak run md.obsidian.Obsidian" "flatpak run me.proton.Mail" "flatpak run me.proton.Pass" "flatpak run org.signal.Signal" "ptyxis -e /usr/bin/zsh -c tmux")
+        declare -a progs=("firefox" "code --profile main" "flatpak run md.obsidian.Obsidian" "flatpak run me.proton.Mail" "flatpak run me.proton.Pass" "flatpak run org.signal.Signal" "ptyxis -e /usr/bin/zsh -c tmux")
     ;;
 esac
 printf '%s\n' "${progs[@]}"\
