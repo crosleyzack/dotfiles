@@ -365,7 +365,7 @@
                     "terminal.integrated.fontFamily" = "'Monaspice', monospace";
                     "terminal.integrated.suggest.enabled" = true;
                     "terminal.integrated.shellIntegration.enabled" = true;
-                    "terminal.integrated.profile.linux" = {
+                    "terminal.integrated.profiles.linux" = {
                       "zsh_nix" = {
                         "path" = "${config.home.homeDirectory}/.nix-profile/bin/zsh";
                         "icon" = "terminal";
