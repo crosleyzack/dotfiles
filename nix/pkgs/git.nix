@@ -64,11 +64,10 @@
                   details = "!git log -\${@-1} -p --format=fuller #";
                   tree = "log --all --graph --oneline --decorate --simplify-by-decoration --abbrev-commit";
                   main = "!git symbolic-ref refs/remotes/origin/HEAD | cut -d'/' -f4";
-                  update = "!BRANCH=$(git branch --show-current) && git checkout-m && git fetch && git rebase && git checkout $BRANCH # && git rebase-m";
-                  checkout-m = "!git checkout $(git main)";
-                  rebase-m = "!git rebase $(git main)";
-                  # setup signed commits with gitsign
-                  setup-signing = "!git config --local commit.gpgsign true && git config --local tag.gpgsign true && git config --local gpg.x509.program gitsign && git config --local gpg.format x509 && git config --local gitsign.connectorID https://accounts.google.com";
+                  # return upstream main branch, or main if no upstream exists
+                  upstream-branch = "!git remote | grep -q '^upstream$' && echo upstream || echo $(git main)";
+                  # synchronize local main with upstream main and return to the current branch
+                  sync = "!BRANCH=$(git branch --show-current) && UPSTREAM=$(git upstream-branch) && git checkout $(git main) && git fetch $UPSTREAM && git rebase $UPSTREAM && git checkout $BRANCH #";
               };
           }; 
       };

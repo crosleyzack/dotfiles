@@ -34,6 +34,6 @@ nix-channel --update
 # home-manager switch 
 cd $DIR_PATH/system && home-manager switch -b backup --flake .
 
-# delete older generations. 20 days arbitrary to balance having generations
+# delete older generations. 15 days arbitrary to balance having generations
 # to revert to while minimizing storage
-home-manager expire-generations "-20 days"
+home-manager expire-generations "-15 days"

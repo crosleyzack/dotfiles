@@ -2,7 +2,8 @@
 
 {
   home.packages = with pkgs; [
-    github-runner
+    # remove this because it loads nodejs which is huge
+    # github-runner
   ];
   programs = {
       gh = {
