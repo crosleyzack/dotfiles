@@ -25,6 +25,7 @@
           envExtra = ''
             export USE_GKE_GCLOUD_AUTH_PLUGIN=true
             export OUTSIDE_DOCKER_HOST="172.17.0.1"
+            export HISTIGNORE="*token*:*password*:*secret*:*api*key*"
           '';
           setOptions = [
             "NO_BEEP"

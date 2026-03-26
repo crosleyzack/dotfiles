@@ -37,3 +37,4 @@ cd $DIR_PATH/system && home-manager switch -b backup --flake .
 # delete older generations. 15 days arbitrary to balance having generations
 # to revert to while minimizing storage
 home-manager expire-generations "-15 days"
+nix-collect-garbage

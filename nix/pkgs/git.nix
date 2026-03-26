@@ -25,8 +25,8 @@
               color.ui = true;
               # use ssh for auth
               url = {
-                  "ssh://git@github.com/crosleyzack" = {
-                      insteadOf = "https://github.com/crosleyzack";
+                  "ssh://git@github.com" = {
+                      insteadOf = "https://github.com";
                   };
               };
               # always sign
@@ -42,6 +42,9 @@
               gpg = {
                 format = "x509";
                 x509.program = "gitsign";
+              };
+              http = {
+                sslVerify = true;
               };
               # setup aliases for convenience
               alias = {

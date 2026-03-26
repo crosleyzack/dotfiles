@@ -16,6 +16,7 @@
   home.file.docker = {
     # NOTE: requires docker in rootless mode
     enable = true;
+    executable = false;
     target = ".config/docker/daemon.json";
     text = ''
 { "features": { "buildkit": true } }
