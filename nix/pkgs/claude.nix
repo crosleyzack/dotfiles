@@ -5,7 +5,7 @@
     claude-code
   ];
   # config file
-  home.file.claude = {
+  home.file.claude_settings = {
     enable = true;
     target = ".claude/settings.json";
     text = ''
@@ -128,5 +128,14 @@
     "cleanupPeriodDays": 14
 }
     '';
+  };
+  home.file.claude = {
+    enable = true;
+    target = ".claude/CLAUDE.md";
+    text = ''
+Read all links you are given; they have critical context.
+You can run read-only commands, but always ask before writing.
+Always show you work and explain why you are doing this.
+   '';
   };
 }
