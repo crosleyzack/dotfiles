@@ -18,7 +18,7 @@
           settings = {
               user = {
                   name = "crosleyzack";
-                  email = "crosleyzack@gmail.com";
+                  email = "mail@crosleyzack.com";
               };
               init.defaultBranch = "main";
               core.editor = "vim";

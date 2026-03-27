@@ -1,1 +1,45 @@
 .log
+
+# Environment and secret files
+.env*
+*.key
+*.pem
+*.p12
+*.pfx
+*_rsa*
+*_ed25519*
+credentials.json
+secrets.yaml
+secret.txt
+*.secret
+
+# Cloud provider credentials
+.aws/credentials
+.aws/config
+.azure/
+.gcloud/
+
+# SSH and Kubernetes configs
+.ssh/config
+.ssh/known_hosts
+.kube/config
+
+# API tokens and keys
+*.token
+.netrc
+authinfo.gpg
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# Certificate files
+*.crt
+*.cer
+*.ca-bundle
+
+# Private keys
+id_rsa
+id_ed25519
+id_ecdsa

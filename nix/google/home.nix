@@ -14,6 +14,7 @@
     ../pkgs/go.nix
     ../pkgs/pkgs.nix
     ../pkgs/protobuf.nix
+    ../pkgs/ssh.nix
     ../pkgs/starship.nix
     ../pkgs/vim.nix
     ../pkgs/work.nix
@@ -22,7 +23,7 @@
   ];
 
   home = {
-    username = "zackary_crosley_chainguard_dev"
+    username = "zackary_crosley_chainguard_dev";
     homeDirectory = "/home/zackary_crosley_chainguard_dev";
     stateVersion = "25.11";
     sessionVariables = {

@@ -18,6 +18,7 @@
     ../pkgs/pkgs.nix
     ../pkgs/protobuf.nix
     ../pkgs/proxychains.nix
+    ../pkgs/ssh.nix
     ../pkgs/starship.nix
     ../pkgs/tmux.nix
     ../pkgs/vim.nix

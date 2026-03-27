@@ -80,7 +80,7 @@ fi
 
 # Update important python libs
 if [ -x "$(command -v python)" ]; then
-    python -m pip install --upgrade wheel pip setuptools virtualenv
+    python -m pip install --upgrade --user wheel pip setuptools virtualenv
 fi
 
 # update snap

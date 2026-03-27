@@ -53,7 +53,33 @@ mkdir -p $TEMP
 IMAGE="$TEMP/bazecor"
 rm -f $IMAGE
 #   Download to Temp
-curl -L https://github.com/Dygmalab/Bazecor/releases/download/v1.7.0/Bazecor-1.7.0-x64.AppImage -o $IMAGE
+# Expected SHA256 for Bazecor v1.7.0
+# Last verified: 2026-03-27
+# Source: https://github.com/Dygmalab/Bazecor/releases/tag/v1.7.0
+EXPECTED_SHA256="8bee840604fc16fdc6376ab09ebf901fd99c0d3a1e42f8ade76a91b77d18f6c3"
+DOWNLOAD_URL="https://github.com/Dygmalab/Bazecor/releases/download/v1.7.0/Bazecor-1.7.0-x64.AppImage"
+
+echo "Downloading Bazecor AppImage..."
+if ! curl -fSL "$DOWNLOAD_URL" -o "$IMAGE"; then
+    echo "Error: Failed to download Bazecor AppImage" >&2
+    exit 1
+fi
+
+echo "Verifying SHA256 checksum..."
+ACTUAL_SHA256=$(sha256sum "$IMAGE" | awk '{print $1}')
+
+if [ "$ACTUAL_SHA256" != "$EXPECTED_SHA256" ]; then
+    echo "Error: Checksum verification FAILED!" >&2
+    echo "  Expected: $EXPECTED_SHA256" >&2
+    echo "  Got:      $ACTUAL_SHA256" >&2
+    echo "" >&2
+    echo "The downloaded file may be corrupted or tampered with." >&2
+    echo "DO NOT proceed unless you can verify the checksum is legitimate." >&2
+    rm -f "$IMAGE"
+    exit 1
+fi
+echo "✓ Checksum verified successfully"
+
 chmod a+x $IMAGE
 #   Extract image
 cd $TEMP && ./image --appimage-extract
