@@ -486,9 +486,11 @@
                     "search.followSymlinks" = false;
                     "search.collapseResults" = "alwaysCollapse";
                     "search.searchOnType" = false;
-                    "telemetry.telemetryLevel" = "crash";
+                    "telemetry.telemetryLevel" = "off";
                     "telemetry.feedback.enabled" = false;
                     "telemetry.editStats.enabled" = false;
+                    "redhat.telemetry.enabled" = false;
+                    "update.mode" = "none";
                     "window.customTitleBarVisibility" = "never";
                     "window.commandCenter" = false;
                     "workbench.reduceMotion" = "on";

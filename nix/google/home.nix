@@ -30,6 +30,7 @@
       MOZ_ENABLE_WAYLAND = 1;
       NIX_SYSTEM_ID = "google";
       EDITOR = "vim";
+      DO_NOT_TRACK = "1";
     };
     sessionPath = [
       "$HOME/go/bin"

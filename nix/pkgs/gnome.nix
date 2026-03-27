@@ -73,5 +73,34 @@
       "org/gnome/settings-daemon/plugins/media-keys" = {
         terminal = ["<Super>Return"];
       };
+      # disable location services
+      "org/gnome/system/location" = {
+        enabled = false;
+      };
+      # disable automatic problem reporting and telemetry
+      "org/gnome/desktop/privacy" = {
+        report-technical-problems = false;
+        send-software-usage-stats = false;
+        remember-recent-files = false;
+        remember-app-usage = false;
+        remove-old-temp-files = true;
+        remove-old-trash-files = true;
+        old-files-age = 7;
+      };
+      # disable gnome software telemetry
+      "org/gnome/software" = {
+        allow-updates = false;
+        download-updates = false;
+        download-updates-notify = false;
+      };
+      # screen lock settings
+      "org/gnome/desktop/session" = {
+        idle-delay = 300;
+      };
+      "org/gnome/desktop/screensaver" = {
+        lock-enabled = true;
+        lock-delay = 0;
+        idle-activation-enabled = true;
+      };
   };
 }

@@ -18,13 +18,6 @@ To setup on new computer:
 
 To keep everything updated, run [utils/update.sh](utils/update.sh)
 
-## Security
-
-1. Use distribution with [SELinux or AppArmor](https://en.wikipedia.org/wiki/Security-Enhanced_Linux#Adoption)
-2. Setup whole drive encryption on Linux install using LUKS (prompted during install)
-3. Run [utils/security.sh](utils/security.sh) to setup good security defaults
-4. Generate [new SSH key for Github](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent) using `ssh-keygen -t ed25519 -C "mail@crosleyzack.com"`
-
 ## TODO
 
 - set default mic and camera to usb webcam

@@ -99,6 +99,66 @@ else
     echo "  This is expected on legacy BIOS systems"
 fi
 
+# Check TPM (Trusted Platform Module) status
+echo "TPM (Trusted Platform Module) Status:"
+if [ -e /dev/tpm0 ] || [ -e /dev/tpmrm0 ]; then
+    echo "  ✓ TPM device detected"
+
+    # Determine TPM version
+    if command -v tpm2_getcap >/dev/null 2>&1; then
+        TPM_VERSION=$(tpm2_getcap properties-fixed 2>/dev/null | grep -i "TPM2_PT_FAMILY_INDICATOR" | awk '{print $2}')
+        if [ -n "$TPM_VERSION" ]; then
+            echo "  - TPM Version: 2.0"
+        else
+            echo "  - TPM Version: Unable to determine (may be 1.2)"
+        fi
+    elif [ -e /sys/class/tpm/tpm0/tpm_version_major ]; then
+        TPM_MAJOR=$(cat /sys/class/tpm/tpm0/tpm_version_major 2>/dev/null)
+        if [ "$TPM_MAJOR" = "2" ]; then
+            echo "  - TPM Version: 2.0"
+        elif [ "$TPM_MAJOR" = "1" ]; then
+            echo "  - TPM Version: 1.2 (consider upgrading to TPM 2.0)"
+        else
+            echo "  - TPM Version: Unknown"
+        fi
+    else
+        echo "  - TPM Version: Unable to determine"
+    fi
+
+    # Check if TPM is being used for LUKS
+    if command -v systemd-cryptenroll >/dev/null 2>&1; then
+        LUKS_DEVICES=$(lsblk -f | grep -i "crypto_LUKS" | awk '{print "/dev/" $1}' 2>/dev/null)
+        TPM_ENROLLED=false
+        for device in $LUKS_DEVICES; do
+            if sudo cryptsetup luksDump "$device" 2>/dev/null | grep -q "systemd-tpm2"; then
+                TPM_ENROLLED=true
+                echo "  ✓ TPM is enrolled for LUKS auto-unlock on $device"
+                break
+            fi
+        done
+
+        if [ "$TPM_ENROLLED" = false ] && [ -n "$LUKS_DEVICES" ]; then
+            echo "  ⚠ TPM available but not enrolled for LUKS auto-unlock"
+            echo "  Consider: sudo systemd-cryptenroll --tpm2-device=auto <luks-device>"
+        fi
+    fi
+
+    # Check ownership/enabled status
+    if [ -r /sys/class/tpm/tpm0/device/enabled ]; then
+        TPM_ENABLED=$(cat /sys/class/tpm/tpm0/device/enabled 2>/dev/null)
+        if [ "$TPM_ENABLED" = "1" ]; then
+            echo "  ✓ TPM is enabled"
+        else
+            echo "  ✗ WARNING: TPM is disabled in firmware"
+            echo "  Enable in UEFI/BIOS settings"
+        fi
+    fi
+else
+    echo "  ⚠ No TPM device detected (/dev/tpm0 or /dev/tpmrm0)"
+    echo "  Check if TPM is enabled in UEFI/BIOS settings"
+    echo "  Note: Older systems may not have TPM hardware"
+fi
+
 echo ""
 echo "=== Security checks complete ==="
 echo ""
