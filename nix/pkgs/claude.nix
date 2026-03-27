@@ -133,9 +133,11 @@
     enable = true;
     target = ".claude/CLAUDE.md";
     text = ''
-Read all links you are given; they have critical context.
-You can run read-only commands, but always ask before writing.
-Always show you work and explain why you are doing this.
+Read all links you are given; they have critical context
+You can run read-only commands, but always ask before writing
+Always show you work and explain why you are doing this
+Go packages should always have an interface, a struct implementing that interface, a mock of the interface, and comprehensive tests for every method
+Function test should always compare the full output object to the expected output object; use cmp.Diff for structs
    '';
   };
 }
