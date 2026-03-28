@@ -10,7 +10,6 @@
     ../pkgs/containers.nix
     ../pkgs/dircolors.nix
     ../pkgs/direnv.nix
-    ../pkgs/flatpak.nix
     ../pkgs/gh.nix
     ../pkgs/git.nix
     ../pkgs/glow.nix
