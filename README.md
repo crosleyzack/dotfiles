@@ -20,8 +20,6 @@ To keep everything updated, run [utils/update.sh](utils/update.sh)
 
 ## TODO
 
-- set default mic and camera to usb webcam
-- remove [pulse](./pulse)
 - is [firefox](./firefox) still necessary?
 - remove [dygma/setup.sh](./dygma/setup.sh) as redundant
 - remove [toolbox](./toolbox) in favor of nix-shell?
