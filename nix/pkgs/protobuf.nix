@@ -1,13 +1,13 @@
 { pkgs, lib, ... }:
 
 let
-  # setup protoc 29.3
-  protoc-29 = pkgs.stdenv.mkDerivation {
+  # setup protoc
+  protoc-custom = pkgs.stdenv.mkDerivation {
     pname = "protoc";
-    version = "29.3";
+    version = "34.0";
     src = pkgs.fetchzip {
-      url = "https://github.com/protocolbuffers/protobuf/releases/download/v29.3/protoc-29.3-linux-x86_64.zip";
-      hash = "sha256-qufshY1rXjBwFkNT0HR7+neMVFdkOARcb4f+nfuDng4=";
+      url = "https://github.com/protocolbuffers/protobuf/releases/download/v34.0/protoc-34.0-linux-x86_64.zip";
+      hash = "sha256-JdGJ38iCHK1wsdviHjrBNiQpw30unLnLNz+/P/Ux5oA=";
       stripRoot = false;
     };
     installPhase = ''
@@ -23,57 +23,57 @@ let
     };
   };
 
-  # setup protoc-gen-go 1.34.2
+  # setup protoc-gen-go
   protoc-gen-go = pkgs.buildGoModule {
     pname = "protoc-gen-go";
-    version = "1.34.2";
+    version = "1.36.11";
     src = pkgs.fetchFromGitHub {
       owner = "protocolbuffers";
       repo = "protobuf-go";
-      rev = "v1.34.2";
-      hash = "sha256-467+AhA3tADBg6+qbTd1SvLW+INL/1QVR8PzfAMYKFA=";
+      rev = "v1.36.11";
+      hash = "sha256-7+w3f5dDcQCw87A6P+JZXfMejS4QHANaLGK8QbUAaQs=";
     };
-    vendorHash = "sha256-nGI/Bd6eMEoY0sBwWEtyhFowHVvwLKjbT4yfzFz6Z3E=";
+    vendorHash = "sha256-EAkrbx9pTBhZ0y0ub14PnMINrk1M6yEgnGapzpgXqBU=";
     subPackages = [ "cmd/protoc-gen-go" ];
   };
 
-  # install protoc-gen-go-grpc 1.5.1
+  # install protoc-gen-go-grpc
   protoc-gen-go-grpc = pkgs.buildGoModule rec {
     pname = "protoc-gen-go-grpc";
-    version = "1.5.1";
+    version = "1.6.1";
     src = pkgs.fetchFromGitHub {
       owner = "grpc";
       repo = "grpc-go";
       rev = "cmd/protoc-gen-go-grpc/v${version}";
-      hash = "sha256-PAUM0chkZCb4hGDQtCgHF3omPm0jP1sSDolx4EuOwXo=";
+      hash = "sha256-s6GZ9K0Wy18YF1RBL0RGDCbtCfAV2bskq6DNXwyorgg=";
     };
-    vendorHash = "sha256-yn6jo6Ku/bnbSX8FL0B/Uu3Knn59r1arjhsVUkZ0m9g=";
+    vendorHash = "sha256-+D3prb03c/Vgm+p3CxCZw14UMCvrDc1Cllzn1znZAE0=";
     modRoot = "cmd/protoc-gen-go-grpc";
   };
 
-  # pull grpc-gateway repo v2.22.0
+  # pull grpc-gateway repo tag
   grpc-gateway-src = pkgs.fetchFromGitHub {
     owner = "grpc-ecosystem";
     repo = "grpc-gateway";
-    rev = "v2.22.0";
-    hash = "sha256-I1w3gfV06J8xG1xJ+XuMIGkV2/Ofszo7SCC+z4Xb6l4=";
+    rev = "v2.28.0";
+    hash = "sha256-93omvHb+b+S0w4D+FGEEwYYDjgumJFDAruc1P4elfvA=";
   };
 
-  # install protoc-gen-grpc-gateway v2.22.0 from grpc-gateway repo
+  # install protoc-gen-grpc-gateway from grpc-gateway repo
   protoc-gen-grpc-gateway = pkgs.buildGoModule {
     pname = "protoc-gen-grpc-gateway";
-    version = "2.22.0";
+    version = "2.28.0";
     src = grpc-gateway-src;
-    vendorHash = "sha256-S4hcD5/BSGxM2qdJHMxOkxsJ5+Ks6m4lKHSS9+yZ17c=";
+    vendorHash = "sha256-jVP5zfFPfHeAEApKNJzZwuZLA+DjKgkL7m2DFG72UNs=";
     subPackages = [ "protoc-gen-grpc-gateway" ];
   };
 
-  # install protoc-gen-openapiv2 v2.22.0 from grpc-gateway repo
+  # install protoc-gen-openapiv2 from grpc-gateway repo
   protoc-gen-openapiv2 = pkgs.buildGoModule {
     pname = "protoc-gen-openapiv2";
-    version = "2.22.0";
+    version = "2.28.0";
     src = grpc-gateway-src;
-    vendorHash = "sha256-S4hcD5/BSGxM2qdJHMxOkxsJ5+Ks6m4lKHSS9+yZ17c=";
+    vendorHash = "sha256-jVP5zfFPfHeAEApKNJzZwuZLA+DjKgkL7m2DFG72UNs=";
     subPackages = [ "protoc-gen-openapiv2" ];
   };
 in
@@ -82,7 +82,7 @@ in
   home.packages = [
     pkgs.buf
     pkgs.grpcurl
-    protoc-29
+    protoc-custom
     protoc-gen-go
     protoc-gen-go-grpc
     protoc-gen-grpc-gateway
