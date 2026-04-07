@@ -8,6 +8,7 @@
     ../pkgs/cli.nix
     ../pkgs/claude.nix
     ../pkgs/cloud.nix
+    ../pkgs/codeowners.nix
     ../pkgs/containers.nix
     ../pkgs/dircolors.nix
     ../pkgs/direnv.nix

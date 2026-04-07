@@ -4,7 +4,6 @@
   home.packages = with pkgs; [
     cosign
     gitsign
-    codeowners
     pre-commit
   ];
   programs = {
