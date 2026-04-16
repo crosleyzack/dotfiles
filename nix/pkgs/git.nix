@@ -53,6 +53,16 @@
                   aliases = "config --get-regexp '^alias\\.'";
                   yolo = "push --force-with-lease";
                   by = "!f() { git log --author=$1; }; f";
+                  # files which changed the most in the last year, defaults to 20
+                  volatile = "!git log --format=format: --name-only --since='1 year ago' | sort | uniq -c | sort -nr | head -\${@-20}";
+                  # files which have had the most commits reporting bugs, defaults to 20
+                  bugs = "!git log -i -E --grep='fix|bug|broken' --name-only --format='' | sort | uniq -c | sort -nr | head -\${@-20}";
+                  # contributors to this directory ordered by descending
+                  author = "shortlog -sn --no-merges .";
+                  # changes to this code per month
+                  per-month = "!git log --format='%ad' --date=format:'%Y-%m' | sort | uniq -c";
+                  # get reversion commits which have occurred here in the last year
+                  reversions = "!git log --oneline --since='1 year ago' . | grep -iE 'revert|hotfix|emergency|rollback'";
                   # show the most recent N branches, defaults to 10
                   recent = "!git for-each-ref --count=\${@-10} --sort=-committerdate refs/heads/ --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(contents:subject) (%(color:green)%(committerdate:short)%(color:reset))' #";
                   # create a new branch upstream and push to it

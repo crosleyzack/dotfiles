@@ -4,6 +4,7 @@
   home = {
     packages = with pkgs; [
       jq
+      vhs
       htop
       tldr
       cmake
