@@ -31,15 +31,21 @@ fi
 
 nix-channel --update
 
-# check if chromium will be built from source, and if so do nothing. This will take hours and
-# its better to wait for the cache to catch up
+# Packages that should never be built from source (e.g. they take hours to compile).
+# If any of these are not in the binary cache, skip the update and wait for the cache to catch up.
+PACKAGES_TO_NEVER_BUILD=(
+    chromium
+)
+
 # Use the nixpkgs revision from the flake.lock to match what home-manager will actually build
 NIXPKGS_REV=$(jq -r '.nodes.nixpkgs.locked.rev' $DIR_PATH/system/flake.lock)
-if nix build "github:NixOS/nixpkgs/${NIXPKGS_REV}#chromium" --dry-run 2>&1 | grep -q "will be built"; then
-    echo "ERROR: chromium is not in the binary cache and would be built from source. Skipping nix update."
-    echo "Try again in a few hours once the cache has caught up."
-    exit 1
-fi
+for pkg in "${PACKAGES_TO_NEVER_BUILD[@]}"; do
+    if nix build "github:NixOS/nixpkgs/${NIXPKGS_REV}#${pkg}" --dry-run 2>&1 | grep -q "will be built"; then
+        echo "ERROR: ${pkg} is not in the binary cache and would be built from source. Skipping nix update."
+        echo "Try again in a few hours once the cache has caught up."
+        exit 1
+    fi
+done
 
 # home-manager switch
 cd $DIR_PATH/system && home-manager switch -b backup --flake .
