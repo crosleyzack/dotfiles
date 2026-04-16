@@ -65,7 +65,10 @@
         unmaximize            = ["<Super>Down"];
         toggle-fullscreen     = ["<Super>f"];
       };
-      # autohide sidebar, you don't need it
+      # remove ubuntu sidebar dock
+      "org/gnome/shell" = {
+        disabled-extensions = [ "ubuntu-dock@ubuntu.com" ];
+      };
       "org/gnome/shell/extensions/dash-to-dock" = {
         dock-fixed  = false;
         intellihide = true;
