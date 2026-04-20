@@ -431,10 +431,28 @@
                     # go settings
                     "gopls" = {
                         "formatting.local" = "github.com/chainguard-dev";
+                        "expandWorkspaceToModule" = false;
+                        "directoryFilters" = [
+                            "-vendor"
+                            "-**/testdata"
+                            "-**/.git"
+                            "-**/node_modules"
+                        ];
+                        "ui.diagnostic.analyses" = {
+                            "shadow" = false;
+                            "fieldalignment" = false;
+                        };
+                        "ui.codelenses" = {
+                            "gc_details" = false;
+                            "regenerate_cgo" = false;
+                            "tidy" = false;
+                            "upgrade_dependency" = false;
+                            "vendor" = false;
+                        };
                     };
                     "go.useLanguageServer" = true;
                     "go.lintTool" = "golint";
-                    "go.lintOnSave" = "workspace";
+                    "go.lintOnSave" = "file";
                     "go.delveConfig" = {};
                     "go.toolsManagement.autoUpdate" = true;
                     "go.testTimeout" = "200s";
@@ -500,6 +518,7 @@
                         "**/.git/objects/**" = true;
                         "**/.git/subtree-cache/**" = true;
                         "**/node_modules/**" = true;
+                        "**/vendor/**" = true;
                         "**/env/**" = true;
                         "**/venv/**" = true;
                         "env-*" = true;
@@ -514,6 +533,7 @@
                         "**/bower_components" = true;
                         "**/env" = true;
                         "**/venv" = true;
+                        "**/vendor" = true;
                     };
                     "files.exclude" = {
                         "**/.git" = true;

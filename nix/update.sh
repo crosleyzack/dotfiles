@@ -35,6 +35,11 @@ nix-channel --update
 # If any of these are not in the binary cache, skip the update and wait for the cache to catch up.
 PACKAGES_TO_NEVER_BUILD=(
     chromium
+    dotnet-sdk
+    vscode
+    mysql84
+    postgresql
+    gcc
 )
 
 # Use the nixpkgs revision from the flake.lock to match what home-manager will actually build
