@@ -34,8 +34,8 @@ nix-channel --update
 # Packages that should never be built from source (e.g. they take hours to compile).
 # If any of these are not in the binary cache, skip the update and wait for the cache to catch up.
 PACKAGES_TO_NEVER_BUILD=(
-    chromium
-    dotnet-sdk
+    chromium # bazecor (electron app), vhs (uses playwright for rendering)
+    dotnet-sdk # azure-cli
     vscode
     mysql84
     postgresql

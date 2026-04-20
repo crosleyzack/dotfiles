@@ -9,7 +9,7 @@
       # languages
       uv
       # programs
-      bazecor
+      # bazecor
     ];
   };
 }

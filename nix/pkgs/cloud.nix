@@ -6,7 +6,7 @@
     sqlite
     mysql84
     awscli2
-    azure-cli
+    # azure-cli
     postgresql
     terraform
     terraform-docs
