@@ -51,6 +51,16 @@
     };
   };
 
+  # set default scaling and font size, system dependent
+  dconf.settings = {
+    "org/gnome/desktop/interface" = {
+      text-scaling-factor = 1.2;
+      # font-name = "Ubuntu 13";
+      # document-font-name = "Ubuntu 13";
+      monospace-font-name = "Monaspice 13";
+    };
+  };
+
   # allow non-free packages to be installed, like terraform
   nixpkgs.config.allowUnfree = true;
 

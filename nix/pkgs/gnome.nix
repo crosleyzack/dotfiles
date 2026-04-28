@@ -21,7 +21,6 @@
       "org/gnome/desktop/interface" = {
         enable-animations = false;
         color-scheme      = "prefer-dark";
-        text-scaling-factor = 1.2;
       };
       # fixed 10 workspaces like i3 environment
       "org/gnome/desktop/wm/preferences" = {
