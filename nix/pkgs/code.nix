@@ -357,12 +357,12 @@
                     "window.profilePerWindow" = false;
                     # theming
                     "workbench.colorTheme" = "One Dark Pro Night Flat";
-                    "editor.fontFamily" = "'Monaspice', monospace";
+                    "editor.fontFamily" = "'Monaspice Ar', monospace";
                     "editor.fontSize" = 14.5;
                     "editor.fontVariations" = true;
                     "editor.fontLigatures" = false;
                     "editor.bracketPairColorization.enabled" = true;
-                    "terminal.integrated.fontFamily" = "'Monaspice', monospace";
+                    "terminal.integrated.fontFamily" = "'Monaspice Ar', monospace";
                     "terminal.integrated.suggest.enabled" = true;
                     "terminal.integrated.shellIntegration.enabled" = true;
                     "terminal.integrated.profiles.linux" = {

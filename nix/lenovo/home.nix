@@ -10,6 +10,7 @@
     ../pkgs/containers.nix
     ../pkgs/dircolors.nix
     ../pkgs/direnv.nix
+    ../pkgs/fonts.nix
     ../pkgs/gh.nix
     ../pkgs/git.nix
     ../pkgs/glow.nix
@@ -54,9 +55,9 @@
   # set default scaling and font size, system dependent
   dconf.settings = {
     "org/gnome/desktop/interface" = {
-      text-scaling-factor = 1.2;
-      # font-name = "Ubuntu 13";
-      # document-font-name = "Ubuntu 13";
+      # text-scaling-factor = 1.0;
+      # font-name = "Open Sans 11";
+      # document-font-name = "Open Sans 11";
       monospace-font-name = "Monaspice 13";
     };
   };

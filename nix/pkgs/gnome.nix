@@ -55,6 +55,8 @@
         cycle-group            = ["<Super>a"];
         cycle-group-backward   = ["<Super><Shift>a"];
         # move windows to location within workspace
+        toggle-tiled-left     = ["<Super>Left"];
+        toggle-tiled-right    = ["<Super>Right"];
         move-to-side-e        = ["<Super>l"];
         move-to-side-n        = ["<Super>k"];
         move-to-side-s        = ["<Super>j"];
@@ -74,7 +76,8 @@
         intellihide = true;
       };
       "org/gnome/settings-daemon/plugins/media-keys" = {
-        terminal = ["<Super>Return"];
+        terminal    = ["<Super>Return"];
+        screensaver = ["<Super><Shift>l"];
       };
       # disable location services
       "org/gnome/system/location" = {
