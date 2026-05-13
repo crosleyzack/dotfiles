@@ -58,7 +58,7 @@
       # text-scaling-factor = 1.0;
       # font-name = "Open Sans 11";
       # document-font-name = "Open Sans 11";
-      monospace-font-name = "Monaspice 13";
+      # monospace-font-name = "Monaspice 13";
     };
   };
 

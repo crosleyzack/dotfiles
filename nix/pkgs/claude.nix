@@ -11,7 +11,7 @@
     text = ''
 {
     "env": {
-        "SHELL": "${config.home.homeDirectory}/.nix-profile/bin/zsh",
+        "SHELL": "${pkgs.zsh}/bin/zsh",
         "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": "1",
         "DISABLE_TELEMETRY": "1",
         "DISABLE_ERROR_REPORTING": "1"

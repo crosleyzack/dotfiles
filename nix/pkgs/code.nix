@@ -367,7 +367,7 @@
                     "terminal.integrated.shellIntegration.enabled" = true;
                     "terminal.integrated.profiles.linux" = {
                       "zsh_nix" = {
-                        "path" = "${config.home.homeDirectory}/.nix-profile/bin/zsh";
+                        "path" = "${pkgs.zsh}/bin/zsh";
                         "icon" = "terminal";
                       };
                     };
@@ -429,6 +429,10 @@
                     # for fedora machines
                     # "dev.containers.dockerPath" = "podman";
                     # go settings
+                    "go.alternateTools": {
+                        "go": "${pkgs.go}/bin/go",
+                        "gopls": "${pkgs.gopls}/bin/gopls"
+                    }
                     "gopls" = {
                         "formatting.local" = "github.com/chainguard-dev";
                         "expandWorkspaceToModule" = false;

@@ -46,6 +46,7 @@ declare -a packages=(
     "md.obsidian.Obsidian"
     "com.valvesoftware.Steam"
     "org.librecad.librecad"
+    "com.yubico.yubioath"
 )
 
 ## now loop through the above array
