@@ -31,6 +31,7 @@
               # always sign
               commit = {
                 gpgsign = true;
+                signoff = true;
                 status = true;
               };
               tag = {
