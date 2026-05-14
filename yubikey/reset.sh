@@ -68,4 +68,6 @@ ykman -d $DEVICE fido reset
 ykman -d $DEVICE hsmauth reset
 ykman -d $DEVICE oath reset
 ykman -d $DEVICE openpgp reset
+ykman -d $DEVICE openpgp access set-retries 255
 ykman -d $DEVICE piv reset
+ykman -d $DEVICE piv access set-retries 255

@@ -10,6 +10,10 @@
     target = ".claude/settings.json";
     text = ''
 {
+    "statusLine": {
+        "type": "command",
+        "command": "bash ${config.home.homeDirectory}/.claude/statusline-command.sh"
+    },
     "env": {
         "SHELL": "${pkgs.zsh}/bin/zsh",
         "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": "1",
@@ -275,16 +279,97 @@
     "cleanupPeriodDays": 14
 }
     '';
-  };
-  home.file.claude = {
-    enable = true;
-    target = ".claude/CLAUDE.md";
-    text = ''
+    };
+    # claude md main file
+    home.file.claude = {
+        enable = true;
+        target = ".claude/CLAUDE.md";
+        text = ''
 Read all links you are given; they have critical context
 You can run read-only commands, but always ask before writing.
 Always show you work and explain why you are doing this
 Go packages should always have an interface, a struct implementing that interface, a mock of the interface, and comprehensive tests for every method
 Function test should use table-driven pattern and compare the full output object to the expected output object; use cmp.Diff for structs
-   '';
-  };
+        '';
+    };
+    home.file.claude_status = {
+        enable = true;
+        target = "${config.home.homeDirectory}/.claude/statusline-command.sh";
+        executable = true;
+        text = ''
+#!/usr/bin/env bash
+# Claude Code status line: model, context usage, session cost, water estimate
+# Pricing: https://www.anthropic.com/pricing (USD per million tokens)
+
+input=$(cat)
+
+model=$(jq -r '.model.display_name // "unknown"' <<<"$input")
+model_id=$(jq -r '.model.id // ""' <<<"$input")
+used_pct=$(jq -r '.context_window.used_percentage // empty' <<<"$input")
+total_in=$(jq -r '.context_window.total_input_tokens // 0' <<<"$input")
+total_out=$(jq -r '.context_window.total_output_tokens // 0' <<<"$input")
+authoritative_cost=$(jq -r '.cost.total_cost_usd // empty' <<<"$input")
+
+# Per-MTok input/output pricing by model family
+case "$model_id" in
+  *opus*)   cost_in=15.00; cost_out=75.00 ;;
+  *haiku*)  cost_in=0.80;  cost_out=4.00  ;;
+  *)        cost_in=3.00;  cost_out=15.00 ;;  # sonnet default
+esac
+
+# Prefer authoritative .cost.total_cost_usd; fall back to token estimate
+if [ -n "$authoritative_cost" ]; then
+  read -r cost_raw cost_display < <(awk -v c="$authoritative_cost" 'BEGIN{
+    if (c < 0.01) printf "%.4f $%.4f\n", c, c
+    else printf "%.4f $%.2f\n", c, c }')
+else
+  read -r cost_raw cost_display < <(awk -v i="$total_in" -v o="$total_out" \
+    -v ci="$cost_in" -v co="$cost_out" 'BEGIN{
+      c = (i/1e6)*ci + (o/1e6)*co
+      if (c < 0.01) printf "%.4f $%.4f\n", c, c
+      else printf "%.4f $%.2f\n", c, c }')
+fi
+
+# Water footprint (~170 mL/$, scope 1+2; ±10x uncertainty)
+water=$(awk -v c="$cost_raw" 'BEGIN{
+  ml = c * 170
+  if (ml >= 500)    printf "%.2fbtl", ml/500
+  else if (ml >= 1) printf "%.0fmL", ml
+  else if (ml > 0)  printf "<1mL"
+  else              printf "0mL" }')
+
+# 8-cell context bar with partial-fill blocks
+make_bar() {
+  local pct=$1 cells=8 subs filled full part empty out="" i
+  subs=$((cells*8)); filled=$((pct*subs/100))
+  (( filled > subs )) && filled=$subs
+  (( filled < 0 )) && filled=0
+  full=$((filled/8)); part=$((filled%8)); empty=$((cells-full))
+  (( part > 0 )) && empty=$((empty-1))
+  (( empty < 0 )) && empty=0
+  for ((i=0;i<full;i++));  do out+="█"; done
+  case $part in 1) out+="▏";; 2) out+="▎";; 3) out+="▍";; 4) out+="▌";;
+                5) out+="▋";; 6) out+="▊";; 7) out+="▉";; esac
+  for ((i=0;i<empty;i++)); do out+="░"; done
+  printf "%s" "$out"
+}
+
+parts=("$model")
+if [ -n "$used_pct" ]; then
+  used_int=$(printf "%.0f" "$used_pct")
+  if   [ "$used_int" -ge 90 ]; then color="\033[91m"
+  elif [ "$used_int" -ge 75 ]; then color="\033[33m"
+  elif [ "$used_int" -ge 50 ]; then color="\033[36m"
+  else                               color="\033[32m"
+  fi
+  parts+=("$(printf "''${color}$(make_bar "$used_int") ctx:''${used_int}%%\033[0m")")
+fi
+parts+=("$(printf "\033[33mcost:''${cost_display}\033[0m")")
+parts+=("$(printf "\033[94mh2o:''${water}\033[0m")")
+
+printf "%s" "''${parts[0]}"
+for p in "''${parts[@]:1}"; do printf " | %s" "$p"; done
+printf "\n"
+        '';
+    };
 }

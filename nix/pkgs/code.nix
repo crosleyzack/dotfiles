@@ -429,10 +429,10 @@
                     # for fedora machines
                     # "dev.containers.dockerPath" = "podman";
                     # go settings
-                    "go.alternateTools": {
-                        "go": "${pkgs.go}/bin/go",
-                        "gopls": "${pkgs.gopls}/bin/gopls"
-                    }
+                    "go.alternateTools" = {
+                        "go" = "${pkgs.go}/bin/go";
+                        "gopls" = "${pkgs.gopls}/bin/gopls";
+                    };
                     "gopls" = {
                         "formatting.local" = "github.com/chainguard-dev";
                         "expandWorkspaceToModule" = false;
