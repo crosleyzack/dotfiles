@@ -41,7 +41,7 @@ LEN=${#DEVICES[@]}
 echo "DEVICES=${DEVICES[@]}, length=$LEN"
 
 DEVICE=""
-if [ -v $1 ]; then
+if [ -n "$1" ]; then
     # if device is provided as argument, use that
     echo "setting device to $1"
     DEVICE=$1
@@ -53,6 +53,9 @@ else
     echo for multiple devices a serial must be specified
     exit 1
 fi
+
+# setup maximum retries for OpenPGP and PIV applications
+# MAX_RETRIES=${MAX_RETRIES:-99}
 
 read -p "Do you want to reset ${DEVICE}? (y/n) " yn
 
@@ -68,6 +71,7 @@ ykman -d $DEVICE fido reset
 ykman -d $DEVICE hsmauth reset
 ykman -d $DEVICE oath reset
 ykman -d $DEVICE openpgp reset
-ykman -d $DEVICE openpgp access set-retries 255
 ykman -d $DEVICE piv reset
-ykman -d $DEVICE piv access set-retries 255
+# TODO how many retries should each thing have?
+# ykman -d $DEVICE openpgp access set-retries $MAX_RETRIES
+# ykman -d $DEVICE piv access set-retries $MAX_RETRIES $MAX_RETRIES
