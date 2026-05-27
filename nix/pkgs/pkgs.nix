@@ -8,6 +8,7 @@
       yubikey-manager
       # languages
       uv
+      pyenv
       # programs
       # bazecor
     ];
