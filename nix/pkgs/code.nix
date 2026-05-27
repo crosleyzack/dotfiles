@@ -426,6 +426,8 @@
                     "workbench.secondarySideBar.defaultVisibility" = "hidden";
                     "workbench.startupEditor" = "readme";
                     "dev.containers.copyGitConfig" = false;
+                    # use nix direnv
+                    "direnv.path.executable" = "${pkgs.direnv}/bin/direnv";
                     # for fedora machines
                     # "dev.containers.dockerPath" = "podman";
                     # go settings
