@@ -29,6 +29,7 @@
                 extraConfig = ''
                     set -g @continuum-restore 'on'
                     set -g @continuum-boot 'on'
+                    set -g @continuum-systemd-start-cmd 'new-session -d -s main'
                     set -g @continuum-save-interval '10'
                 '';
             }
@@ -64,7 +65,7 @@
             set -s command-alias[8] rename='rename-session -t'
             set -s command-alias[9] default='attach -c'
             set -s command-alias[10] kill='kill-session -t'
-            set -s command-alias[11] clean='for x in $(tmux list-sessions | grep -E -i "^[[:digit:]]" | awk -F ":" "{print \$1}"); do tmux kill-session -t $x; done'
+            set -s command-alias[11] clean='run-shell "tmux list-sessions -F \"##S\" | grep -E \"^[[:digit:]]\" | xargs -I{} tmux kill-session -t {}"'
             # remove delay reading command characters while awaiting escape sequence
             set -s escape-time 1
             # set vim style bindings

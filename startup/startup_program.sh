@@ -57,7 +57,7 @@
 # This requires tmux exist on the host, however doing the `toolbox run -c devs tmux`
 # alone results in ressurect not running. Ideally, will find a way to make this
 # work without host requiring tmux
-tmux new-session -d
+tmux new-session -d -A -s main
 
 FILE_PATH=$(realpath $BASH_SOURCE)
 DIR=$(dirname $FILE_PATH)
@@ -72,7 +72,7 @@ case $NIX_SYSTEM_ID in
     ;;
     *)
         # default
-        declare -a progs=("firefox" "code" "flatpak run md.obsidian.Obsidian" "flatpak run me.proton.Mail" "flatpak run me.proton.Pass" "flatpak run org.signal.Signal" "ptyxis -e /usr/bin/zsh -c tmux")
+        declare -a progs=("firefox" "code" "flatpak run md.obsidian.Obsidian" "flatpak run me.proton.Mail" "flatpak run me.proton.Pass" "flatpak run org.signal.Signal" "ptyxis -e /usr/bin/zsh -c 'tmux new-session -A -s main'")
     ;;
 esac
 printf '%s\n' "${progs[@]}"\
