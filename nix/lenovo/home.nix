@@ -6,6 +6,7 @@
     ../pkgs/bash.nix
     ../pkgs/code.nix
     ../pkgs/cli.nix
+    # ../pkgs/cg.nix
     # ../pkgs/cloud.nix
     ../pkgs/containers.nix
     ../pkgs/dircolors.nix
@@ -23,7 +24,6 @@
     ../pkgs/starship.nix
     ../pkgs/tmux.nix
     ../pkgs/vim.nix
-    # ../pkgs/work.nix
     ../pkgs/xplr.nix
     ../pkgs/zsh.nix
   ];

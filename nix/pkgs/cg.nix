@@ -8,9 +8,8 @@
     grype
     trivy
     # images
+    cue
     apko
     melange
-    # ai
-    claude-code
   ];
 }

@@ -5,6 +5,7 @@
     ../pkgs/atuin.nix
     ../pkgs/bash.nix
     ../pkgs/code.nix
+    ../pkgs/cg.nix
     ../pkgs/cli.nix
     ../pkgs/claude.nix
     ../pkgs/cloud.nix
@@ -25,7 +26,6 @@
     ../pkgs/starship.nix
     ../pkgs/tmux.nix
     ../pkgs/vim.nix
-    ../pkgs/work.nix
     ../pkgs/xplr.nix
     ../pkgs/zsh.nix
   ];
