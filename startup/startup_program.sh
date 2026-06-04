@@ -77,6 +77,27 @@ case $NIX_SYSTEM_ID in
 esac
 printf '%s\n' "${progs[@]}"\
 
+# Wayland-friendly replacement for position_windows.sh.
+# Uses the built-in auto-move-windows GNOME extension to place each app's first
+# window onto a specific workspace at launch time. Unlike wmctrl this works for
+# native Wayland clients, but it cannot resize/fullscreen windows or spread
+# multiple instances of the same app across successive workspaces.
+configure_auto_move_windows() {
+    # auto-move-windows is 1-indexed; position_windows.sh values were 0-indexed,
+    # so each workspace number below is the position_windows.sh value + 1.
+    local app_list
+    case "$NIX_SYSTEM_ID" in
+        framework)
+            app_list="['firefox_firefox.desktop:9','code.desktop:2','slack_slack.desktop:10','proton-pass_proton-pass.desktop:8','obsidian_obsidian.desktop:7']"
+        ;;
+        *)
+            app_list="['firefox.desktop:9','code.desktop:2','md.obsidian.Obsidian.desktop:7','me.proton.Mail.desktop:6','me.proton.Pass.desktop:8','org.signal.Signal.desktop:10']"
+        ;;
+    esac
+    echo "configure_auto_move_windows: setting application-list=$app_list"
+    gsettings set org.gnome.shell.extensions.auto-move-windows application-list "$app_list"
+}
+
 ## now loop through the above array
 for i in "${progs[@]}"
 do
@@ -87,6 +108,6 @@ done
 
 echo "Programs launched, sleeping"
 sleep 9
-echo "Sleep done, repositioning windows via $DIR/position_windows.sh"
+echo "Sleep done, configuring workspace placement via auto-move-windows"
 
-exec $DIR/position_windows.sh
+configure_auto_move_windows
