@@ -31,8 +31,6 @@ if [ ! -L $DIR_PATH/system ]; then
     exit 1
 fi
 
-# nix-channel --update
-
 # Update flake inputs to get the latest nixpkgs revision
 nix flake update --flake $DIR_PATH/system
 
