@@ -1,14 +1,6 @@
 { pkgs, ... }:
 
 {
-  home.packages = with pkgs; [
-    # packages that only apply with window managers
-    wmctrl
-    xorg.xrandr
-    # Wayland-compatible auto-placement of apps onto workspaces
-    # (used by startup/startup_program.sh -> configure_auto_move_windows)
-    gnomeExtensions.auto-move-windows
-  ];
   # This sets up the gnome environment to preferred settings, a
   #  pseudo-i3 environment with fixed desktops and shortcuts to
   #  move between them

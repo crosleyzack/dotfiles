@@ -48,7 +48,7 @@ NIX_SYSTEM_ID="${NIX_SYSTEM_ID:-''}"
 # Verify the checksum against official Nix documentation or trusted sources before setting.
 # Last verified: 2026-03-27
 # This MUST be set before running the script.
-NIX_INSTALLER_CHECKSUM="${NIX_INSTALLER_CHECKSUM:-de490f61fcbaf9a5cabf2fa621ddb9ef93ad35d9a23a04e7d51b26e092b63691}"
+NIX_INSTALLER_CHECKSUM="${NIX_INSTALLER_CHECKSUM:-e9d447ce3d2ff62d7ff9cb6ef401de6fa8acb148839dd00f7271945d7b638b14}"
 
 printf "SETUP_CHANNEL=$SETUP_CHANNEL; INSTALL_HOME_MANAGER=$INSTALL_HOME_MANAGER; NIX_SYSTEM_ID=$SYSTEM\n"
 
@@ -153,7 +153,7 @@ if $INSTALL_HOME_MANAGER; then
 
     # add and sync channel
     nix-channel --remove home-manager
-    nix-channel --add https://github.com/nix-community/home-manager/archive/master.tar.gz home-manager
+    nix-channel --add "https://github.com/nix-community/home-manager/archive/release-$VERSION.tar.gz" home-manager
     nix-channel --update
 
     # install home manager
