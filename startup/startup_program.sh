@@ -28,7 +28,7 @@
 #   - Slack (Snap)
 #   - Proton Pass (Snap)
 #   - Obsidian (Snap)
-#   - GNOME Terminal
+#   - Ptyxis terminal with tmux
 #
 #   Default (personal):
 #   - Firefox
@@ -57,7 +57,8 @@
 # This requires tmux exist on the host, however doing the `toolbox run -c devs tmux`
 # alone results in ressurect not running. Ideally, will find a way to make this
 # work without host requiring tmux
-tmux new-session -d -A -s main
+NIX_BIN=$HOME/.nix-profile/bin
+$NIX_BIN/tmux new-session -d -A -s main
 
 FILE_PATH=$(realpath $BASH_SOURCE)
 DIR=$(dirname $FILE_PATH)
@@ -68,14 +69,14 @@ echo "NIX_SYSTEM_ID=$NIX_SYSTEM_ID"
 case $NIX_SYSTEM_ID in
     framework)
         # work
-        declare -a progs=("/home/zackary-crosley/.nix-profile/bin/code" "snap run firefox" "snap run slack" "snap run proton-pass" "snap run obsidian" "gnome-terminal")
+        declare -a progs=("$NIX_BIN/code" "snap run firefox" "snap run slack" "snap run proton-pass" "snap run obsidian" "ptyxis -e $NIX_BIN/zsh")
     ;;
     *)
         # default
         declare -a progs=("firefox" "code" "flatpak run md.obsidian.Obsidian" "flatpak run me.proton.Mail" "flatpak run me.proton.Pass" "flatpak run org.signal.Signal" "ptyxis -e /usr/bin/zsh -c 'tmux new-session -A -s main'")
     ;;
 esac
-printf '%s\n' "${progs[@]}"\
+printf '%s\n' "${progs[@]}"
 
 # Wayland-friendly replacement for position_windows.sh.
 # Uses the built-in auto-move-windows GNOME extension to place each app's first
@@ -98,16 +99,15 @@ configure_auto_move_windows() {
     gsettings set org.gnome.shell.extensions.auto-move-windows application-list "$app_list"
 }
 
+# NOTE: requires installation of gnome-shell-extension-auto-move-windows.
+configure_auto_move_windows
+
 ## now loop through the above array
 for i in "${progs[@]}"
 do
     echo "executing $i"
-    exec $i > /dev/null &
+    eval "$i > /dev/null &"
     sleep .1s
 done
 
-echo "Programs launched, sleeping"
-sleep 9
-echo "Sleep done, configuring workspace placement via auto-move-windows"
-
-configure_auto_move_windows
+echo "Programs launched!"
