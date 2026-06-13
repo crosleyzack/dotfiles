@@ -1,6 +1,12 @@
 { pkgs, ... }:
 
 {
+  home.shellAliases = {
+    # easy command to create main tmux session
+    tmuxnew = "${pkgs.tmux}/bin/tmux new-session -d -A -s main";
+    # easy command to attach to main tmux session
+    tmuxbind = "${pkgs.tmux}/bin/tmux a -t main";
+  };
   programs = {
       tmux = {
           enable = true;
