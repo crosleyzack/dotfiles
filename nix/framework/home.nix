@@ -13,6 +13,7 @@
     ../pkgs/containers.nix
     ../pkgs/dircolors.nix
     ../pkgs/direnv.nix
+    ../pkgs/docker.nix
     ../pkgs/fonts.nix
     ../pkgs/gh.nix
     ../pkgs/git.nix
