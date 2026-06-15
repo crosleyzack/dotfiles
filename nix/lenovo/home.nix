@@ -65,5 +65,10 @@
   # allow non-free packages to be installed, like terraform
   nixpkgs.config.allowUnfree = true;
 
+  my.git.identity = {
+    name = "crosleyzack";
+    email = "mail@crosleyzack.com";
+  };
+
   programs.home-manager.enable = true;
 }

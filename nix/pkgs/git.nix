@@ -1,11 +1,46 @@
-{ pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
-{
+let cfg = config.my.git.identity;
+in {
+  options.my.git.identity = {
+    name = lib.mkOption {
+      type = lib.types.str;
+      description = "git user.name for this device";
+    };
+    email = lib.mkOption {
+      type = lib.types.str;
+      description = "git user.email for this device";
+    };
+  };
+
+  config = {
   home.packages = with pkgs; [
     cosign
     gitsign
     pre-commit
   ];
+  # prepare-commit-msg hook: auto-append Signed-off-by trailer.
+  # Covers `commit`, `merge`, `cherry-pick`, `revert`, `rebase`, and IDE-driven
+  # commits — anything that goes through the prepare-commit-msg lifecycle.
+  home.file.git-signoff-hook = {
+    enable = true;
+    executable = true;
+    target = ".config/git/hooks/prepare-commit-msg";
+    text = ''
+#!/bin/sh
+set -eu
+
+COMMIT_MSG_FILE="$1"
+
+NAME=$(git config user.name)
+EMAIL=$(git config user.email)
+SIGNOFF="Signed-off-by: $NAME <$EMAIL>"
+
+if ! grep -qxF "$SIGNOFF" "$COMMIT_MSG_FILE"; then
+    git interpret-trailers --in-place --trailer "$SIGNOFF" "$COMMIT_MSG_FILE"
+fi
+    '';
+  };
   programs = {
       git = {
           enable = true;
@@ -15,12 +50,12 @@
               skipSmudge = false;
           };
           settings = {
-              user = {
-                  name = "crosleyzack";
-                  email = "mail@crosleyzack.com";
-              };
+              user = { inherit (cfg) name email; };
               init.defaultBranch = "main";
-              core.editor = "vim";
+              core = {
+                editor = "vim";
+                hooksPath = "${config.home.homeDirectory}/.config/git/hooks";
+              };
               color.ui = true;
               # use ssh for auth
               url = {
@@ -82,7 +117,8 @@
                   # synchronize local main with upstream main and return to the current branch
                   sync = "!BRANCH=$(git branch --show-current) && UPSTREAM=$(git upstream-branch) && git checkout $(git main) && git fetch $UPSTREAM && git rebase $UPSTREAM && git checkout $BRANCH #";
               };
-          }; 
+          };
       };
+  };
   };
 }

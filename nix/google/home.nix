@@ -45,5 +45,10 @@
   # allow non-free packages to be installed, like terraform
   nixpkgs.config.allowUnfree = true;
 
+  my.git.identity = {
+    name = "Zackary Crosley";
+    email = "zackary.crosley@chainguard.dev";
+  };
+
   programs.home-manager.enable = true;
 }
