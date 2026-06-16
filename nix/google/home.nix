@@ -25,7 +25,7 @@
   home = {
     username = "zackary_crosley_chainguard_dev";
     homeDirectory = "/home/zackary_crosley_chainguard_dev";
-    stateVersion = "25.11";
+    stateVersion = "26.05";
     sessionVariables = {
       MOZ_ENABLE_WAYLAND = 1;
       NIX_SYSTEM_ID = "google";

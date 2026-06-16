@@ -10,6 +10,7 @@
     target = ".claude/settings.json";
     text = ''
 {
+    "model": "claude-sonnet-4-6[1m]",
     "statusLine": {
         "type": "command",
         "command": "bash ${config.home.homeDirectory}/.claude/statusline-command.sh"

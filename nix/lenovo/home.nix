@@ -31,7 +31,7 @@
   home = {
     username = "crosleyzack";
     homeDirectory = "/home/crosleyzack";
-    stateVersion = "25.11";
+    stateVersion = "26.05";
     # for fedora machines
     shellAliases = {
       docker = "podman";
