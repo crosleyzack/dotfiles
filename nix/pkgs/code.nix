@@ -433,7 +433,9 @@
                     # go settings
                     "go.alternateTools" = {
                         "go" = "${pkgs.go}/bin/go";
+                        "dlv" = "${pkgs.delve}/bin/dlv";
                         "gopls" = "${pkgs.gopls}/bin/gopls";
+                        "gofmt" = "${pkgs.go}/bin/gofmt";
                     };
                     "gopls" = {
                         "formatting.local" = "github.com/chainguard-dev";
@@ -457,7 +459,7 @@
                         };
                     };
                     "go.useLanguageServer" = true;
-                    "go.lintTool" = "golint";
+                    "go.lintTool" = "${pkgs.golint}/bin/golint";
                     "go.lintOnSave" = "file";
                     "go.delveConfig" = {};
                     "go.toolsManagement.autoUpdate" = true;
@@ -465,7 +467,7 @@
                     "go.testFlags" = [
                         "-test.count=1"
                     ];
-                    "go.formatTool" = "gofmt";
+                    "go.formatTool" = "gopls";
                     "go.inlayHints.constantValues" = true;
                     "go.inferGopath" = true;
                     "[go]" = {

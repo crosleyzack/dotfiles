@@ -51,6 +51,13 @@
     };
   };
 
+  # Expose Nix profile to GUI apps (VS Code, Claude) which inherit the systemd
+  # user session environment, not the shell profile. Without this, tools like
+  # gopls and gofmt are invisible to anything not launched from a terminal.
+  xdg.configFile."environment.d/nix-paths.conf".text = ''
+    PATH=$HOME/.nix-profile/bin:$HOME/go/bin:$HOME/.local/bin:$PATH
+  '';
+
   # set default scaling and font size, system dependent
   dconf.settings = {
     "org/gnome/desktop/interface" = {

@@ -50,7 +50,7 @@
             source $HOME/.nix-profile/etc/profile.d/hm-session-vars.sh
             source $HOME/.nix-profile/etc/profile.d/nix.sh
             test -f $HOME/.env && source $HOME/.env 
-            eval "$(pyenv init - zsh)"
+            command -v pyenv &>/dev/null && eval "$(pyenv init - zsh)"
           '';
       };
   };
