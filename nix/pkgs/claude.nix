@@ -17,6 +17,7 @@
     },
     "env": {
         "SHELL": "${pkgs.zsh}/bin/zsh",
+        "CLAUDE_CODE_EFFORT_LEVEL": "max",
         "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": "1",
         "DISABLE_TELEMETRY": "1",
         "DISABLE_ERROR_REPORTING": "1"
@@ -287,10 +288,11 @@
         target = ".claude/CLAUDE.md";
         text = ''
 Read all links you are given; they have critical context
-You can run read-only commands, but always ask before writing.
+Use permissions in settings.json; ask for permission if settings.json doesn't give it to you
 Always show you work and explain why you are doing this
 Go packages should always have an interface, a struct implementing that interface, a mock of the interface, and comprehensive tests for every method
 Function test should use table-driven pattern and compare the full output object to the expected output object; use cmp.Diff for structs
+Go tests should use stretch/testify for comparisons
         '';
     };
     home.file.claude_status = {

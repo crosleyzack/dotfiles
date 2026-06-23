@@ -473,6 +473,7 @@
                     "[go]" = {
                         "editor.codeLens" = true;
                         "editor.defaultFormatter" = "golang.go";
+                        "editor.formatOnSave" = true;
                     };
                     # disable a bunch of stuff for efficiency
                     "chat.mcp.access" = "none";
