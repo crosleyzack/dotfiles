@@ -36,10 +36,16 @@
 ################################################################################
 
 # NOTE: this can also be run to update nix version. Simply change `VERSION` below to the appropriate value. See https://nixos.wiki/wiki/Nix_channels
-VERSION="${NIX_VERSION:-25.11}"
+VERSION="${NIX_VERSION:-26.05}"
 SETUP_CHANNEL="${SETUP_NIX_CHANNEL:-true}"
 INSTALL_HOME_MANAGER="${SETUP_HOME_MANAGER:-true}"
 NIX_SYSTEM_ID="${NIX_SYSTEM_ID:-''}"
+if [ -z "$NIX_SYSTEM_ID" ]; then
+    if ! command -v dmidecode &>/dev/null; then
+        printf "Error: NIX_SYSTEM_ID is not set and dmidecode is not installed.\nSet NIX_SYSTEM_ID to 'framework', 'lenovo', or 'google'.\n" >&2
+        exit 1
+    fi
+fi
 
 # Expected SHA256 checksum of the Nix installer script
 # REQUIRED: This checksum is mandatory for security.
@@ -49,7 +55,7 @@ NIX_SYSTEM_ID="${NIX_SYSTEM_ID:-''}"
 # This MUST be set before running the script.
 NIX_INSTALLER_CHECKSUM="${NIX_INSTALLER_CHECKSUM:-e9d447ce3d2ff62d7ff9cb6ef401de6fa8acb148839dd00f7271945d7b638b14}"
 
-printf "SETUP_CHANNEL=$SETUP_CHANNEL; INSTALL_HOME_MANAGER=$INSTALL_HOME_MANAGER; NIX_SYSTEM_ID=$SYSTEM\n"
+printf "SETUP_CHANNEL=$SETUP_CHANNEL; INSTALL_HOME_MANAGER=$INSTALL_HOME_MANAGER; NIX_SYSTEM_ID=$NIX_SYSTEM_ID\n"
 
 # get dir containing this file
 FILE_PATH=$(realpath $BASH_SOURCE)
