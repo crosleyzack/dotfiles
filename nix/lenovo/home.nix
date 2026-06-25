@@ -70,5 +70,13 @@
     email = "mail@crosleyzack.com";
   };
 
+  nix.package = pkgs.nix;
+  nix.settings = {
+    experimental-features = [ "nix-command" "flakes" "cgroups" ];
+    max-jobs = "auto";
+    cores = 0;
+    use-cgroups = true;
+  };
+
   programs.home-manager.enable = true;
 }

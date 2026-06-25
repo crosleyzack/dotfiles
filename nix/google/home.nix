@@ -50,5 +50,12 @@
     email = "zackary.crosley@chainguard.dev";
   };
 
+  nix.package = pkgs.nix;
+  nix.settings = {
+    experimental-features = [ "nix-command" "flakes" ];
+    max-jobs = "auto";
+    cores = 0;
+  };
+
   programs.home-manager.enable = true;
 }

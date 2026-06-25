@@ -10,11 +10,10 @@
 #
 # Behavior:
 #   1. Installs Nix package manager if not already present
-#   2. Symlinks Nix configuration file (nix.conf) to ~/.config/nix/
-#   3. Configures Nix channels (nixpkgs stable)
-#   4. Installs home-manager and sets up the appropriate channel
-#   5. Auto-detects or uses provided system ID to apply machine-specific configs
-#   6. Applies home-manager flake configuration from the system-specific directory
+#   2. Configures Nix channels (nixpkgs stable)
+#   3. Installs home-manager and sets up the appropriate channel
+#   4. Auto-detects or uses provided system ID to apply machine-specific configs
+#   5. Applies home-manager flake configuration from the system-specific directory
 #
 # Environment Variables:
 #   NIX_VERSION              - Nix channel version to install (default: 25.11)
@@ -60,10 +59,7 @@ DIR_PATH=$(dirname $FILE_PATH)
 if [[ -z "$(which nix-env)" ]]; then
     printf "\nnix not installed, installing..."
 
-    # sym links nix config
     mkdir -p $HOME/.config/nix
-    rm -f $HOME/.config/nix/nix.conf
-    ln -s $DIR_PATH/nix.conf $HOME/.config/nix/nix.conf
 
     # install
     INSTALLER_URL="https://nixos.org/nix/install"
@@ -170,7 +166,7 @@ if $INSTALL_HOME_MANAGER; then
     [ "$NIX_SYSTEM_ID" == "lenovo" ] && ln -s $DIR_PATH/lenovo $DIR_PATH/system
     [ "$NIX_SYSTEM_ID" == "google" ] && ln -s $DIR_PATH/google $DIR_PATH/system
 
-    cd system && home-manager switch -b backup --flake .
+    cd system && NIX_CONFIG="experimental-features = nix-command flakes" home-manager switch -b backup --flake .
 fi
 
 printf "\nInstall completed. Relaunch shell to use nix\n"
