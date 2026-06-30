@@ -10,7 +10,7 @@
     target = ".claude/settings.json";
     text = ''
 {
-    "model": "claude-sonnet-4-6[1m]",
+    "model": "claude-opus-4-8[1m]",
     "statusLine": {
         "type": "command",
         "command": "bash ${config.home.homeDirectory}/.claude/statusline-command.sh"
@@ -287,12 +287,13 @@
         enable = true;
         target = ".claude/CLAUDE.md";
         text = ''
-Read all links you are given; they have critical context
+Read all links you are given
 Use permissions in settings.json; ask for permission if settings.json doesn't give it to you
 Always show you work and explain why you are doing this
 Go packages should always have an interface, a struct implementing that interface, a mock of the interface, and comprehensive tests for every method
 Function test should use table-driven pattern and compare the full output object to the expected output object; use cmp.Diff for structs
 Go tests should use stretch/testify for comparisons
+README files should have newlines between sentences
         '';
     };
     home.file.claude_status = {
@@ -315,8 +316,8 @@ authoritative_cost=$(jq -r '.cost.total_cost_usd // empty' <<<"$input")
 
 # Per-MTok input/output pricing by model family
 case "$model_id" in
-  *opus*)   cost_in=15.00; cost_out=75.00 ;;
-  *haiku*)  cost_in=0.80;  cost_out=4.00  ;;
+  *opus*)   cost_in=5.00;  cost_out=25.00 ;;
+  *haiku*)  cost_in=1.00;  cost_out=5.00  ;;
   *)        cost_in=3.00;  cost_out=15.00 ;;  # sonnet default
 esac
 
