@@ -1,6 +1,26 @@
 { config, pkgs, lib, ... }:
 
-let cfg = config.my.git.identity;
+let
+  cfg = config.my.git.identity;
+
+  # DCO sign-off hook, written as a plain #!/bin/sh script with no /nix/store
+  # references. It is installed into git's init.templateDir (see below) as a
+  # REAL file, so when git copies it into each repo's .git/hooks at init/clone
+  # time the copy is self-contained and survives `nix-collect-garbage`.
+  signoffHook = pkgs.writeText "prepare-commit-msg" ''
+    #!/bin/sh
+    set -eu
+
+    COMMIT_MSG_FILE="$1"
+
+    NAME=$(git config user.name)
+    EMAIL=$(git config user.email)
+    SIGNOFF="Signed-off-by: $NAME <$EMAIL>"
+
+    if ! grep -qxF "$SIGNOFF" "$COMMIT_MSG_FILE"; then
+        git interpret-trailers --in-place --trailer "$SIGNOFF" "$COMMIT_MSG_FILE"
+    fi
+  '';
 in {
   options.my.git.identity = {
     name = lib.mkOption {
@@ -22,25 +42,17 @@ in {
   # prepare-commit-msg hook: auto-append Signed-off-by trailer.
   # Covers `commit`, `merge`, `cherry-pick`, `revert`, `rebase`, and IDE-driven
   # commits — anything that goes through the prepare-commit-msg lifecycle.
-  home.file.git-signoff-hook = {
-    enable = true;
-    executable = true;
-    target = ".config/git/hooks/prepare-commit-msg";
-    text = ''
-#!/bin/sh
-set -eu
-
-COMMIT_MSG_FILE="$1"
-
-NAME=$(git config user.name)
-EMAIL=$(git config user.email)
-SIGNOFF="Signed-off-by: $NAME <$EMAIL>"
-
-if ! grep -qxF "$SIGNOFF" "$COMMIT_MSG_FILE"; then
-    git interpret-trailers --in-place --trailer "$SIGNOFF" "$COMMIT_MSG_FILE"
-fi
+  #
+  # Seeded into every repo's own .git/hooks via git's init.templateDir (see the
+  # init.templateDir setting below) instead of a global core.hooksPath. This
+  # keeps each repo's .git/hooks directory available for `pre-commit`, which
+  # refuses to install while core.hooksPath is set. Installed as a real file
+  # (not a nix-store symlink) so the copied hook survives garbage collection.
+  # Existing repos need a re-run of `git init` to pick up the hook.
+  home.activation.gitSignoffTemplate =
+    lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+      run install -Dm755 ${signoffHook} "$HOME/.config/git/template/hooks/prepare-commit-msg"
     '';
-  };
   programs = {
       git = {
           enable = true;
@@ -51,10 +63,15 @@ fi
           };
           settings = {
               user = { inherit (cfg) name email; };
-              init.defaultBranch = "main";
+              init = {
+                defaultBranch = "main";
+                # Seed each repo's own .git/hooks from this template dir (real
+                # files copied in at git init/clone) instead of pointing every
+                # repo at one global core.hooksPath.
+                templateDir = "${config.home.homeDirectory}/.config/git/template";
+              };
               core = {
                 editor = "vim";
-                hooksPath = "${config.home.homeDirectory}/.config/git/hooks";
               };
               color.ui = true;
               # use ssh for auth
