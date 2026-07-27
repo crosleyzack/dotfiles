@@ -1,5 +1,13 @@
 { config, pkgs, ... }:
 
+let
+  # Default reasoning effort for Claude Code sessions started with no flag.
+  # Override for a single session with `claude --effort <low|medium|high|xhigh|max>`
+  # (or `claude -c --effort <level>` to resume the current conversation at that level).
+  # The CLI flag takes precedence over this env var and writes nothing back to
+  # settings.json, so per-task overrides never mutate this shared default.
+  defaultEffort = "high";
+in
 {
   home.packages = with pkgs; [
     claude-code
@@ -17,7 +25,7 @@
     },
     "env": {
         "SHELL": "${pkgs.zsh}/bin/zsh",
-        "CLAUDE_CODE_EFFORT_LEVEL": "max",
+        "CLAUDE_CODE_EFFORT_LEVEL": "${defaultEffort}",
         "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": "1",
         "DISABLE_TELEMETRY": "1",
         "DISABLE_ERROR_REPORTING": "1"
