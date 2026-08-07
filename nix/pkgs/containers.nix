@@ -8,6 +8,8 @@
     oras
     crane
     ctlptl
+    skopeo
+    buildah
     kubectl
     kubectx
     kubernetes-helm

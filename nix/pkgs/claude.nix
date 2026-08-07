@@ -302,6 +302,7 @@ Go packages should always have an interface, a struct implementing that interfac
 Function test should use table-driven pattern and compare the full output object to the expected output object; use cmp.Diff for structs
 Go tests should use stretch/testify for comparisons
 README files should have newlines between sentences
+Write all documentation using ASD-STE100. Be concise but detailed.
         '';
     };
     home.file.claude_status = {
