@@ -18,6 +18,7 @@
                     vscode-extensions.ms-python.python
                     vscode-extensions.hashicorp.terraform
                     vscode-extensions.drblury.protobuf-vsc
+                    vscode-extensions.rust-lang.rust-analyzer
                     vscode-extensions.github.copilot-chat
                     vscode-extensions.anthropic.claude-code
                   ];
