@@ -53,7 +53,7 @@ fi
 # Verify the checksum against official Nix documentation or trusted sources before setting.
 # Last verified: 2026-03-27
 # This MUST be set before running the script.
-NIX_INSTALLER_CHECKSUM="${NIX_INSTALLER_CHECKSUM:-e9d447ce3d2ff62d7ff9cb6ef401de6fa8acb148839dd00f7271945d7b638b14}"
+NIX_INSTALLER_CHECKSUM="${NIX_INSTALLER_CHECKSUM:-9adda97297d9e8ab360df95c729eabff4f4f93d6db091953c3a68f29e3fb130c}"
 
 printf "SETUP_CHANNEL=$SETUP_CHANNEL; INSTALL_HOME_MANAGER=$INSTALL_HOME_MANAGER; NIX_SYSTEM_ID=$NIX_SYSTEM_ID\n"
 
@@ -172,7 +172,7 @@ if $INSTALL_HOME_MANAGER; then
     [ "$NIX_SYSTEM_ID" == "lenovo" ] && ln -s $DIR_PATH/lenovo $DIR_PATH/system
     [ "$NIX_SYSTEM_ID" == "google" ] && ln -s $DIR_PATH/google $DIR_PATH/system
 
-    cd system && NIX_CONFIG="experimental-features = nix-command flakes" home-manager switch -b backup --flake .
+    cd system && NIX_CONFIG="experimental-features = nix-command flakes cgroups" home-manager switch -b backup --flake .
 fi
 
 printf "\nInstall completed. Relaunch shell to use nix\n"
