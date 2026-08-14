@@ -8,6 +8,7 @@
   programs = {
       gh = {
           enable = true;
+          extensions = [ pkgs.gh-stack ];
           settings = {
               editor = "vim";
               git_protocol = "ssh";
