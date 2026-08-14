@@ -3,16 +3,16 @@
 let
   xplr = pkgs.buildGoModule rec {
     pname = "xplr"; # Name of your application
-    version = "0.2.5";   # Version of the application
+    version = "0.3.1";   # Version of the application
 
     src = pkgs.fetchFromGitHub {
       owner = "crosleyzack";
       repo = "xplr";
       rev = "v${version}"; # The specific Git tag or commit hash
-      sha256 = "sha256-ex0ya6drPoC0GhCtlBm2Wz0Qo3RPxBQwSkHU3XUozag=";
+      sha256 = "sha256-QsA26pU22NxHSdbINauZAcO9IlNqrV+W4NbaCSWWz1Q=";
     };
 
-    vendorHash = "sha256-yVeuz/S1VPEXDK/AOIGpS/gefdGnyWnMG/IJjB3ctDM=";
+    vendorHash = "sha256-ECWzWOktoOahA1d09ofQmI7zdnVZcvRaTv2kGSKYwdc=";
 
     meta = with lib; {
       description = "Explore tree-based file formats as an interactive TUI tree";
