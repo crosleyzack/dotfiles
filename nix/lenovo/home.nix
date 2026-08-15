@@ -21,6 +21,7 @@
     ../pkgs/pkgs.nix
     ../pkgs/protobuf.nix
     ../pkgs/proxychains.nix
+    ../pkgs/rust.nix
     ../pkgs/ssh.nix
     ../pkgs/starship.nix
     ../pkgs/tmux.nix
