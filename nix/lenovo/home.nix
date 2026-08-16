@@ -26,7 +26,7 @@
     ../pkgs/starship.nix
     ../pkgs/tmux.nix
     ../pkgs/vim.nix
-    ../pkgs/xplr.nix
+    ../pkgs/wndr.nix
     ../pkgs/zsh.nix
   ];
 
