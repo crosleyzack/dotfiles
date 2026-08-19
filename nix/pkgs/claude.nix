@@ -18,7 +18,7 @@ in
     target = ".claude/settings.json";
     text = ''
 {
-    "model": "claude-opus-4-8[1m]",
+    "model": "claude-opus-5[1m]",
     "statusLine": {
         "type": "command",
         "command": "bash ${config.home.homeDirectory}/.claude/statusline-command.sh"
