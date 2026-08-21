@@ -14,7 +14,7 @@
       slides
       ripgrep
       nix-info
-      # mermaid-cli
+      mermaid-cli
       # network
       nmap
       gping
