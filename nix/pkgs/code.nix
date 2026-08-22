@@ -1,7 +1,19 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
+let
+  dockerPath = config.my.dev.containers.dockerPath;
+in
 {
-  programs = {
+  options.my.dev.containers.dockerPath = lib.mkOption {
+    type = lib.types.str;
+    default = "docker";
+    description = ''
+      Value for the vscode "dev.containers.dockerPath" setting.
+      Override per-device (e.g. "podman") in that machine's home.nix.
+    '';
+  };
+
+  config.programs = {
       vscode = {
           # NOTE: requires apparmor to be configured
           # see dotfiles/nix/utils/apparmor.s
@@ -427,10 +439,9 @@
                     "workbench.secondarySideBar.defaultVisibility" = "hidden";
                     "workbench.startupEditor" = "readme";
                     "dev.containers.copyGitConfig" = false;
+                    "dev.containers.dockerPath" = dockerPath;
                     # use nix direnv
                     "direnv.path.executable" = "${pkgs.direnv}/bin/direnv";
-                    # for fedora machines
-                    # "dev.containers.dockerPath" = "podman";
                     # go settings
                     "go.alternateTools" = {
                         "go" = "${pkgs.go}/bin/go";

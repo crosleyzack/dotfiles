@@ -72,6 +72,9 @@
     email = "mail@crosleyzack.com";
   };
 
+  # this machine has podman, not docker
+  my.dev.containers.dockerPath = "podman";
+
   nix.package = pkgs.nix;
   nix.settings = {
     experimental-features = [ "nix-command" "flakes" "cgroups" ];
