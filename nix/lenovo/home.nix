@@ -17,7 +17,6 @@
     ../pkgs/glow.nix
     ../pkgs/gnome.nix
     ../pkgs/go.nix
-    ../pkgs/opencode.nix
     ../pkgs/pkgs.nix
     ../pkgs/protobuf.nix
     ../pkgs/proxychains.nix
