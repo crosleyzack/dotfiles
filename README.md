@@ -1,4 +1,5 @@
-<img alt="gitleaks badge" src="https://img.shields.io/badge/protected%20by-gitleaks-blue">
+[![Protected by Gitleaks](https://img.shields.io/badge/protected%20by-gitleaks-blue)](https://github.com/gitleaks/gitleaks)
+[![Dependabot Updates](https://github.com/crosleyzack/dotfiles/actions/workflows/dependabot/dependabot-updates/badge.svg)](https://github.com/crosleyzack/dotfiles/actions/workflows/dependabot/dependabot-updates)
 
 # Dotfiles
 
