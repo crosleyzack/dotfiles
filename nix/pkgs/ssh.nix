@@ -5,6 +5,8 @@
     enable = true;
     enableDefaultConfig = false;
 
+    includes = [ "~/.ssh/config.d/cgw.conf" ];
+
     settings = {
       "*" = {
         AddKeysToAgent = "yes";

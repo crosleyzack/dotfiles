@@ -41,6 +41,7 @@
       NIX_SYSTEM_ID = "framework";
       EDITOR = "vim";
       DO_NOT_TRACK = "1";
+      CG_WORK_UX = "2";
     };
     sessionPath = [
       "$HOME/go/bin"
