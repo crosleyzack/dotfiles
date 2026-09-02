@@ -5,6 +5,7 @@
     ../pkgs/atuin.nix
     ../pkgs/bash.nix
     ../pkgs/cg.nix
+    ../pkgs/claude.nix
     ../pkgs/cli.nix
     ../pkgs/cloud.nix
     ../pkgs/dircolors.nix
@@ -49,6 +50,11 @@
     name = "Zackary Crosley";
     email = "zackary.crosley@chainguard.dev";
   };
+
+  # Disposable VM: a new root disk arrives at every start, thus only the
+  # checkout is worth protecting. Claude runs every tool without a prompt, and
+  # `git push` fails.
+  my.claude.profile = "sandbox";
 
   nix.package = pkgs.nix;
   nix.settings = {
