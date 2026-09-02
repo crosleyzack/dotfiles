@@ -1,112 +1,55 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 let
+  cfg = config.my.claude;
+
   # Override for a single session with `claude --effort <low|medium|high|xhigh|max>`
   # (or `claude -c --effort <level>` to resume the current conversation at that level).
   defaultEffort = "high";
 
   claudeDir = "${config.home.homeDirectory}/.claude";
 
-  # Status line script: model, context usage, session cost, water estimate.
-  statuslineScript = pkgs.writeShellScript "claude-statusline" ''
-    # Claude Code status line: model, context usage, session cost, water estimate
-    # Pricing: https://www.anthropic.com/pricing (USD per million tokens)
-
-    input=$(cat)
-
-    model=$(${pkgs.jq}/bin/jq -r '.model.display_name // "unknown"' <<<"$input")
-    model_id=$(${pkgs.jq}/bin/jq -r '.model.id // ""' <<<"$input")
-    used_pct=$(${pkgs.jq}/bin/jq -r '.context_window.used_percentage // empty' <<<"$input")
-    total_in=$(${pkgs.jq}/bin/jq -r '.context_window.total_input_tokens // 0' <<<"$input")
-    total_out=$(${pkgs.jq}/bin/jq -r '.context_window.total_output_tokens // 0' <<<"$input")
-    authoritative_cost=$(${pkgs.jq}/bin/jq -r '.cost.total_cost_usd // empty' <<<"$input")
-
-    # Per-MTok input/output pricing by model family
-    case "$model_id" in
-      *opus*)   cost_in=5.00;  cost_out=25.00 ;;
-      *haiku*)  cost_in=1.00;  cost_out=5.00  ;;
-      *)        cost_in=3.00;  cost_out=15.00 ;;  # sonnet default
-    esac
-
-    # Prefer authoritative .cost.total_cost_usd; fall back to token estimate
-    if [ -n "$authoritative_cost" ]; then
-      read -r cost_raw cost_display < <(${pkgs.gawk}/bin/awk -v c="$authoritative_cost" 'BEGIN{
-        if (c < 0.01) printf "%.4f $%.4f\n", c, c
-        else printf "%.4f $%.2f\n", c, c }')
-    else
-      read -r cost_raw cost_display < <(${pkgs.gawk}/bin/awk -v i="$total_in" -v o="$total_out" \
-        -v ci="$cost_in" -v co="$cost_out" 'BEGIN{
-          c = (i/1e6)*ci + (o/1e6)*co
-          if (c < 0.01) printf "%.4f $%.4f\n", c, c
-          else printf "%.4f $%.2f\n", c, c }')
-    fi
-
-    # Water footprint (~170 mL/$, scope 1+2; ±10x uncertainty)
-    water=$(${pkgs.gawk}/bin/awk -v c="$cost_raw" 'BEGIN{
-      ml = c * 170
-      if (ml >= 500)    printf "%.2fbtl", ml/500
-      else if (ml >= 1) printf "%.0fmL", ml
-      else if (ml > 0)  printf "<1mL"
-      else              printf "0mL" }')
-
-    # 8-cell context bar with partial-fill blocks
-    make_bar() {
-      local pct=$1 cells=8 subs filled full part empty out="" i
-      subs=$((cells*8)); filled=$((pct*subs/100))
-      (( filled > subs )) && filled=$subs
-      (( filled < 0 )) && filled=0
-      full=$((filled/8)); part=$((filled%8)); empty=$((cells-full))
-      (( part > 0 )) && empty=$((empty-1))
-      (( empty < 0 )) && empty=0
-      for ((i=0;i<full;i++));  do out+="█"; done
-      case $part in 1) out+="▏";; 2) out+="▎";; 3) out+="▍";; 4) out+="▌";;
-                    5) out+="▋";; 6) out+="▊";; 7) out+="▉";; esac
-      for ((i=0;i<empty;i++)); do out+="░"; done
-      printf "%s" "$out"
-    }
-
-    parts=("$model")
-    if [ -n "$used_pct" ]; then
-      used_int=$(printf "%.0f" "$used_pct")
-      if   [ "$used_int" -ge 90 ]; then color="\033[91m"
-      elif [ "$used_int" -ge 75 ]; then color="\033[33m"
-      elif [ "$used_int" -ge 50 ]; then color="\033[36m"
-      else                               color="\033[32m"
-      fi
-      parts+=("$(printf "''${color}$(make_bar "$used_int") ctx:''${used_int}%%\033[0m")")
-    fi
-    parts+=("$(printf "\033[33mcost:''${cost_display}\033[0m")")
-    parts+=("$(printf "\033[94mh2o:''${water}\033[0m")")
-
-    printf "%s" "''${parts[0]}"
-    for p in "''${parts[@]:1}"; do printf " | %s" "$p"; done
-    printf "\n"
-  '';
-
-  # Full settings object. Serialized with builtins.toJSON below, so structure is
-  # validated by Nix and there are no hand-managed commas.
-  settings = {
-    model = "claude-opus-5[1m]";
-
-    statusLine = {
-      type = "command";
-      command = "${statuslineScript}";
-    };
-
-    env = {
-      SHELL = "${pkgs.zsh}/bin/zsh";
-      CLAUDE_CODE_EFFORT_LEVEL = defaultEffort;
-      CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC = "1";
-      DISABLE_TELEMETRY = "1";
-      DISABLE_ERROR_REPORTING = "1";
-      DISABLE_AUTOUPDATER = "1";
-      BASH_DEFAULT_TIMEOUT_MS = "600000";
-      BASH_MAX_OUTPUT_LENGTH = "200000";
-      MCP_TIMEOUT = "30000";
-    };
-
+  # "sandbox" profile: a throwaway VM where git changes in upstream 
+  # are the only thing worth protecting
+  sandboxPermissions = {
     permissions = {
-      allowBypassPermissions = false;
+      deny = [
+        "Bash(* crane push *)"
+        "Bash(crane push *)"
+        "Bash(* crane delete *)"
+        "Bash(crane delete *)"
+        "Bash(* gh pr *)"
+        "Bash(gh pr *)"
+        "Bash(* gh issue *)"
+        "Bash(gh issue *)"
+        "Bash(* gh secret *)"
+        "Bash(gh secret *)"
+        "Bash(* gh auth *)"
+        "Bash(gh auth *)"
+        "Bash(* apko publish *)"
+        "Bash(apko publish *)"
+      ];
+    };
+    hooks.PreToolUse = [
+      {
+        matcher = "Bash";
+        hooks = [
+          {
+            type = "command";
+            command = "${sandboxHook}";
+          }
+        ];
+      }
+    ];
+  };
+
+  # restricted permissions trying to limit
+  restrictedPermissions = {
+    permissions = {
+      # Lock this machine out of bypassPermissions mode. The key name matters:
+      # "allowBypassPermissions" is not a setting Claude Code reads, thus it did
+      # nothing here before.
+      disableBypassPermissionsMode = "disable";
       allow = [
         "Bash(* --version)"
         "Bash(* --help)"
@@ -316,6 +259,152 @@ let
         "Bash(* npm unpublish *)"
       ];
     };
+  };
+
+  # Tools that the sandbox hook blocks. The hook tests the whole command text
+  # for each word, thus a word here also blocks the tool it names.
+  sandboxTools = [
+    "terraform"
+    "gcloud"
+    "kubectl"
+    "aws"
+    "helm"
+    "k3d"
+    "ssh"
+    "redis"
+    "mysql"
+    "postgres"
+    "psql"
+    "cloud-sql-proxy"
+    "ykman"
+  ];
+
+  # PreToolUse/Bash guard for the "sandbox" profile. The agent runs every other
+  # tool without a prompt. This hook denies any output containing one of the 
+  # sandbox tools
+  sandboxHook = pkgs.writeShellScript "claude-deny" ''
+    cmd=$(${pkgs.jq}/bin/jq -r '.tool_input.command // ""')
+
+    # Print a PreToolUse deny decision, then stop.
+    deny() {
+      ${pkgs.jq}/bin/jq -cn --arg reason "$1" '{
+        hookSpecificOutput: {
+          hookEventName: "PreToolUse",
+          permissionDecision: "deny",
+          permissionDecisionReason: $reason
+        }
+      }'
+      exit 0
+    }
+
+    lower=''${cmd,,}
+    for word in ${lib.escapeShellArgs sandboxTools}; do
+      if [[ "$lower" == *"$word"* ]]; then
+        deny "This machine denies use of tool \"$word\". Continue without this tool or ask the human to run it."
+      fi
+    done
+
+    exit 0
+  '';
+
+  # Status line script: model, context usage, session cost, water estimate.
+  statuslineScript = pkgs.writeShellScript "claude-statusline" ''
+    # Claude Code status line: model, context usage, session cost, water estimate
+    # Pricing: https://www.anthropic.com/pricing (USD per million tokens)
+
+    input=$(cat)
+
+    model=$(${pkgs.jq}/bin/jq -r '.model.display_name // "unknown"' <<<"$input")
+    model_id=$(${pkgs.jq}/bin/jq -r '.model.id // ""' <<<"$input")
+    used_pct=$(${pkgs.jq}/bin/jq -r '.context_window.used_percentage // empty' <<<"$input")
+    total_in=$(${pkgs.jq}/bin/jq -r '.context_window.total_input_tokens // 0' <<<"$input")
+    total_out=$(${pkgs.jq}/bin/jq -r '.context_window.total_output_tokens // 0' <<<"$input")
+    authoritative_cost=$(${pkgs.jq}/bin/jq -r '.cost.total_cost_usd // empty' <<<"$input")
+
+    # Per-MTok input/output pricing by model family
+    case "$model_id" in
+      *opus*)   cost_in=5.00;  cost_out=25.00 ;;
+      *haiku*)  cost_in=1.00;  cost_out=5.00  ;;
+      *)        cost_in=3.00;  cost_out=15.00 ;;  # sonnet default
+    esac
+
+    # Prefer authoritative .cost.total_cost_usd; fall back to token estimate
+    if [ -n "$authoritative_cost" ]; then
+      read -r cost_raw cost_display < <(${pkgs.gawk}/bin/awk -v c="$authoritative_cost" 'BEGIN{
+        if (c < 0.01) printf "%.4f $%.4f\n", c, c
+        else printf "%.4f $%.2f\n", c, c }')
+    else
+      read -r cost_raw cost_display < <(${pkgs.gawk}/bin/awk -v i="$total_in" -v o="$total_out" \
+        -v ci="$cost_in" -v co="$cost_out" 'BEGIN{
+          c = (i/1e6)*ci + (o/1e6)*co
+          if (c < 0.01) printf "%.4f $%.4f\n", c, c
+          else printf "%.4f $%.2f\n", c, c }')
+    fi
+
+    # Water footprint (~170 mL/$, scope 1+2; ±10x uncertainty)
+    water=$(${pkgs.gawk}/bin/awk -v c="$cost_raw" 'BEGIN{
+      ml = c * 170
+      if (ml >= 500)    printf "%.2fbtl", ml/500
+      else if (ml >= 1) printf "%.0fmL", ml
+      else if (ml > 0)  printf "<1mL"
+      else              printf "0mL" }')
+
+    # 8-cell context bar with partial-fill blocks
+    make_bar() {
+      local pct=$1 cells=8 subs filled full part empty out="" i
+      subs=$((cells*8)); filled=$((pct*subs/100))
+      (( filled > subs )) && filled=$subs
+      (( filled < 0 )) && filled=0
+      full=$((filled/8)); part=$((filled%8)); empty=$((cells-full))
+      (( part > 0 )) && empty=$((empty-1))
+      (( empty < 0 )) && empty=0
+      for ((i=0;i<full;i++));  do out+="█"; done
+      case $part in 1) out+="▏";; 2) out+="▎";; 3) out+="▍";; 4) out+="▌";;
+                    5) out+="▋";; 6) out+="▊";; 7) out+="▉";; esac
+      for ((i=0;i<empty;i++)); do out+="░"; done
+      printf "%s" "$out"
+    }
+
+    parts=("$model")
+    if [ -n "$used_pct" ]; then
+      used_int=$(printf "%.0f" "$used_pct")
+      if   [ "$used_int" -ge 90 ]; then color="\033[91m"
+      elif [ "$used_int" -ge 75 ]; then color="\033[33m"
+      elif [ "$used_int" -ge 50 ]; then color="\033[36m"
+      else                               color="\033[32m"
+      fi
+      parts+=("$(printf "''${color}$(make_bar "$used_int") ctx:''${used_int}%%\033[0m")")
+    fi
+    parts+=("$(printf "\033[33mcost:''${cost_display}\033[0m")")
+    parts+=("$(printf "\033[94mh2o:''${water}\033[0m")")
+
+    printf "%s" "''${parts[0]}"
+    for p in "''${parts[@]:1}"; do printf " | %s" "$p"; done
+    printf "\n"
+  '';
+
+  # Settings that both profiles share. builtins.toJSON serializes this below,
+  # thus Nix checks the structure and there are no commas to keep in order.
+  # A profile attribute set layers on top with lib.recursiveUpdate.
+  baseSettings = {
+    model = "claude-opus-5[1m]";
+
+    statusLine = {
+      type = "command";
+      command = "${statuslineScript}";
+    };
+
+    env = {
+      SHELL = "${pkgs.zsh}/bin/zsh";
+      CLAUDE_CODE_EFFORT_LEVEL = defaultEffort;
+      CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC = "1";
+      DISABLE_TELEMETRY = "1";
+      DISABLE_ERROR_REPORTING = "1";
+      DISABLE_AUTOUPDATER = "1";
+      BASH_DEFAULT_TIMEOUT_MS = "600000";
+      BASH_MAX_OUTPUT_LENGTH = "200000";
+      MCP_TIMEOUT = "30000";
+    };
 
     hooks = {
       PostToolUse = [
@@ -360,32 +449,58 @@ let
     spinnerTipsEnabled = false;
     verbose = false;
   };
+
+  # lib.recursiveUpdate merges an attribute set key by key, but it replaces a
+  # list as a whole. Thus a profile that gives an allow, ask, or deny list
+  # replaces the base list, and hooks.PreToolUse from sandboxPermissions joins
+  # the PostToolUse and UserPromptSubmit hooks above.
+  settings =
+    if cfg.profile == "sandbox"
+    then lib.recursiveUpdate baseSettings sandboxPermissions
+    else lib.recursiveUpdate baseSettings restrictedPermissions;
 in
 {
-  home.packages = with pkgs; [
-    claude-code
-  ];
+  options.my.claude = {
+    profile = lib.mkOption {
+      type = lib.types.enum [ "workstation" "sandbox" ];
+      default = "workstation";
+      description = ''
+        Permission posture for Claude Code on this device.
 
-  # config file
-  home.file.claude_settings = {
-    enable = true;
-    target = "${claudeDir}/settings.json";
-    text = builtins.toJSON settings;
+        "workstation" asks before a mutating action, and is correct for a
+        machine that holds work you cannot replace.
+
+        "sandbox" has different restrictions for a disposable VM.
+      '';
+    };
   };
 
-  # claude md main file
-  home.file.claude = {
-    enable = true;
-    target = "${claudeDir}/CLAUDE.md";
-    text = ''
-      Read all links you are given
-      Use permissions in settings.json; ask for permission if settings.json doesn't give it to you
-      Always show you work and explain why you are doing this
-      Go packages should always have an interface, a struct implementing that interface, a mock of the interface, and comprehensive tests for every method
-      Function test should use table-driven pattern and compare the full output object to the expected output object; use cmp.Diff for structs
-      Go tests should use stretch/testify for comparisons
-      README files should have newlines between sentences
-      Write all documentation using ASD-STE100. Be concise but detailed.
-    '';
+  config = {
+    home.packages = with pkgs; [
+      claude-code
+    ];
+
+    # config file
+    home.file.claude_settings = {
+      enable = true;
+      target = "${claudeDir}/settings.json";
+      text = builtins.toJSON settings;
+    };
+
+    # claude md main file
+    home.file.claude = {
+      enable = true;
+      target = "${claudeDir}/CLAUDE.md";
+      text = ''
+        Read all links you are given
+        Use permissions in settings.json; ask for permission if settings.json doesn't give it to you
+        Always show you work and explain why you are doing this
+        Go packages should always have an interface, a struct implementing that interface, a mock of the interface, and comprehensive tests for every method
+        Function test should use table-driven pattern and compare the full output object to the expected output object; use cmp.Diff for structs
+        Go tests should use stretch/testify for comparisons
+        README files should have newlines between sentences
+        Write all documentation using ASD-STE100. Be concise but detailed.
+      '';
+    };
   };
 }

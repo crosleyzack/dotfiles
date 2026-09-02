@@ -78,6 +78,9 @@
     email = "zackary.crosley@chainguard.dev";
   };
 
+  # Primary machine: keep the prompts.
+  my.claude.profile = "workstation";
+
   nix.package = pkgs.nix;
   nix.settings = {
     experimental-features = [ "nix-command" "flakes" "cgroups" ];
