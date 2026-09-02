@@ -9,11 +9,12 @@
 #   sets up system-specific configurations.
 #
 # Behavior:
-#   1. Installs Nix package manager if not already present
-#   2. Configures Nix channels (nixpkgs stable)
-#   3. Installs home-manager and sets up the appropriate channel
-#   4. Auto-detects or uses provided system ID to apply machine-specific configs
-#   5. Applies home-manager flake configuration from the system-specific directory
+#   1. Auto-detects or uses provided system ID to apply machine-specific configs
+#   2. Binds /nix to persistent storage, on a system that needs it
+#   3. Installs Nix package manager if not already present
+#   4. Configures Nix channels (nixpkgs stable)
+#   5. Installs home-manager and sets up the appropriate channel
+#   6. Applies home-manager flake configuration from the system-specific directory
 #
 # Environment Variables:
 #   NIX_VERSION              - Nix channel version to install (default: 25.11)
@@ -22,8 +23,19 @@
 #   SETUP_HOME_MANAGER       - Whether to install home-manager (default: true)
 #   NIX_SYSTEM_ID            - System identifier: 'framework', 'lenovo', or 'google'
 #                              Auto-detected via dmidecode if not set
+#   NIX_STORE_BACKING        - Directory that holds the store, bound onto /nix
+#                              (default: $HOME/nix on 'google', empty elsewhere)
+#                              Set to 'none' to keep the store on the root disk
 #   NIX_INSTALLER_CHECKSUM   - Expected SHA256 checksum of Nix installer script
 #                              REQUIRED for security. Update periodically from official sources
+#
+# Store location:
+#   The store path is always /nix, because nix writes that absolute path into
+#   its build results, and a different path makes the binary cache useless.
+#   NIX_STORE_BACKING moves only the storage behind it, with a bind mount.
+#   Use it when the root filesystem is disposable but a data disk is not: a
+#   'google' system is a cloud VM, which gets a new root disk from its image
+#   at every start. See utils/bind-store.sh.
 #
 # Security:
 #   To update the expected checksum, download the installer and run:
@@ -39,12 +51,23 @@
 VERSION="${NIX_VERSION:-26.05}"
 SETUP_CHANNEL="${SETUP_NIX_CHANNEL:-true}"
 INSTALL_HOME_MANAGER="${SETUP_HOME_MANAGER:-true}"
-NIX_SYSTEM_ID="${NIX_SYSTEM_ID:-''}"
+# Resolve the system id here, not at the home-manager step: the store
+# location default depends on it.
+NIX_SYSTEM_ID="${NIX_SYSTEM_ID:-}"
 if [ -z "$NIX_SYSTEM_ID" ]; then
     if ! command -v dmidecode &>/dev/null; then
         printf "Error: NIX_SYSTEM_ID is not set and dmidecode is not installed.\nSet NIX_SYSTEM_ID to 'framework', 'lenovo', or 'google'.\n" >&2
         exit 1
     fi
+    NIX_SYSTEM_ID="$(sudo dmidecode -s system-manufacturer | awk '{print tolower($0)}')"
+fi
+
+# Where the store really lives. A google system is a cloud VM: its root disk,
+# and thus /nix, comes from the image at every start, so the store must sit on
+# the home disk. See the "Store location" note above.
+NIX_STORE_BACKING="${NIX_STORE_BACKING:-}"
+if [ -z "$NIX_STORE_BACKING" ] && [ "$NIX_SYSTEM_ID" == "google" ]; then
+    NIX_STORE_BACKING="$HOME/nix"
 fi
 
 # Expected SHA256 checksum of the Nix installer script
@@ -55,14 +78,25 @@ fi
 # This MUST be set before running the script.
 NIX_INSTALLER_CHECKSUM="${NIX_INSTALLER_CHECKSUM:-9adda97297d9e8ab360df95c729eabff4f4f93d6db091953c3a68f29e3fb130c}"
 
-printf "SETUP_CHANNEL=$SETUP_CHANNEL; INSTALL_HOME_MANAGER=$INSTALL_HOME_MANAGER; NIX_SYSTEM_ID=$NIX_SYSTEM_ID\n"
+printf "SETUP_CHANNEL=$SETUP_CHANNEL; INSTALL_HOME_MANAGER=$INSTALL_HOME_MANAGER; NIX_SYSTEM_ID=$NIX_SYSTEM_ID; NIX_STORE_BACKING=${NIX_STORE_BACKING:-none}\n"
 
 # get dir containing this file
 FILE_PATH=$(realpath $BASH_SOURCE)
 DIR_PATH=$(dirname $FILE_PATH)
 
-# Install nix package manager
-if [[ -z "$(which nix-env)" ]]; then
+# Put the store on persistent storage before anything looks for one at /nix.
+# --migrate keeps a store that a previous run left on the root disk.
+if [ -n "$NIX_STORE_BACKING" ] && [ "$NIX_STORE_BACKING" != "none" ]; then
+    printf "\nbacking /nix with $NIX_STORE_BACKING...\n"
+    if ! "$DIR_PATH/utils/bind-store.sh" --migrate "$NIX_STORE_BACKING"; then
+        printf "Error: could not bind %s onto /nix\n" "$NIX_STORE_BACKING" >&2
+        exit 1
+    fi
+fi
+
+# Install nix package manager. A restored store already holds nix, but PATH
+# does not show it until a new shell reads the profile, thus test both.
+if [[ -z "$(which nix-env)" && ! -x "$HOME/.nix-profile/bin/nix-env" ]]; then
     printf "\nnix not installed, installing..."
 
     mkdir -p $HOME/.config/nix
@@ -164,15 +198,16 @@ if $INSTALL_HOME_MANAGER; then
 
     # setup system link, depending on system name
     rm -f $DIR_PATH/system
-    if [ -z $NIX_SYSTEM_ID ]; then 
-        NIX_SYSTEM_ID="$(sudo dmidecode -s system-manufacturer| awk '{print tolower($0)}')";
-    fi
     printf "\nconfiguring as $NIX_SYSTEM_ID system..."
-    [ "$NIX_SYSTEM_ID" == "framework" ] && ln -s $DIR_PATH/framework $DIR_PATH/system
-    [ "$NIX_SYSTEM_ID" == "lenovo" ] && ln -s $DIR_PATH/lenovo $DIR_PATH/system
-    [ "$NIX_SYSTEM_ID" == "google" ] && ln -s $DIR_PATH/google $DIR_PATH/system
+    case "$NIX_SYSTEM_ID" in
+        framework|lenovo|google) ln -s "$DIR_PATH/$NIX_SYSTEM_ID" "$DIR_PATH/system" ;;
+        *)
+            printf "\nError: no configuration for system '%s'.\nSet NIX_SYSTEM_ID to 'framework', 'lenovo', or 'google'.\n" "$NIX_SYSTEM_ID" >&2
+            exit 1
+            ;;
+    esac
 
-    cd system && NIX_CONFIG="experimental-features = nix-command flakes cgroups" home-manager switch -b backup --flake .
+    cd "$DIR_PATH/system" && NIX_CONFIG="experimental-features = nix-command flakes cgroups" home-manager switch -b backup --flake .
 fi
 
 printf "\nInstall completed. Relaunch shell to use nix\n"
