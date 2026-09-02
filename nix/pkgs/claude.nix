@@ -13,6 +13,7 @@ let
   # are the only thing worth protecting
   sandboxPermissions = {
     permissions = {
+      defaultMode = "bypassPermissions";
       deny = [
         "Bash(* crane push *)"
         "Bash(crane push *)"
