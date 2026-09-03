@@ -13,23 +13,31 @@ let
   # are the only thing worth protecting
   sandboxPermissions = {
     permissions = {
-      defaultMode = "bypassPermissions";
-      deny = [
-        "Bash(* crane push *)"
-        "Bash(crane push *)"
-        "Bash(* crane delete *)"
-        "Bash(crane delete *)"
-        "Bash(* gh pr *)"
-        "Bash(gh pr *)"
-        "Bash(* gh issue *)"
-        "Bash(gh issue *)"
-        "Bash(* gh secret *)"
-        "Bash(gh secret *)"
-        "Bash(* gh auth *)"
-        "Bash(gh auth *)"
-        "Bash(* apko publish *)"
-        "Bash(apko publish *)"
-      ];
+      # File edits go through with no prompt. Bash still obeys the lists below.
+      defaultMode = "acceptEdits";
+
+      # Local files are disposable on this machine, thus these tools need no
+      # prompt. A bare name allows the tool for every path.
+      allow = [
+        "Read"
+        "Glob"
+        "Grep"
+        "Edit"
+        "Write"
+        "NotebookEdit"
+        "WebFetch"
+        "WebSearch"
+      ]
+      # Two rules for each tool: one for the start of the command, one
+      # for a later position (a pipe, a subshell, or an argument).
+      ++ lib.concatMap (tool: [
+        "Bash(${tool} *)"
+        "Bash(* ${tool} *)"
+      ]) allowTools;
+      deny = lib.concatMap (tool: [
+        "Bash(${tool} *)"
+        "Bash(* ${tool} *)"
+      ]) sandboxBlocked;
     };
     hooks.PreToolUse = [
       {
@@ -262,27 +270,18 @@ let
     };
   };
 
-  # Tools that the sandbox hook blocks. The hook tests the whole command text
-  # for each word, thus a word here also blocks the tool it names.
-  sandboxTools = [
-    "terraform"
-    "gcloud"
-    "kubectl"
-    "aws"
-    "helm"
-    "k3d"
-    "ssh"
-    "redis"
-    "mysql"
-    "postgres"
-    "psql"
-    "cloud-sql-proxy"
-    "ykman"
+  # Tools that the "sandbox" profile blocks. This list makes the deny rules
+  # above and the word list in the hook below. The hook tests the whole command
+  # text for each word, thus a word here also blocks the tool it names.
+  sandboxBlocked = [
+    "terraform" "gcloud" "kubectl" "aws" "helm" "k3d" "ssh"
+    "redis" "mysql" "postgres" "psql" "cloud-sql-proxy" "ykman"
+    "crane push" "crane delete" "gh pr merge" "gh secret" "gh auth"
+    "gh issue" "gh api" "apko publish"
   ];
 
   # PreToolUse/Bash guard for the "sandbox" profile. The agent runs every other
-  # tool without a prompt. This hook denies any output containing one of the 
-  # sandbox tools
+  # tool without a prompt. This hook denies any output containing one of the tools.
   sandboxHook = pkgs.writeShellScript "claude-deny" ''
     cmd=$(${pkgs.jq}/bin/jq -r '.tool_input.command // ""')
 
@@ -299,7 +298,7 @@ let
     }
 
     lower=''${cmd,,}
-    for word in ${lib.escapeShellArgs sandboxTools}; do
+    for word in ${lib.escapeShellArgs sandboxBlocked}; do
       if [[ "$lower" == *"$word"* ]]; then
         deny "This machine denies use of tool \"$word\". Continue without this tool or ask the human to run it."
       fi
@@ -307,6 +306,41 @@ let
 
     exit 0
   '';
+
+  # Read-only commands that the "workstation" profile runs without a prompt.
+  # A name here must not write a file, delete data, send local data off the
+  # machine, or run a command that it receives as an argument.
+  allowTools = [
+    "cd" "ls" "tree" "pwd" "stat" "file" "du" "df" "realpath" "readlink" "basename" "dirname" "lsblk" "mountpoint"
+    "cat" "head" "tail" "nl" "tac" "rev" "wc" "grep" "egrep" "fgrep" "rg" "cut" "tr" "uniq" "comm" "join" "rg"
+    "paste" "column" "fold" "expand" "unexpand" "diff" "cmp" "diff3" "md5sum" "sha1sum" "sha256sum" "sha512sum"
+    "b2sum" "cksum" "base64" "xxd" "hexdump" "od" "strings" "jq" "yq" "uname" "hostname" "whoami" "id" "groups"
+    "printenv" "locale" "date" "cal" "uptime" "free" "nproc" "lscpu" "lsusb" "lspci" "ps" "pgrep" "pstree" "lsof"
+    "vmstat" "iostat" "journalctl" "which" "type" "whereis" "command -v" "compgen" "alias" "echo" "printf" "seq"
+    "true" "false" "test" "dig" "nslookup" "host" "whois" "ip addr" "ip route" "ip link" "ss" "netstat" "arp"
+    "go version" "go env" "go doc" "go list" "go vet" "go build" "go test" "go mod graph" "go mod why"
+    "go mod verify" "gofmt -l" "gofmt -d" "golangci-lint" "staticcheck" "govulncheck" "crane digest"
+    "crane manifest" "crane config" "crane ls" "crane catalog" "skopeo inspect" "cosign verify" "cosign tree"
+    "cosign triangulate" "syft" "grype" "trivy" "gh pr view" "gh pr list" "gh pr diff" "gh pr checks"
+    "gh pr status" "gh issue view" "gh issue list" "gh run view" "gh run list" "gh repo view"
+    "gh release list" "gh release view" "gh workflow list" "gh workflow view" "gh search"
+    "gh label list" "gh status"
+  ];
+
+  # One instruction for each line of ~/.claude/CLAUDE.md. The "sandbox" profile
+  # adds a last line.
+  claudeInstructions = [
+    "Read all links you are given"
+    "Prioritize allow list tools to avoid prompting user"
+    "Follow settings.json permissions; ask when it is silent"
+    "Show your work and explain why"
+    "Go packages: interface, implementing struct, mock, and tests for every method"
+    "Tests: one unit test per function, table-driven, compare whole objects, cmp.Diff for structs"
+    "READMEs: one sentence per line"
+    "Write docs in ASD-STE100; be concise but complete"
+    "Code comments should be as short as possible"
+  ] ++ lib.optional (cfg.profile == "sandbox")
+    "Local files are disposable; change them freely. Never change remote state: cloud resources, clusters, registries, git remotes, or issue trackers";
 
   # Status line script: model, context usage, session cost, water estimate.
   statuslineScript = pkgs.writeShellScript "claude-statusline" ''
@@ -322,25 +356,10 @@ let
     total_out=$(${pkgs.jq}/bin/jq -r '.context_window.total_output_tokens // 0' <<<"$input")
     authoritative_cost=$(${pkgs.jq}/bin/jq -r '.cost.total_cost_usd // empty' <<<"$input")
 
-    # Per-MTok input/output pricing by model family
-    case "$model_id" in
-      *opus*)   cost_in=5.00;  cost_out=25.00 ;;
-      *haiku*)  cost_in=1.00;  cost_out=5.00  ;;
-      *)        cost_in=3.00;  cost_out=15.00 ;;  # sonnet default
-    esac
-
-    # Prefer authoritative .cost.total_cost_usd; fall back to token estimate
-    if [ -n "$authoritative_cost" ]; then
-      read -r cost_raw cost_display < <(${pkgs.gawk}/bin/awk -v c="$authoritative_cost" 'BEGIN{
-        if (c < 0.01) printf "%.4f $%.4f\n", c, c
-        else printf "%.4f $%.2f\n", c, c }')
-    else
-      read -r cost_raw cost_display < <(${pkgs.gawk}/bin/awk -v i="$total_in" -v o="$total_out" \
-        -v ci="$cost_in" -v co="$cost_out" 'BEGIN{
-          c = (i/1e6)*ci + (o/1e6)*co
-          if (c < 0.01) printf "%.4f $%.4f\n", c, c
-          else printf "%.4f $%.2f\n", c, c }')
-    fi
+    # An empty .cost.total_cost_usd reads as 0 in awk
+    read -r cost_raw cost_display < <(${pkgs.gawk}/bin/awk -v c="$authoritative_cost" 'BEGIN{
+      if (c < 0.01) printf "%.4f $%.4f\n", c, c
+      else printf "%.4f $%.2f\n", c, c }')
 
     # Water footprint (~170 mL/$, scope 1+2; ±10x uncertainty)
     water=$(${pkgs.gawk}/bin/awk -v c="$cost_raw" 'BEGIN{
@@ -390,6 +409,10 @@ let
   baseSettings = {
     model = "claude-opus-5[1m]";
 
+    # /effort writes this key. Do not set CLAUDE_CODE_EFFORT_LEVEL: the
+    # environment variable overrides the session and makes /effort a no-op.
+    effortLevel = defaultEffort;
+
     statusLine = {
       type = "command";
       command = "${statuslineScript}";
@@ -397,7 +420,6 @@ let
 
     env = {
       SHELL = "${pkgs.zsh}/bin/zsh";
-      CLAUDE_CODE_EFFORT_LEVEL = defaultEffort;
       CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC = "1";
       DISABLE_TELEMETRY = "1";
       DISABLE_ERROR_REPORTING = "1";
@@ -492,16 +514,7 @@ in
     home.file.claude = {
       enable = true;
       target = "${claudeDir}/CLAUDE.md";
-      text = ''
-        Read all links you are given
-        Use permissions in settings.json; ask for permission if settings.json doesn't give it to you
-        Always show you work and explain why you are doing this
-        Go packages should always have an interface, a struct implementing that interface, a mock of the interface, and comprehensive tests for every method
-        Function test should use table-driven pattern and compare the full output object to the expected output object; use cmp.Diff for structs
-        Go tests should use stretch/testify for comparisons
-        README files should have newlines between sentences
-        Write all documentation using ASD-STE100. Be concise but detailed.
-      '';
+      text = lib.concatStringsSep "\n" claudeInstructions + "\n";
     };
   };
 }

@@ -26,12 +26,29 @@
       """
     '';
   };
+  # For ephemeral VMs, runs bind store to mount /nix to ~/nix on luanch.
   home.file.vm_startup = {
     target = "${config.home.homeDirectory}/.config/cgw/startup.sh";
     executable = true;
     text = ''
       #!/bin/sh
-      ${config.home.homeDirectory}/dev/dotfiles/nix/utils/bind-store.sh ${config.home.homeDirectory}/nix
+      set -eu
+
+      HOME=/home/zackary_crosley_chainguard_dev
+      BACKING=$HOME/nix
+      TIMEOUT=120
+
+      elapsed=0
+      while [ ! -d "$BACKING" ]; do
+          if [ "$elapsed" -ge "$TIMEOUT" ]; then
+              echo "startup-script: no $BACKING after $TIMEOUT seconds, leaving /nix alone" >&2
+              exit 1
+          fi
+          elapsed=$((elapsed + 2))
+          sleep 2
+      done
+
+      exec "$HOME/dev/dotfiles/nix/utils/bind-store.sh" "$BACKING"
     '';
   };
 }
