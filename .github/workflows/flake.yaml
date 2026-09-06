@@ -1,4 +1,4 @@
-name: "Flake.lock: update Nix dependencies"
+name: "update Nix dependencies"
 
 on:
   workflow_dispatch:
@@ -15,14 +15,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
-      - name: bump_nix
+      - name: bump old nix pins
+        id: bump_nix
         uses: crosleyzack/nix-bump-action@v0.1.0
         with:
           paths: |
             nix/framework/flake.nix
             nix/lenovo/flake.nix
             nix/google/flake.nix
-      - if: ${{ steps.bump_nix.outputs.bumped }}
+      - if: steps.bump_nix.outputs.bumped == 'true'
         uses: peter-evans/create-pull-request@v8
         with:
           commit-message: |
