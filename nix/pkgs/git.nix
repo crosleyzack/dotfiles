@@ -36,6 +36,7 @@ in {
   config = {
   home.packages = with pkgs; [
     cosign
+    jujutsu
     gitsign
     pre-commit
   ];
