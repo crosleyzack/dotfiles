@@ -106,6 +106,7 @@ in {
                   uncommit = "reset --soft HEAD^";
                   aliases = "config --get-regexp '^alias\\.'";
                   yolo = "push --force-with-lease";
+                  store = "stash push --keep-index --include-untracked";
                   by = "!f() { git log --author=$1; }; f";
                   # files which changed the most in the last year, defaults to 20
                   volatile = "!git log --format=format: --name-only --since='1 year ago' | sort | uniq -c | sort -nr | head -\${@-20}";
