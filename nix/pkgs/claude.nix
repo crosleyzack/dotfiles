@@ -330,15 +330,15 @@ let
   # One instruction for each line of ~/.claude/CLAUDE.md. The "sandbox" profile
   # adds a last line.
   claudeInstructions = [
+    "In replies: explain fully — what changed, why, what you ruled out, what's risky. Never compress an explanation. Cut ceremony: no preamble, no closing summary, no restating my request."
+    "In code and comments: minimize length without sacrificing readability. This governs artifacts only, never your explanation of them."
+    "In comments: only non-obvious why, never what."
+    "In docs and comments: use ASD-STE100, one idea per sentence."
+    "In docs: Add a mermaid diagram for multi-component architecture or non-trivial control flow."
     "Read all links you are given"
-    "Prioritize allow list tools to avoid prompting user"
-    "Follow settings.json permissions; ask when it is silent"
-    "Show your work and explain why"
     "Go packages: interface, implementing struct, mock, and tests for every method"
     "Tests: one unit test per function, table-driven, compare whole objects, cmp.Diff for structs"
     "READMEs: one sentence per line"
-    "Write docs in ASD-STE100; be concise but complete"
-    "Code comments should be as short as possible"
   ] ++ lib.optional (cfg.profile == "sandbox")
     "Local files are disposable; change them freely. Never change remote state: cloud resources, clusters, registries, git remotes, or issue trackers";
 
