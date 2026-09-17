@@ -9,6 +9,21 @@ let
 
   claudeDir = "${config.home.homeDirectory}/.claude";
 
+  # ── Extensions ──────────────────────────────────────────────────────────────
+  # A name here installs the plugin and turns it on. The "/plugin" menu cannot:
+  # it writes to settings.json, and that file is a read-only link to the store.
+  #
+  # An LSP plugin installs no binary. gopls comes from go.nix.
+  #
+  # A plugin also carries the only MCP server a Nix file can declare, because
+  # settings.json holds no "mcpServers" key.
+  marketplace = "claude-plugins-official";
+
+  plugins = [
+    "gopls-lsp"
+    "linear"
+  ];
+
   # ── Derived permissions ─────────────────────────────────────────────────────
   # One policy makes both profiles: the "tools" set below. Every tool holds four
   # lists of words, and each list gives one outcome for each machine.
@@ -820,6 +835,16 @@ let
   # A profile attribute set layers on top with lib.recursiveUpdate.
   baseSettings = {
     model = "claude-opus-5[1m]";
+
+    # Claude Code adds this marketplace on the first interactive start. The
+    # entry holds for a machine that starts with "claude -p" instead.
+    extraKnownMarketplaces.${marketplace}.source = {
+      source = "github";
+      repo = "anthropics/claude-plugins-official";
+    };
+
+    enabledPlugins = lib.listToAttrs
+      (map (name: lib.nameValuePair "${name}@${marketplace}" true) plugins);
 
     # /effort writes this key. Do not set CLAUDE_CODE_EFFORT_LEVEL: the
     # environment variable overrides the session and makes /effort a no-op.
