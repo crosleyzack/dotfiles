@@ -14,6 +14,7 @@
     ../pkgs/git.nix
     ../pkgs/glow.nix
     ../pkgs/go.nix
+    ../pkgs/mcp.nix
     ../pkgs/pkgs.nix
     ../pkgs/protobuf.nix
     ../pkgs/ssh.nix

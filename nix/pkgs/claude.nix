@@ -24,6 +24,18 @@ let
     "linear"
   ];
 
+  # The list above holds only a plugin whose files sit in the marketplace. For
+  # the rest, a folder here loads as "<name>@skills-dir": no install step, and
+  # no write to the read-only settings file. It needs a plugin.json.
+  skillPlugins = {
+    mattpocock-skills = pkgs.fetchFromGitHub {
+      owner = "mattpocock";
+      repo = "skills";
+      rev = "959a8e9f1edc3adbe2f7e3054bb6fbefa6696260"; # v1.2.3
+      hash = "sha256-AbIlPEE0VWJq+NJpa56SDzhM8o7vXDBtlJHS5FCTElE=";
+    };
+  };
+
   # ── Derived permissions ─────────────────────────────────────────────────────
   # One policy makes both profiles: the "tools" set below. Every tool holds four
   # lists of words, and each list gives one outcome for each machine.
@@ -937,18 +949,28 @@ in
       claude-code
     ];
 
-    # config file
-    home.file.claude_settings = {
-      enable = true;
-      target = "${claudeDir}/settings.json";
-      text = builtins.toJSON settings;
-    };
+    home.file = {
+      # config file
+      claude_settings = {
+        enable = true;
+        target = "${claudeDir}/settings.json";
+        text = builtins.toJSON settings;
+      };
 
-    # claude md main file
-    home.file.claude = {
-      enable = true;
-      target = "${claudeDir}/CLAUDE.md";
-      text = lib.concatStringsSep "\n" claudeInstructions + "\n";
-    };
+      # claude md main file
+      claude = {
+        enable = true;
+        target = "${claudeDir}/CLAUDE.md";
+        text = lib.concatStringsSep "\n" claudeInstructions + "\n";
+      };
+    }
+    # One link for each skill plugin, straight to its source in the store.
+    // lib.mapAttrs'
+      (name: src: lib.nameValuePair "claude_skill_${name}" {
+        enable = true;
+        target = "${claudeDir}/skills/${name}";
+        source = src;
+      })
+      skillPlugins;
   };
 }

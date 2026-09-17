@@ -20,6 +20,7 @@
     ../pkgs/glow.nix
     ../pkgs/gnome.nix
     ../pkgs/go.nix
+    ../pkgs/mcp.nix
     ../pkgs/pkgs.nix
     ../pkgs/protobuf.nix
     ../pkgs/proxychains.nix
@@ -29,6 +30,7 @@
     ../pkgs/tmux.nix
     ../pkgs/vim.nix
     ../pkgs/wndr.nix
+    ../pkgs/zed.nix
     ../pkgs/zsh.nix
   ];
 
