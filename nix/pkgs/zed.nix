@@ -119,6 +119,20 @@ in
       }
     ];
 
+    # Nix owns keymap.json, as it owns settings.json.
+    mutableUserKeymaps = false;
+
+    # The context holds the one of the window commands of Zed, thus these
+    # keys act in normal mode and rest in insert mode.
+    userKeymaps = [
+      {
+        context = "VimControl && !menu || !Editor && !Terminal";
+        bindings = {
+          "ctrl-w b" = "workspace::ActivateLastPane";
+        };
+      }
+    ];
+
     # Zed reads no shell profile. A tool must be on the PATH of the process.
     extraPackages = with pkgs; [
       delve
