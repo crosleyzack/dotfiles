@@ -24,6 +24,7 @@
 #
 #   Framework (work):
 #   - VSCode (from Nix)
+#   - Zed (from Nix)
 #   - Firefox (Snap)
 #   - Slack (Snap)
 #   - Proton Pass (Snap)
@@ -33,6 +34,7 @@
 #   Default (personal):
 #   - Firefox
 #   - VSCode
+#   - Zed
 #   - Obsidian (Flatpak)
 #   - Proton Mail (Flatpak)
 #   - Proton Pass (Flatpak)
@@ -69,11 +71,11 @@ echo "NIX_SYSTEM_ID=$NIX_SYSTEM_ID"
 case $NIX_SYSTEM_ID in
     framework)
         # work
-        declare -a progs=("$NIX_BIN/code" "snap run firefox" "snap run slack" "snap run proton-pass" "snap run obsidian" "ptyxis -e $NIX_BIN/zsh")
+        declare -a progs=("$NIX_BIN/code" "$NIX_BIN/zeditor" "snap run firefox" "snap run slack" "snap run proton-pass" "snap run obsidian" "ptyxis -e $NIX_BIN/zsh")
     ;;
     *)
         # default
-        declare -a progs=("firefox" "code" "flatpak run md.obsidian.Obsidian" "flatpak run me.proton.Mail" "flatpak run me.proton.Pass" "flatpak run org.signal.Signal" "ptyxis -e /usr/bin/zsh -c 'tmux new-session -A -s main'")
+        declare -a progs=("firefox" "code" "zeditor" "flatpak run md.obsidian.Obsidian" "flatpak run me.proton.Mail" "flatpak run me.proton.Pass" "flatpak run org.signal.Signal" "ptyxis -e /usr/bin/zsh -c 'tmux new-session -A -s main'")
     ;;
 esac
 printf '%s\n' "${progs[@]}"
@@ -89,10 +91,10 @@ configure_auto_move_windows() {
     local app_list
     case "$NIX_SYSTEM_ID" in
         framework)
-            app_list="['firefox_firefox.desktop:9','code.desktop:2','slack_slack.desktop:10','proton-pass_proton-pass.desktop:8','obsidian_obsidian.desktop:7']"
+            app_list="['firefox_firefox.desktop:9','code.desktop:2','dev.zed.Zed.desktop:2','slack_slack.desktop:10','proton-pass_proton-pass.desktop:8','obsidian_obsidian.desktop:7']"
         ;;
         *)
-            app_list="['firefox.desktop:9','code.desktop:2','md.obsidian.Obsidian.desktop:7','me.proton.Mail.desktop:6','me.proton.Pass.desktop:8','org.signal.Signal.desktop:10']"
+            app_list="['firefox.desktop:9','code.desktop:2','dev.zed.Zed.desktop:2','md.obsidian.Obsidian.desktop:7','me.proton.Mail.desktop:6','me.proton.Pass.desktop:8','org.signal.Signal.desktop:10']"
         ;;
     esac
     echo "configure_auto_move_windows: setting application-list=$app_list"

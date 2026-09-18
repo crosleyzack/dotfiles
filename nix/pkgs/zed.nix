@@ -41,6 +41,9 @@ in
     # Zed starts an ACP agent under the shell of SHELL, which the login entry
     # of the host fills with a path of no file. The variable holds the zsh of
     # the terminal setting below, which makes one shell for both.
+    #
+    # "extraPackages" appends to the PATH, thus the go of the host wins. gopls
+    # runs "go" off the PATH, thus this prefix gives it the go of the store.
     package = pkgs.symlinkJoin {
       name = "zed-editor-host-vulkan";
       paths = [ pkgs.zed-editor ];
@@ -48,6 +51,7 @@ in
       postBuild = ''
         wrapProgram $out/bin/zeditor \
           --suffix LD_LIBRARY_PATH : ${hostLibs} \
+          --prefix PATH : ${lib.makeBinPath [ pkgs.go ]} \
           --set SHELL ${pkgs.zsh}/bin/zsh
       '';
       inherit (pkgs.zed-editor) meta;
@@ -198,6 +202,16 @@ in
         type = "registry";
         env.CLAUDE_CODE_EXECUTABLE = lib.getExe pkgs.claude-code;
       };
+      # Zed docks the agent panel left and every other panel right. These
+      # settings hold the opposite layout.
+      project_panel.dock = "left";
+      git_panel.dock = "left";
+      outline_panel.dock = "left";
+      collaboration_panel.dock = "left";
+      agent.dock = "right";
+      # The left dock holds four panels with different default widths. This
+      # setting gives them one width. Zed defaults to this value.
+      resize_all_panels_in_dock = [ "left" ];
       # The inline assist runs on a model of Zed, never on the ACP agent.
       # Zed reads the key out of ANTHROPIC_API_KEY, thus the store holds no
       # secret.
