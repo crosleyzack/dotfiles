@@ -26,8 +26,12 @@
     ../pkgs/tmux.nix
     ../pkgs/vim.nix
     ../pkgs/wndr.nix
+    ../pkgs/zed.nix
     ../pkgs/zsh.nix
   ];
+
+  # Fedora holds no multiarch directory.
+  my.dev.zed.vulkanLibs = "/usr/lib64";
 
   home = {
     username = "crosleyzack";

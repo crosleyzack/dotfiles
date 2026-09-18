@@ -4,11 +4,7 @@ let
   # code.nix declares this option. The fallback keeps zed.nix usable without it.
   dockerPath = lib.attrByPath [ "my" "dev" "containers" "dockerPath" ] "docker" config;
 
-  # Zed draws with Vulkan, and Mesa on the host holds the only driver. The nix
-  # loader reads no /etc/ld.so.cache, thus that driver stays invisible without
-  # this path. The wrapper below holds the path, which keeps every other nix
-  # program away from the libraries of the host.
-  hostLibs = "/usr/lib/x86_64-linux-gnu";
+  hostLibs = config.my.dev.zed.vulkanLibs;
 
   # "github.copilot.enable" in code.nix permits suggestions in these languages only.
   predictionLanguages = [
@@ -23,18 +19,36 @@ let
   ];
 in
 {
-  programs.zed-editor = {
+  options.my.dev.zed.vulkanLibs = lib.mkOption {
+    type = lib.types.str;
+    default = "/usr/lib/x86_64-linux-gnu";
+    description = ''
+      Directory of the host that holds the Vulkan driver of Mesa.
+      Zed draws with Vulkan, and the nix loader reads no /etc/ld.so.cache.
+      The driver and every library of it stay invisible without this path.
+      The default holds for a Debian machine, of a multiarch directory.
+      Override per-device (e.g. "/usr/lib64" on Fedora) in that machine's home.nix.
+    '';
+  };
+
+  config.programs.zed-editor = {
     enable = true;
     enableMcpIntegration = true;
 
     # The desktop entry and the shell both run "zeditor", thus one wrapper
     # covers every start of Zed.
+    #
+    # Zed starts an ACP agent under the shell of SHELL, which the login entry
+    # of the host fills with a path of no file. The variable holds the zsh of
+    # the terminal setting below, which makes one shell for both.
     package = pkgs.symlinkJoin {
       name = "zed-editor-host-vulkan";
       paths = [ pkgs.zed-editor ];
       nativeBuildInputs = [ pkgs.makeWrapper ];
       postBuild = ''
-        wrapProgram $out/bin/zeditor --suffix LD_LIBRARY_PATH : ${hostLibs}
+        wrapProgram $out/bin/zeditor \
+          --suffix LD_LIBRARY_PATH : ${hostLibs} \
+          --set SHELL ${pkgs.zsh}/bin/zsh
       '';
       inherit (pkgs.zed-editor) meta;
     };
