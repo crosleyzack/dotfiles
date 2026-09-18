@@ -56,7 +56,7 @@
         move-to-side-w        = ["<Super><Shift>h"];
         maximize-horizontally = ["<Super>s"];
         maximize-vertically   = ["<Super>v"];
-        maximize              = ["<Super>Up"];
+        maximize              = ["<Super>Up" "<Super><Shift>minus" "<Super>underscore"];
         unmaximize            = ["<Super>Down"];
         toggle-fullscreen     = ["<Super>f"];
         close                 = ["<Super>q" "<Alt>F4"];
