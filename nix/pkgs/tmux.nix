@@ -8,113 +8,115 @@
     tmuxbind = "${pkgs.tmux}/bin/tmux a -t main";
   };
   programs = {
-      tmux = {
-          enable = true;
-          baseIndex = 0;
-          historyLimit = 1000000;
-          shell = "${pkgs.zsh}/bin/zsh";
-          terminal = "tmux-256color";
-          # use vi mode with C-w to mirror nvim bindings
-          keyMode = "vi";
-          prefix = "C-w";
-          plugins = with pkgs; [
-            {
-                # save out tmux state
-                plugin = tmuxPlugins.resurrect;
-                extraConfig = ''
-                    set -g @resurrect-strategy-vim 'session'
-                    set -g @resurrect-capture-pane-contents 'on'
-                    set -g @resurrect-save '!'
-                    set -g @resurrect-restore '@'
-                    set -g @resurrect-dir '$HOME/.config/tmux/resurrect'
-                '';
-            }
-            {
-                # reload tmux state automatically on launch
-                plugin = tmuxPlugins.continuum;
-                extraConfig = ''
-                    set -g @continuum-restore 'on'
-                    set -g @continuum-boot 'on'
-                    set -g @continuum-systemd-start-cmd 'new-session -d -s main'
-                    set -g @continuum-save-interval '10'
-                '';
-            }
-            {
-                # block copy from tmux
-                plugin = tmuxPlugins.yank;
-                extraConfig = ''
-                    bind -T copy-mode-vi v send -X begin-selection
-                    bind-key -T copy-mode-vi y send -X copy-selection-and-cancel
-                '';
-            }
-            {
-                plugin = tmuxPlugins.sessionist;
-            }
-            # TODO add tmux open
-            # plugin = tmuxPlugins.open;
-            {
-                # color scheme
-                plugin = tmuxPlugins.tmux-nova;
-                extraConfig = ''
-                    set -g @plugin 'o0th/tmux-nova'
-                    set -g @nova-nerdfonts true
-                    set -g @nova-segment-zoomed "#{?window_zoomed_flag,🔍︎,}"
-                    set -g @nova-segments-0-right "zoomed"
-                '';
-            }
-          ];
+    tmux = {
+      enable = true;
+      baseIndex = 0;
+      historyLimit = 1000000;
+      shell = "${pkgs.zsh}/bin/zsh";
+      terminal = "tmux-256color";
+      # use vi mode with C-w to mirror nvim bindings
+      keyMode = "vi";
+      prefix = "C-w";
+      plugins = with pkgs; [
+        {
+          # save out tmux state
+          plugin = tmuxPlugins.resurrect;
           extraConfig = ''
-            set -g history-file "$HOME/.config/tmux/history"
-            # add useful aliases
-            set -s command-alias[6] "aliases=show-options command-alias"
-            set -s command-alias[7] ns='new -s'
-            set -s command-alias[8] rename='rename-session -t'
-            set -s command-alias[9] default='attach -c'
-            set -s command-alias[10] kill='kill-session -t'
-            set -s command-alias[11] clean='run-shell "tmux list-sessions -F \"##S\" | grep -E \"^[[:digit:]]\" | xargs -I{} tmux kill-session -t {}"'
-            # remove delay reading command characters while awaiting escape sequence
-            set -s escape-time 1
-            # set vim style bindings
-            bind ` source-file "$HOME/.config/tmux/tmux.conf" \; display "tmux reloaded"
-            bind h select-pane -L
-            bind j select-pane -D
-            bind k select-pane -U
-            bind l select-pane -R
-            bind s split-window -h
-            bind v split-window -v
-            bind \; last-pane
-            bind q kill-pane
-            bind w select-pane -R
-            bind W select-pane -L
-            bind r swap-pane -U
-            bind R swap-pane -D
-            bind $ command-prompt -I'#W' { rename-session -- '%%' }
-            bind , command-prompt -I'#W' { rename-window -- '%%' }
-            bind - resize-pane -D 5
-            bind + resize-pane -U 5
-            bind \% resize-pane -y "50%"
-            bind _ resize-pane -y "100%"
-            bind < resize-pane -L 5
-            bind > resize-pane -R 5
-            bind ^ resize-pane -x "50%"
-            bind | resize-pane -x "100%"
-            bind = select-layout tiled
-            bind K select-layout even-vertical
-            bind J select-layout main-horizontal
-            bind H select-layout even-horizontal
-            bind L select-layout main-vertical
-            bind ? previous-layout
-            bind o kill-pane -a
-            bind x swap-pane -D
-            bind t select-pane -t "{top-left}"
-            bind b select-pane -t "{bottom-right}"
-            bind p switch-client -l
-            bind \\ choose-session -Z
-            bind " " set-option status
-            bind-key * choose-window -F "#{window_index}: #{window_name}" "join-pane -v -t %%"
-            bind [ copy-mode
-            bind ] copy-mode -q
+            set -g @resurrect-strategy-vim 'session'
+            set -g @resurrect-capture-pane-contents 'on'
+            set -g @resurrect-save '!'
+            set -g @resurrect-restore '@'
+            set -g @resurrect-dir '$HOME/.config/tmux/resurrect'
           '';
-      };
+        }
+        {
+          # reload tmux state automatically on launch
+          plugin = tmuxPlugins.continuum;
+          extraConfig = ''
+            set -g @continuum-restore 'on'
+            set -g @continuum-boot 'on'
+            set -g @continuum-systemd-start-cmd 'new-session -d -s main'
+            set -g @continuum-save-interval '10'
+          '';
+        }
+        {
+          # block copy from tmux
+          plugin = tmuxPlugins.yank;
+          extraConfig = ''
+            bind -T copy-mode-vi v send -X begin-selection
+            bind-key -T copy-mode-vi y send -X copy-selection-and-cancel
+          '';
+        }
+        {
+          plugin = tmuxPlugins.sessionist;
+        }
+        # TODO add tmux open
+        # plugin = tmuxPlugins.open;
+        {
+          # color scheme
+          plugin = tmuxPlugins.tmux-nova;
+          extraConfig = ''
+            set -g @plugin 'o0th/tmux-nova'
+            set -g @nova-nerdfonts true
+            set -g @nova-segment-zoomed "#{?window_zoomed_flag,🔍︎,}"
+            set -g @nova-segments-0-right "zoomed"
+          '';
+        }
+      ];
+      extraConfig = ''
+        set -g history-file "$HOME/.config/tmux/history"
+        # add useful aliases
+        set -s command-alias[6] "aliases=show-options command-alias"
+        set -s command-alias[7] ns='new -s'
+        set -s command-alias[8] rename='rename-session -t'
+        set -s command-alias[9] default='attach -c'
+        set -s command-alias[10] kill='kill-session -t'
+        set -s command-alias[11] clean='run-shell "tmux list-sessions -F \"##S\" | grep -E \"^[[:digit:]]\" | xargs -I{} tmux kill-session -t {}"'
+        # remove delay reading command characters while awaiting escape sequence
+        set -s escape-time 1
+        # set vim style bindings
+        bind ` source-file "$HOME/.config/tmux/tmux.conf" \; display "tmux reloaded"
+        bind h select-pane -L
+        bind j select-pane -D
+        bind k select-pane -U
+        bind l select-pane -R
+        bind s split-window -v
+        bind S split-window -v
+        bind v split-window -h
+        bind \; last-pane
+        bind q kill-pane
+        bind w select-pane -t :.+
+        bind W select-pane -t :.-
+        bind r swap-pane -U
+        bind R swap-pane -D
+        bind $ command-prompt -I'#W' { rename-session -- '%%' }
+        bind , command-prompt -I'#W' { rename-window -- '%%' }
+        bind - resize-pane -D 5
+        bind + resize-pane -U 5
+        bind \% resize-pane -y "50%"
+        bind _ resize-pane -Z
+        bind < resize-pane -L 5
+        bind > resize-pane -R 5
+        bind ^ resize-pane -x "50%"
+        bind | resize-pane -x "100%"
+        bind = select-layout tiled
+        bind H swap-pane -s 0 \; select-pane -t 0 \; select-layout main-vertical
+        bind J swap-pane -s 0 \; select-pane -t 0 \; select-layout main-horizontal-mirrored
+        bind K swap-pane -s 0 \; select-pane -t 0 \; select-layout main-horizontal
+        bind L swap-pane -s 0 \; select-pane -t 0 \; select-layout main-vertical-mirrored
+        bind ? previous-layout
+        bind o kill-pane -a
+        bind x swap-pane -D
+        bind t select-pane -t "{top-left}"
+        bind b select-pane -t "{bottom-right}"
+        bind p last-pane
+        bind P switch-client -l
+        bind \\ choose-session -Z
+        bind " " set-option status
+        bind-key * choose-window -F "#{window_index}: #{window_name}" "join-pane -v -t %%"
+        bind [ copy-mode
+        bind ] copy-mode -q
+      '';
+    };
   };
 }

@@ -50,17 +50,22 @@
         cycle-group            = ["<Super>a"];
         cycle-group-backward   = ["<Super><Shift>a"];
         # move windows to location within workspace
-        toggle-tiled-left     = ["<Super>Left"];
-        toggle-tiled-right    = ["<Super>Right"];
-        move-to-side-e        = ["<Super>l"];
-        move-to-side-n        = ["<Super>k"];
-        move-to-side-s        = ["<Super>j"];
-        move-to-side-w        = ["<Super>h"];
+        move-to-side-e        = ["<Super><Shift>l"];
+        move-to-side-n        = ["<Super><Shift>k"];
+        move-to-side-s        = ["<Super><Shift>j"];
+        move-to-side-w        = ["<Super><Shift>h"];
         maximize-horizontally = ["<Super>s"];
         maximize-vertically   = ["<Super>v"];
         maximize              = ["<Super>Up"];
         unmaximize            = ["<Super>Down"];
         toggle-fullscreen     = ["<Super>f"];
+        close                 = ["<Super>q" "<Alt>F4"];
+      };
+      # Mutter reads the tiling commands. The window manager path holds none
+      # of them.
+      "org/gnome/mutter/keybindings" = {
+        toggle-tiled-left  = ["<Super>Left"];
+        toggle-tiled-right = ["<Super>Right"];
       };
       # remove ubuntu sidebar dock
       "org/gnome/shell" = {
