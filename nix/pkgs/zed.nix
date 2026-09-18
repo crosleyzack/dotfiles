@@ -132,11 +132,23 @@ in
       # theming
       # Zed holds this theme, thus the list of extensions needs no entry.
       theme = "Ayu Dark";
-      buffer_font_family = "Monaspice Ar";
+      buffer_font_family = "MonaspiceAr Nerd Font";
       buffer_font_size = 14.5;
-      buffer_font_features.calt = false;
+      # Monaspace makes one glyph of "!=" and of other pairs. "calt" holds
+      # that substitution in the patched font, and "liga" holds it in the
+      # unpatched font. A font that has one feature only ignores the other.
+      buffer_font_features = {
+        calt = false;
+        liga = false;
+      };
       terminal = {
-        font_family = "Monaspice Ar";
+        font_family = "MonaspiceAr Nerd Font";
+        # Zed keeps one set of features for each surface. The buffer above
+        # changes no glyph of the terminal.
+        font_features = {
+          calt = false;
+          liga = false;
+        };
         shell.program = "${pkgs.zsh}/bin/zsh";
       };
       # vim bindings
