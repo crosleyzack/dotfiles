@@ -36,10 +36,6 @@ in
                   ];
                   keybindings = [
                     {
-                        "key" = "ctrl+\\";
-                        "command" = "-workbench.action.splitEditor";
-                    }
-                    {
                         "key" = "ctrl+j";
                         "command" = "-workbench.action.togglePanel";
                     }
@@ -49,12 +45,12 @@ in
                     }
                     { # neovim based window navigation
                         "key" = "ctrl+w s";
-                        "command" = "workbench.action.splitEditorRight";
+                        "command" = "workbench.action.splitEditorDown";
                         "when" = "editorFocus";
                     }
                     {
                         "key" = "ctrl+w v";
-                        "command" = "workbench.action.splitEditorDown";
+                        "command" = "workbench.action.splitEditorRight";
                         "when" = "editorFocus";
                     }
                     {
@@ -118,7 +114,7 @@ in
                     }
                     {
                         "key" = "ctrl+w p";
-                        "command" = "workbench.action.openPreviousRecentlyUsedEditorInGroup";
+                        "command" = "workbench.action.focusPreviousGroup";
                         "when" = "editorFocus";
                     }
                     {
@@ -201,8 +197,8 @@ in
                         "when" = "terminalFocus";
                     }
                     {
-                        "key" = "ctrl+w z";
-                        "command" = "workbench.action.toggleEditorWidths";
+                        "key" = "ctrl+w shift+-";
+                        "command" = "workbench.action.toggleMaximizeEditorGroup";
                         "when" = "editorFocus";
                     }
                     {
@@ -241,6 +237,38 @@ in
                         "key" = "ctrl+w k";
                         "command" = "workbench.action.previousSideBarView";
                         "when" = "sideBarFocus";
+                    }
+                    {
+                        "key" = "alt+1";
+                        "command" = "workbench.action.focusFirstEditorGroup";
+                    }
+                    {
+                        "key" = "alt+2";
+                        "command" = "workbench.action.focusSecondEditorGroup";
+                    }
+                    {
+                        "key" = "alt+3";
+                        "command" = "workbench.action.focusThirdEditorGroup";
+                    }
+                    {
+                        "key" = "alt+4";
+                        "command" = "workbench.action.focusFourthEditorGroup";
+                    }
+                    {
+                        "key" = "alt+5";
+                        "command" = "workbench.action.focusFifthEditorGroup";
+                    }
+                    {
+                        "key" = "alt+6";
+                        "command" = "workbench.action.focusSixthEditorGroup";
+                    }
+                    {
+                        "key" = "alt+7";
+                        "command" = "workbench.action.focusSeventhEditorGroup";
+                    }
+                    {
+                        "key" = "alt+8";
+                        "command" = "workbench.action.focusEighthEditorGroup";
                     }
                     {
                         "key" = "ctrl+/";
