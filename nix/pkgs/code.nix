@@ -74,7 +74,7 @@ in
                     }
                     {
                         "key" = "ctrl+w k";
-                        "command" = "workbench.action.focusAbove";
+                        "command" = "workbench.action.focusAboveGroup";
                         "when" = "editorFocus";
                     }
                     {
@@ -127,11 +127,9 @@ in
                         "command" = "workbench.action.moveEditorToPreviousGroup";
                         "when" = "editorFocus";
                     }
-                    {
-                        "key" = "ctrl+w x";
-                        "command" = "workbench.action.compareEditor.swapSides";
-                        "when" = "editorFocus";
-                    }
+                    # "ctrl+w x" swaps the pane with the one next to it in Zed
+                    # and in tmux. Code holds no command for that swap.
+                    # "compareEditor.swapSides" works in a diff editor only.
                     {
                         "key" = "ctrl+w shift+k";
                         "command" = "workbench.action.moveActiveEditorGroupUp";

@@ -99,7 +99,7 @@
         bind > resize-pane -R 5
         bind ^ resize-pane -x "50%"
         bind | resize-pane -x "100%"
-        bind = select-layout tiled
+        bind = select-layout -E
         bind H swap-pane -s 0 \; select-pane -t 0 \; select-layout main-vertical
         bind J swap-pane -s 0 \; select-pane -t 0 \; select-layout main-horizontal-mirrored
         bind K swap-pane -s 0 \; select-pane -t 0 \; select-layout main-horizontal
