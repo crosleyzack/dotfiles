@@ -50,7 +50,8 @@
             source $HOME/.nix-profile/etc/profile.d/hm-session-vars.sh
             source $HOME/.nix-profile/etc/profile.d/nix.sh
             test -f $HOME/.env && source $HOME/.env 
-            command -v pyenv &>/dev/null && eval "$(pyenv init - zsh)"
+            # --no-rehash to avoid locking on ~/.pyenv/shims/.pyenv-shim
+            command -v pyenv &>/dev/null && eval "$(pyenv init - --no-rehash zsh)"
           '';
       };
   };
