@@ -84,6 +84,13 @@
     max-jobs = "auto";
     cores = 0;
     use-cgroups = true;
+    auto-optimise-store = true;
+  };
+
+  nix.gc = {
+    automatic = true;
+    dates = "weekly";
+    options = "--delete-older-than 10d";
   };
 
   programs.home-manager.enable = true;
