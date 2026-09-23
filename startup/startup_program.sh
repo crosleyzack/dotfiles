@@ -49,6 +49,8 @@
 #   - tmux installed on host system
 #   - position_windows.sh in the same directory
 #   - Applications specified in the profile must be installed
+#   - The prerequisites of position_windows.sh, which holds the control of
+#     every window of this script
 #
 # Note:
 #   This script is designed to be called by startup_install.sh or configured
@@ -71,38 +73,14 @@ echo "NIX_SYSTEM_ID=$NIX_SYSTEM_ID"
 case $NIX_SYSTEM_ID in
     framework)
         # work
-        declare -a progs=("$NIX_BIN/code" "$NIX_BIN/zeditor" "snap run firefox" "snap run slack" "snap run proton-pass" "snap run obsidian" "ptyxis -e $NIX_BIN/zsh")
+        declare -a progs=("$NIX_BIN/zeditor" "snap run firefox" "snap run slack" "snap run proton-pass" "snap run obsidian" "ptyxis -e $NIX_BIN/zsh")
     ;;
     *)
         # default
-        declare -a progs=("firefox" "code" "zeditor" "flatpak run md.obsidian.Obsidian" "flatpak run me.proton.Mail" "flatpak run me.proton.Pass" "flatpak run org.signal.Signal" "ptyxis -e /usr/bin/zsh -c 'tmux new-session -A -s main'")
+        declare -a progs=("firefox" "code" "$NIX_BIN/zeditor" "flatpak run md.obsidian.Obsidian" "flatpak run me.proton.Mail" "flatpak run me.proton.Pass" "flatpak run org.signal.Signal" "ptyxis -e $NIX_BIN/zsh -c 'tmux new-session -A -s main'")
     ;;
 esac
 printf '%s\n' "${progs[@]}"
-
-# Wayland-friendly replacement for position_windows.sh.
-# Uses the built-in auto-move-windows GNOME extension to place each app's first
-# window onto a specific workspace at launch time. Unlike wmctrl this works for
-# native Wayland clients, but it cannot resize/fullscreen windows or spread
-# multiple instances of the same app across successive workspaces.
-configure_auto_move_windows() {
-    # auto-move-windows is 1-indexed; position_windows.sh values were 0-indexed,
-    # so each workspace number below is the position_windows.sh value + 1.
-    local app_list
-    case "$NIX_SYSTEM_ID" in
-        framework)
-            app_list="['firefox_firefox.desktop:9','code.desktop:2','dev.zed.Zed.desktop:2','slack_slack.desktop:10','proton-pass_proton-pass.desktop:8','obsidian_obsidian.desktop:7']"
-        ;;
-        *)
-            app_list="['firefox.desktop:9','code.desktop:2','dev.zed.Zed.desktop:2','md.obsidian.Obsidian.desktop:7','me.proton.Mail.desktop:6','me.proton.Pass.desktop:8','org.signal.Signal.desktop:10']"
-        ;;
-    esac
-    echo "configure_auto_move_windows: setting application-list=$app_list"
-    gsettings set org.gnome.shell.extensions.auto-move-windows application-list "$app_list"
-}
-
-# NOTE: requires installation of gnome-shell-extension-auto-move-windows.
-configure_auto_move_windows
 
 ## now loop through the above array
 for i in "${progs[@]}"
@@ -112,4 +90,10 @@ do
     sleep .1s
 done
 
-echo "Programs launched!"
+# position_windows.sh holds every move and every layout. A window of a program
+# of the list above comes after the launch of that program, thus this sleep
+# gives the slowest one the time to open its window.
+echo "Programs launched, sleeping"
+sleep 2
+echo "Sleep done, repositioning windows via $DIR/position_windows.sh"
+"$DIR/position_windows.sh"
