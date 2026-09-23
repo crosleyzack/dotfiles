@@ -283,7 +283,6 @@ in
         "**/__pycache__"
         "**/bower_components"
         "**/dist"
-        "**/env"
         "**/env-*"
         "**/node_modules"
         "**/tmp"
