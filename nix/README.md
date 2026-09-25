@@ -8,7 +8,11 @@ Run `./install.sh` to setup nix on this computer with home manager.
 
 Home Manager will not only install packages, but configure programs like zsh, vscode, atuin, etc.
 
-Use `update.sh` or `cd system && home-manager switch --flake .` to update packages.
+Use `update.sh` or `home-manager switch -b backup --flake ~/dev/dotfiles/nix` to update packages.
+
+[flake.nix](flake.nix) holds one configuration for each machine, under the name of the user of that machine.
+The home-manager command reads the configuration of the current user, thus the same command works on every machine.
+[common.nix](common.nix) holds what all of them share, and `<machine>/home.nix` holds the rest.
 
 Use `home-manager expire-generations "<expire time>` to delete old home manager generations
 
