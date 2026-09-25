@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ ... }:
 
 {
   imports = [
@@ -33,28 +33,9 @@
   # Fedora holds no multiarch directory.
   my.dev.zed.vulkanLibs = "/usr/lib64";
 
-  home = {
-    username = "crosleyzack";
-    homeDirectory = "/home/crosleyzack";
-    stateVersion = "26.05";
-    # for fedora machines
-    shellAliases = {
-      docker = "podman";
-    };
-    sessionVariables = {
-      NIX_SYSTEM_ID = "lenovo";
-      MOZ_ENABLE_WAYLAND = 1;
-      EDITOR = "vim";
-      DO_NOT_TRACK = "1";
-    };
-    sessionPath = [
-      "$HOME/go/bin"
-      "$HOME/.local/bin"
-    ];
-    shell.enableShellIntegration = true;
-    shellAliases = {
-      ls = "ls --color=auto";
-    };
+  # for fedora machines
+  home.shellAliases = {
+    docker = "podman";
   };
 
   # set default scaling and font size, system dependent
@@ -67,9 +48,6 @@
     };
   };
 
-  # allow non-free packages to be installed, like terraform
-  nixpkgs.config.allowUnfree = true;
-
   my.git.identity = {
     name = "crosleyzack";
     email = "mail@crosleyzack.com";
@@ -78,20 +56,8 @@
   # this machine has podman, not docker
   my.dev.containers.dockerPath = "podman";
 
-  nix.package = pkgs.nix;
   nix.settings = {
     experimental-features = [ "nix-command" "flakes" "cgroups" ];
-    max-jobs = "auto";
-    cores = 0;
     use-cgroups = true;
-    auto-optimise-store = true;
   };
-
-  nix.gc = {
-    automatic = true;
-    dates = "weekly";
-    options = "--delete-older-than 10d";
-  };
-
-  programs.home-manager.enable = true;
 }

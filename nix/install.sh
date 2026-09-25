@@ -14,7 +14,8 @@
 #   3. Installs Nix package manager if not already present
 #   4. Configures Nix channels (nixpkgs stable)
 #   5. Installs home-manager and sets up the appropriate channel
-#   6. Applies home-manager flake configuration from the system-specific directory
+#   6. Applies the home-manager configuration of this machine, which nix/flake.nix
+#      holds under the name of the user
 #
 # Environment Variables:
 #   NIX_VERSION              - Nix channel version to install (default: 25.11)
@@ -196,18 +197,16 @@ if $INSTALL_HOME_MANAGER; then
     nix-shell '<home-manager>' -A install
     source $HOME/.nix-profile/etc/profile.d/hm-session-vars.sh
 
-    # setup system link, depending on system name
-    rm -f $DIR_PATH/system
     printf "\nconfiguring as $NIX_SYSTEM_ID system..."
-    case "$NIX_SYSTEM_ID" in
-        framework|lenovo|google) ln -s "$DIR_PATH/$NIX_SYSTEM_ID" "$DIR_PATH/system" ;;
-        *)
-            printf "\nError: no configuration for system '%s'.\nSet NIX_SYSTEM_ID to 'framework', 'lenovo', or 'google'.\n" "$NIX_SYSTEM_ID" >&2
-            exit 1
-            ;;
-    esac
+    if [ ! -d "$DIR_PATH/$NIX_SYSTEM_ID" ]; then
+        printf "\nError: no configuration for system '%s'.\nSet NIX_SYSTEM_ID to 'framework', 'lenovo', or 'google'.\n" "$NIX_SYSTEM_ID" >&2
+        exit 1
+    fi
 
-    cd "$DIR_PATH/system" && NIX_CONFIG="experimental-features = nix-command flakes cgroups" home-manager switch -b backup --flake .
+    # home-manager reads homeConfigurations.$USER when the flake reference
+    # holds no "#", and flake.nix names each configuration after the user of
+    # that machine. One command thus covers every machine.
+    cd "$DIR_PATH" && NIX_CONFIG="experimental-features = nix-command flakes cgroups" home-manager switch -b backup --flake .
 fi
 
 printf "\nInstall completed. Relaunch shell to use nix\n"
