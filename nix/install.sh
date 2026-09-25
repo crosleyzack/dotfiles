@@ -52,9 +52,22 @@
 VERSION="${NIX_VERSION:-26.05}"
 SETUP_CHANNEL="${SETUP_NIX_CHANNEL:-true}"
 INSTALL_HOME_MANAGER="${SETUP_HOME_MANAGER:-true}"
-# Resolve the system id here, not at the home-manager step: the store
-# location default depends on it.
+# get dir containing this file
+FILE_PATH=$(realpath $BASH_SOURCE)
+DIR_PATH=$(dirname $FILE_PATH)
+
+# The id names the configuration of flake.nix, and it names the directory that
+# holds home.nix. Resolve it here, not at the home-manager step: the store
+# location default depends on it too.
+#
+# The file holds the id for every later run, of this script and of update.sh.
+# It sits in the home directory, because a google system loses the root disk at
+# every start and keeps the home disk.
+SYSTEM_ID_FILE="${XDG_CONFIG_HOME:-$HOME/.config}/nix-system-id"
 NIX_SYSTEM_ID="${NIX_SYSTEM_ID:-}"
+if [ -z "$NIX_SYSTEM_ID" ] && [ -r "$SYSTEM_ID_FILE" ]; then
+    NIX_SYSTEM_ID="$(cat "$SYSTEM_ID_FILE")"
+fi
 if [ -z "$NIX_SYSTEM_ID" ]; then
     if ! command -v dmidecode &>/dev/null; then
         printf "Error: NIX_SYSTEM_ID is not set and dmidecode is not installed.\nSet NIX_SYSTEM_ID to 'framework', 'lenovo', or 'google'.\n" >&2
@@ -62,6 +75,12 @@ if [ -z "$NIX_SYSTEM_ID" ]; then
     fi
     NIX_SYSTEM_ID="$(sudo dmidecode -s system-manufacturer | awk '{print tolower($0)}')"
 fi
+if [ ! -d "$DIR_PATH/$NIX_SYSTEM_ID" ]; then
+    printf "Error: no configuration for system '%s'.\nSet NIX_SYSTEM_ID to 'framework', 'lenovo', or 'google'.\n" "$NIX_SYSTEM_ID" >&2
+    exit 1
+fi
+mkdir -p "$(dirname "$SYSTEM_ID_FILE")"
+printf '%s\n' "$NIX_SYSTEM_ID" > "$SYSTEM_ID_FILE"
 
 # Where the store really lives. A google system is a cloud VM: its root disk,
 # and thus /nix, comes from the image at every start, so the store must sit on
@@ -80,10 +99,6 @@ fi
 NIX_INSTALLER_CHECKSUM="${NIX_INSTALLER_CHECKSUM:-9adda97297d9e8ab360df95c729eabff4f4f93d6db091953c3a68f29e3fb130c}"
 
 printf "SETUP_CHANNEL=$SETUP_CHANNEL; INSTALL_HOME_MANAGER=$INSTALL_HOME_MANAGER; NIX_SYSTEM_ID=$NIX_SYSTEM_ID; NIX_STORE_BACKING=${NIX_STORE_BACKING:-none}\n"
-
-# get dir containing this file
-FILE_PATH=$(realpath $BASH_SOURCE)
-DIR_PATH=$(dirname $FILE_PATH)
 
 # Put the store on persistent storage before anything looks for one at /nix.
 # --migrate keeps a store that a previous run left on the root disk.
@@ -198,15 +213,10 @@ if $INSTALL_HOME_MANAGER; then
     source $HOME/.nix-profile/etc/profile.d/hm-session-vars.sh
 
     printf "\nconfiguring as $NIX_SYSTEM_ID system..."
-    if [ ! -d "$DIR_PATH/$NIX_SYSTEM_ID" ]; then
-        printf "\nError: no configuration for system '%s'.\nSet NIX_SYSTEM_ID to 'framework', 'lenovo', or 'google'.\n" "$NIX_SYSTEM_ID" >&2
-        exit 1
-    fi
 
-    # home-manager reads homeConfigurations.$USER when the flake reference
-    # holds no "#", and flake.nix names each configuration after the user of
-    # that machine. One command thus covers every machine.
-    cd "$DIR_PATH" && NIX_CONFIG="experimental-features = nix-command flakes cgroups" home-manager switch -b backup --flake .
+    # The text after "#" names the configuration of flake.nix, which holds one
+    # for each machine under the id of that machine.
+    cd "$DIR_PATH" && NIX_CONFIG="experimental-features = nix-command flakes cgroups" home-manager switch -b backup --flake ".#$NIX_SYSTEM_ID"
 fi
 
 printf "\nInstall completed. Relaunch shell to use nix\n"
