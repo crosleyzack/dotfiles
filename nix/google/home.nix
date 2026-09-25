@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ ... }:
 
 {
   imports = [
@@ -24,29 +24,6 @@
     ../pkgs/zsh.nix
   ];
 
-  home = {
-    username = "zackary_crosley_chainguard_dev";
-    homeDirectory = "/home/zackary_crosley_chainguard_dev";
-    stateVersion = "26.05";
-    sessionVariables = {
-      MOZ_ENABLE_WAYLAND = 1;
-      NIX_SYSTEM_ID = "google";
-      EDITOR = "vim";
-      DO_NOT_TRACK = "1";
-    };
-    sessionPath = [
-      "$HOME/go/bin"
-      "$HOME/.local/bin"
-    ];
-    shell.enableShellIntegration = true;
-    shellAliases = {
-      ls = "ls --color=auto";
-    };
-  };
-
-  # allow non-free packages to be installed, like terraform
-  nixpkgs.config.allowUnfree = true;
-
   my.git.identity = {
     name = "Zackary Crosley";
     email = "zackary.crosley@chainguard.dev";
@@ -57,19 +34,6 @@
   # `git push` fails.
   my.claude.profile = "sandbox";
 
-  nix.package = pkgs.nix;
-  nix.settings = {
-    experimental-features = [ "nix-command" "flakes" ];
-    max-jobs = "auto";
-    cores = 0;
-    auto-optimise-store = true;
-  };
-
-  nix.gc = {
-    automatic = true;
-    dates = "weekly";
-    options = "--delete-older-than 10d";
-  };
-
-  programs.home-manager.enable = true;
+  # This VM runs no build in a cgroup, unlike the other machines.
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
 }

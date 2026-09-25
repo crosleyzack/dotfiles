@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ ... }:
 
 {
   imports = [
@@ -34,25 +34,10 @@
     ../pkgs/zsh.nix
   ];
 
-  home = {
-    username = "zackary-crosley";
-    homeDirectory = "/home/zackary-crosley";
-    stateVersion = "26.05";
-    sessionVariables = {
-      MOZ_ENABLE_WAYLAND = 1;
-      NIX_SYSTEM_ID = "framework";
-      EDITOR = "vim";
-      DO_NOT_TRACK = "1";
-      CG_WORK_UX = "2";
-    };
-    sessionPath = [
-      "$HOME/go/bin"
-      "$HOME/.local/bin"
-    ];
-    shell.enableShellIntegration = true;
-    shellAliases = {
-      ls = "ls --color=auto";
-    };
+  home.sessionVariables = {
+    CG_WORK_UX = "2";
+    # Rootless docker listens in the runtime dir, not on /var/run/docker.sock.
+    DOCKER_HOST = "unix://$XDG_RUNTIME_DIR/docker.sock";
   };
 
   # Expose Nix profile to GUI apps (VS Code, Claude) which inherit the systemd
@@ -60,6 +45,13 @@
   # gopls and gofmt are invisible to anything not launched from a terminal.
   xdg.configFile."environment.d/nix-paths.conf".text = ''
     PATH=$HOME/.nix-profile/bin:$HOME/go/bin:$HOME/.local/bin:$PATH
+  '';
+
+  # Same reason as above. The VS Code Dev Containers extension is not launched
+  # from a shell, so it otherwise looks for the rootful socket, which
+  # utils/rootless_docker.sh disables.
+  xdg.configFile."environment.d/docker.conf".text = ''
+    DOCKER_HOST=unix://$XDG_RUNTIME_DIR/docker.sock
   '';
 
   # set default scaling and font size, system dependent
@@ -72,9 +64,6 @@
     };
   };
 
-  # allow non-free packages to be installed, like terraform
-  nixpkgs.config.allowUnfree = true;
-
   my.git.identity = {
     name = "Zackary Crosley";
     email = "zackary.crosley@chainguard.dev";
@@ -83,20 +72,8 @@
   # Primary machine: keep the prompts.
   my.claude.profile = "workstation";
 
-  nix.package = pkgs.nix;
   nix.settings = {
     experimental-features = [ "nix-command" "flakes" "cgroups" ];
-    max-jobs = "auto";
-    cores = 0;
     use-cgroups = true;
-    auto-optimise-store = true;
   };
-
-  nix.gc = {
-    automatic = true;
-    dates = "weekly";
-    options = "--delete-older-than 10d";
-  };
-
-  programs.home-manager.enable = true;
 }
