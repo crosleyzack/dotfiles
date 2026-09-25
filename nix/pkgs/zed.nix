@@ -1,4 +1,9 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 let
   # code.nix declares this option. The fallback keeps zed.nix usable without it.
@@ -74,50 +79,7 @@ in
     mutableUserDebug = false;
 
     # Zed needs "label" and "adapter". The adapter gives every other field.
-    userDebug = [
-      {
-        label = "Go: debug package of file";
-        adapter = "Delve";
-        request = "launch";
-        mode = "debug";
-        program = "$ZED_DIRNAME";
-      }
-      {
-        label = "Go: debug tests of package";
-        adapter = "Delve";
-        request = "launch";
-        mode = "test";
-        program = "$ZED_DIRNAME";
-      }
-      {
-        label = "Go: debug test at cursor";
-        adapter = "Delve";
-        request = "launch";
-        mode = "test";
-        program = "$ZED_DIRNAME";
-        args = [ "-test.run" "$ZED_SYMBOL" ];
-      }
-      {
-        label = "Rust: build and debug binary";
-        adapter = "CodeLLDB";
-        # Zed reads the path of the binary out of a "cargo build" command.
-        # It gives the path, thus the entry needs no "program" field.
-        build = {
-          command = "cargo";
-          args = [ "build" ];
-        };
-        sourceLanguages = [ "rust" ];
-      }
-      {
-        label = "Rust: build and debug tests";
-        adapter = "CodeLLDB";
-        build = {
-          command = "cargo";
-          args = [ "test" "--no-run" ];
-        };
-        sourceLanguages = [ "rust" ];
-      }
-    ];
+    userDebug = [ ];
 
     # Nix owns keymap.json, as it owns settings.json.
     mutableUserKeymaps = false;
@@ -165,6 +127,10 @@ in
         };
         shell.program = "${pkgs.zsh}/bin/zsh";
       };
+      unnecessary_code_fade = 0.6;
+      # use context for indentation
+      auto_indent = "syntax_aware";
+      colorize_brackets = true;
       # vim bindings
       vim_mode = true;
       relative_line_numbers = "enabled";
@@ -173,10 +139,16 @@ in
         # Absolute numbers in insert mode, like "vim.smartRelativeLine".
         toggle_relative_line_numbers = true;
       };
+      pane_split_direction_vertical = "left";
+      pane_split_direction_horizontal = "up";
       # editor configuration
       format_on_save = "on";
       remove_trailing_whitespace_on_save = true;
       show_whitespaces = "all";
+      whitespace_map = {
+        space = "•";
+        tab = "→";
+      };
       tab_size = 4;
       hard_tabs = false;
       show_wrap_guides = true;
@@ -253,14 +225,19 @@ in
         command = lib.getExe pkgs.mcp-nixos;
         args = [ ];
       };
-      languages = lib.recursiveUpdate
-        (lib.genAttrs predictionLanguages (_: { show_edit_predictions = true; }))
-        {
-          Go.formatter.language_server.name = "gopls";
-          # The nix extension starts "nixd" first, and extraPackages holds
-          # "nil" alone. That server needs no configuration to work.
-          Nix.language_servers = [ "nil" ];
-        };
+      languages =
+        lib.recursiveUpdate
+          (lib.genAttrs predictionLanguages (_: {
+            show_edit_predictions = true;
+          }))
+          {
+            Go.formatter.language_server.name = "gopls";
+            # The nix extension starts "nixd" first, and extraPackages holds
+            # "nil" alone. That server needs no configuration to work.
+            Nix.language_servers = [ "nil" ];
+          };
+      # prevent accidental quit
+      confirm_quit = true;
       # disable a bunch of stuff for efficiency
       show_edit_predictions = false;
       edit_predictions.provider = "copilot";
