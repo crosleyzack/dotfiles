@@ -24,10 +24,18 @@
 FILE_PATH=$(realpath $BASH_SOURCE)
 DIR_PATH=$(dirname $FILE_PATH)
 
-if [ ! -f "$DIR_PATH/flake.nix" ]; then
-    echo "flake.nix not found in $DIR_PATH"
+# The id names the configuration of flake.nix. install.sh wrote the file, and
+# home manager sets the variable in every login shell. Either one serves.
+SYSTEM_ID_FILE="${XDG_CONFIG_HOME:-$HOME/.config}/nix-system-id"
+NIX_SYSTEM_ID="${NIX_SYSTEM_ID:-}"
+if [ -z "$NIX_SYSTEM_ID" ] && [ -r "$SYSTEM_ID_FILE" ]; then
+    NIX_SYSTEM_ID="$(cat "$SYSTEM_ID_FILE")"
+fi
+if [ ! -d "$DIR_PATH/$NIX_SYSTEM_ID" ]; then
+    printf "Error: no configuration for system '%s'.\nRun install.sh, or set NIX_SYSTEM_ID to 'framework', 'lenovo', or 'google'.\n" "$NIX_SYSTEM_ID" >&2
     exit 1
 fi
+echo "updating $NIX_SYSTEM_ID system"
 
 # Update flake inputs to get the latest nixpkgs revision
 nix flake update --flake $DIR_PATH
@@ -56,9 +64,9 @@ for pkg in "${PACKAGES_TO_NEVER_BUILD[@]}"; do
     fi
 done
 
-# home-manager switch. The flake holds one configuration for each machine,
-# under the name of the user of it, which home-manager reads without a "#".
-cd $DIR_PATH && home-manager switch -b backup --flake .
+# home-manager switch. The text after "#" names the configuration of flake.nix,
+# which holds one for each machine under the id of that machine.
+cd $DIR_PATH && home-manager switch -b backup --flake ".#$NIX_SYSTEM_ID"
 
 # delete older generations. 10 days arbitrary to balance having generations
 # to revert to while minimizing storage

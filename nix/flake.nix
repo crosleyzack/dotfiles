@@ -33,13 +33,16 @@
             overlays = [ unstable-overlay ];
         };
 
-        # One line for each machine: the directory of that machine, and the
-        # name of the user on it.
+        # One line for each machine: the id of that machine, and the name of
+        # the user on it.
         #
-        # The home-manager command reads homeConfigurations.<name of the user>
-        # when the flake reference holds no "#". The name is different on every
-        # machine, thus one command covers all of them:
-        #     home-manager switch -b backup --flake ~/dev/dotfiles/nix
+        # The id names the directory that holds home.nix, and it names the
+        # configuration below. Thus one command runs on every machine, with the
+        # id of that machine after the "#":
+        #     home-manager switch -b backup --flake ~/dev/dotfiles/nix#framework
+        #
+        # install.sh and update.sh read the id from NIX_SYSTEM_ID, or from the
+        # file that install.sh writes.
         machines = {
             framework = "zackary-crosley";
             lenovo = "crosleyzack";
@@ -54,14 +57,13 @@
                 {
                     home.username = username;
                     home.homeDirectory = "/home/${username}";
-                    # startup_program.sh and install.sh read this name.
+                    # Gives the id back to the shell, for startup_program.sh
+                    # and for update.sh.
                     home.sessionVariables.NIX_SYSTEM_ID = id;
                 }
             ];
         };
     in {
-        homeConfigurations = lib.mapAttrs' (
-            id: username: lib.nameValuePair username (mkHome id username)
-        ) machines;
+        homeConfigurations = lib.mapAttrs mkHome machines;
     };
 }
