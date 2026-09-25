@@ -482,6 +482,7 @@ let
       read = [
         "status" "diff" "log" "show" "blame" "ls-files" "ls-remote"
         "rev-parse" "describe" "shortlog" "reflog" "cat-file" "grep"
+        "patch-id"
       ];
       writeLocal = [
         "add" "commit" "stash" "checkout" "switch" "restore" "tag" "branch"
@@ -770,14 +771,14 @@ let
   # adds a last line.
   claudeInstructions = [
     "In replies: explain fully — what changed, why, what you ruled out, what's risky. Never compress an explanation. Cut ceremony: no preamble, no closing summary, no restating my request."
-    "In code and comments: minimize length without sacrificing readability. This governs artifacts only, never your explanation of them."
-    "In comments: only non-obvious why, never what."
-    "In docs and comments: use ASD-STE100, one idea per sentence."
-    "In docs: Add a mermaid diagram for multi-component architecture or non-trivial control flow."
-    "Read all links you are given"
+    "In code: Avoid premature abstractions, add helper functions only when there is a clear reccurring pattern."
+    "In comments: only non-obvious why, never what. Comments should not exceed five lines unless absolutely necessary."
+    "In docs and comments: use ASD-STE100, one idea per sentence"
+    "In docs: Add a mermaid diagram for multi-component architecture or non-trivial control flow"
     "Go packages: interface, implementing struct, mock, and tests for every method"
     "Tests: one unit test per function, table-driven, compare whole objects, cmp.Diff for structs"
-    "READMEs: one sentence per line"
+    "Markdown: one sentence per line"
+    "Read all links you are given"
   ] ++ lib.optional (cfg.profile == "sandbox")
     "Local files are disposable; change them freely. Never change remote state: cloud resources, clusters, registries, git remotes, or issue trackers";
 
