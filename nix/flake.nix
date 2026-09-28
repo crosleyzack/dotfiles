@@ -18,9 +18,11 @@
         inherit (nixpkgs) lib;
         system = "x86_64-linux";
 
-        # home-manager imports nixpkgs a second time, with the config of
-        # common.nix and the overlays of the pkgs below. This overlay thus runs
-        # again there, and prev.config holds allowUnfree at that moment.
+        # home-manager imports nixpkgs a second time, from the "nixpkgs" options
+        # of the modules below, and every module reads that import. Thus the
+        # overlay belongs in nixpkgs.overlays: an overlay of the pkgs argument
+        # below reaches no module. prev.config holds the allowUnfree of
+        # common.nix at that moment, thus an unfree package of unstable builds.
         unstable-overlay = final: prev: {
             unstable = import nixpkgs-unstable {
                 inherit system;
@@ -28,10 +30,7 @@
             };
         };
 
-        pkgs = import nixpkgs {
-            inherit system;
-            overlays = [ unstable-overlay ];
-        };
+        pkgs = import nixpkgs { inherit system; };
 
         # One line for each machine: the id of that machine, and the name of
         # the user on it.
@@ -55,6 +54,7 @@
                 ./common.nix
                 ./${id}/home.nix
                 {
+                    nixpkgs.overlays = [ unstable-overlay ];
                     home.username = username;
                     home.homeDirectory = "/home/${username}";
                     # Gives the id back to the shell, for startup_program.sh

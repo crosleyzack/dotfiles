@@ -2,6 +2,7 @@
 
 {
   home.packages = with pkgs; [
+    zizmor
     step-cli
     # scanning
     syft

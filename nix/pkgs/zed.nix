@@ -198,7 +198,7 @@ in
       # claude.nix, which holds the plugins and the permissions.
       agent_servers."claude-acp" = {
         type = "registry";
-        env.CLAUDE_CODE_EXECUTABLE = lib.getExe pkgs.claude-code;
+        env.CLAUDE_CODE_EXECUTABLE = lib.getExe pkgs.unstable.claude-code;
       };
       # Zed docks the agent panel left and every other panel right. These
       # settings hold the opposite layout.

@@ -34,6 +34,12 @@ let
       rev = "959a8e9f1edc3adbe2f7e3054bb6fbefa6696260"; # v1.2.3
       hash = "sha256-AbIlPEE0VWJq+NJpa56SDzhM8o7vXDBtlJHS5FCTElE=";
     };
+    cc-skills-golang = pkgs.fetchFromGitHub {
+      owner = "samber";
+      repo = "cc-skills-golang";
+      rev = "053894c088317d7ba2038cffcbf5fd57b5494fa6"; # v2.0.0
+      hash = "sha256-d7HZ+oxuEgLIM6tXFLxT1JrXBbNsvIVMOprbqdlrOWs=";
+    };
   };
 
   # ── Derived permissions ─────────────────────────────────────────────────────
@@ -141,6 +147,12 @@ let
   # Four rules for each verb. The verb comes straight after the tool in "gcloud
   # info", and after a resource group in "gcloud compute instances list". Each
   # of the two positions needs a form with arguments and a form without.
+  #
+  # The last two forms make Claude Code warn at startup, once for each allow
+  # rule. A wildcard before the verb also matches a flag in that position, thus
+  # the rule approves that flag with no prompt. Only an allow rule warns, and no
+  # setting turns the warning off. The forms stay, because the sandbox has
+  # nobody to answer the prompt that a missing rule brings.
   verbRules = tool: verb: [
     "Bash(${tool} ${verb})"
     "Bash(${tool} ${verb} *)"
@@ -847,7 +859,12 @@ let
   # thus Nix checks the structure and there are no commas to keep in order.
   # A profile attribute set layers on top with lib.recursiveUpdate.
   baseSettings = {
-    model = "claude-opus-5[1m]";
+    model = "claude-opus-5-5[1m]";
+
+    # The fullscreen renderer. Do not set CLAUDE_CODE_NO_FLICKER: that variable
+    # wins over this key and over the crash check that turns the renderer off
+    # after a failed start. This key leaves both, and "/tui default", in reach.
+    tui = "fullscreen";
 
     # Claude Code adds this marketplace on the first interactive start. The
     # entry holds for a machine that starts with "claude -p" instead.
@@ -946,8 +963,10 @@ in
   };
 
   config = {
-    home.packages = with pkgs; [
-      claude-code
+    home.packages = [
+      # The release lags the CLI by weeks, thus unstable holds it. zed.nix
+      # points its ACP agent at the same copy.
+      pkgs.unstable.claude-code
     ];
 
     home.file = {
