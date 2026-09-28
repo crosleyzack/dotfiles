@@ -102,7 +102,7 @@ let
           "WebSearch"
         ];
 
-        deny = blockedCommandRules ++ extraDenyRules;
+        deny = blockedCommandRules ++ denyWordRules ++ extraDenyRules;
       };
 
       hooks.PreToolUse = [
@@ -144,16 +144,19 @@ let
   # an unknown word. In the sandbox that prompt has nobody to answer it.
   isStrict = profile: _: profile == "sandbox";
 
-  # Four rules for each verb. The verb comes straight after the tool in "gcloud
-  # info", and after a resource group in "gcloud compute instances list". Each
-  # of the two positions needs a form with arguments and a form without.
-  #
-  # The last two forms make Claude Code warn at startup, once for each allow
-  # rule. A wildcard before the verb also matches a flag in that position, thus
-  # the rule approves that flag with no prompt. Only an allow rule warns, and no
-  # setting turns the warning off. The forms stay, because the sandbox has
-  # nobody to answer the prompt that a missing rule brings.
+  # An allow rule puts a wildcard only at the start or the end. A wildcard
+  # between the tool and the verb also matches a flag, thus the rule approves
+  # that flag with no prompt. Thus "gcloud compute instances list" and
+  # "git -C dir status" find no allow rule, and they wait for a human.
   verbRules = tool: verb: [
+    "Bash(${tool} ${verb})"
+    "Bash(${tool} ${verb} *)"
+  ];
+
+  # A deny rule puts the wildcard between the tool and the verb, as in "yarn *
+  # remove". There it matches a flag or a resource group, and a false match
+  # stops a command that is safe. That is the safe direction for a denial.
+  denyVerbRules = tool: verb: [
     "Bash(${tool} ${verb})"
     "Bash(${tool} ${verb} *)"
     "Bash(${tool} * ${verb})"
@@ -179,6 +182,15 @@ let
   writeLocalRules = lib.concatLists (lib.mapAttrsToList
     (name: v: lib.concatMap (verbRules name) (v.writeLocal or [ ]))
     ruleTools);
+
+  # The "deny" words of every gated tool, for both profiles. The hook denies
+  # these words too, and this list keeps them stopped if the hook fails. A
+  # tool with "argumentVerbs" is here too: a false match only stops a command.
+  # The sandbox denies writeRemote in the hook alone, because four rules for
+  # each such word make more than a thousand rules.
+  denyWordRules = lib.concatLists (lib.mapAttrsToList
+    (name: v: lib.concatMap (denyVerbRules name) (v.deny or [ ]))
+    gatedTools);
 
   # Denials that the "tools" set cannot express, for both profiles.
   extraDenyRules = [
@@ -614,9 +626,8 @@ let
   # "terraform plan && terraform apply", and it cannot see the flags that make
   # "gh api" a write. This hook cuts the command apart and tests every piece.
   #
-  # A denial of a "deny" word needs no rule of its own for that reason. Such a
-  # rule needs eight patterns for each word, and the whole policy would need
-  # more than a thousand of them.
+  # The rules in denyWordRules hold the "deny" words as a second layer. They
+  # cannot hold the flags, and the sandbox denies writeRemote here alone.
   #
   # The hook stays quiet for a word that a human must answer. The default mode
   # of the workstation asks then, because no allow rule holds that command.
