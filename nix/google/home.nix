@@ -21,6 +21,7 @@
     ../pkgs/starship.nix
     ../pkgs/vim.nix
     ../pkgs/wndr.nix
+    ../pkgs/yubikey.nix
     ../pkgs/zsh.nix
   ];
 

@@ -26,6 +26,7 @@
     ../pkgs/tmux.nix
     ../pkgs/vim.nix
     ../pkgs/wndr.nix
+    ../pkgs/yubikey.nix
     ../pkgs/zed.nix
     ../pkgs/zsh.nix
   ];
