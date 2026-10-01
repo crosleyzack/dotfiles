@@ -2,13 +2,10 @@
 
 configuration for [Dygma](https://dygma.com) keyboard config software [Bazecor](https://github.com/Dygmalab/Bazecor)
 
-## Manual install
+## Bazecor
 
-NOTE: now deprecated by [setup via nix](../nix/pkgs/pkgs.nix)
+[Setup via nix](../nix/pkgs/bazecor.nix)
 
-Run `./setup.sh`. This requires policykit-1-gnome, policykit-1, libpolkit-agent-1-dev
+## Layers
 
-If these are installed and you still get an error about polkit, try:
-
-`exec /usr/libexec/polkit-gnome-authentication-agent-1`
-
+Stored in json files in this directory

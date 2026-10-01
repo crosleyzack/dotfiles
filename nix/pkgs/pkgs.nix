@@ -7,8 +7,6 @@
       # languages
       uv
       pyenv
-      # programs
-      # bazecor
     ];
   };
 }

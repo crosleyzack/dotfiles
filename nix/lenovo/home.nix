@@ -11,6 +11,7 @@
     ../pkgs/containers.nix
     ../pkgs/dircolors.nix
     ../pkgs/direnv.nix
+    ../pkgs/dygma.nix
     ../pkgs/fonts.nix
     ../pkgs/gh.nix
     ../pkgs/git.nix
