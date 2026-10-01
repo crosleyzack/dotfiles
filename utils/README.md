@@ -10,6 +10,12 @@ Changes device settings, currently just prevents touchpad from "saving power". (
 
 Updates system including `apt`, `nix`, `python`, and more.
 
+### clean.sh
+
+Frees disk space held by `nix`, `apt`, `snap`, `pre-commit`, `go`, container tools, scanner databases, and more.
+The script cleans only the tools that are installed.
+It keeps the Go module cache and tagged container images, because a download of them again is slow.
+
 ### rootless_docker.sh
 
 Switches Docker to rootless mode, so the daemon runs as the current user instead of root.
