@@ -9,8 +9,10 @@
 #
 # Behavior:
 #   1. Reads the logical screen size from Mutter.
-#   2. Defines move_to_workspace(), which finds all windows of a given window
-#      class and moves each one to a specified workspace.
+#   2. Defines move_to_workspace(), which waits for the windows of a given
+#      window class and moves each one to a specified workspace. The wait
+#      stops when the list of windows stays the same for one second, or after
+#      WC_WAIT_SECONDS.
 #   3. Defines position_on_workspace(), which gives each of those windows a
 #      layout:
 #        * FULLSCREEN (3): Full screen mode
@@ -47,20 +49,17 @@
 #   environment (e.g., GNOME Startup Applications, KDE Autostart)
 #
 # Note:
-#   The layout step waits on a newer build of the extension in nixpkgs.
+#   nix/pkgs/gnome.nix installs and enables the extension from nixpkgs.
 #     Attribute:  gnomeExtensions.window-calls
 #     UUID:       window-calls@domandoman.xyz
 #     Upstream:   https://extensions.gnome.org/extension/4724/window-calls/
-#     In nixpkgs unstable on 2026-09-23:  version 20
-#     Needed by the layout step:          version 21
+#     In nixpkgs 26.05 and unstable on 2026-09-30:  version 21
+#     Needed by the layout step:                    version 21
 #
 #   Version 21 declares support for GNOME Shell 45 to 50. Version 20 declares
 #   no support for GNOME Shell 50. GNOME does not load an extension that
 #   declares no support for the version of the shell. This host runs GNOME
 #   Shell 50.
-#
-#   Read the version of nixpkgs with this command:
-#     nix eval --raw nixpkgs#gnomeExtensions.window-calls.version
 #
 #   This script moves the windows with every version of the extension that
 #   GNOME loads. It lays the windows out with version 21 or later only, and it
@@ -196,15 +195,30 @@ VERT_MAXED=1
 VERT_HORZ_MAXED=2
 FULLSCREEN=3
 
+# The longest time, in seconds, that move_to_workspace waits for a window.
+WC_WAIT_SECONDS=30
+
 # Moves every window of a class to a workspace.
 # $1 indicates the window class to move - a fragment is enough
 # $2 indicates workspace to put on (0 indexed)
 # $3 indicates if multiple windows should be placed on successive desktops.
+#
+# The script starts before the programs open their windows. An application
+# opens its windows one after the other, thus the poll continues until two
+# reads in sequence give the same list.
 function move_to_workspace {
-    local winids winid index=0 workspace
+    local winids previous winid index=0 workspace elapsed=0
     winids=$(wc_window_ids "$1")
+    while [[ -z "$winids" || "$winids" != "$previous" ]] \
+        && (( elapsed < WC_WAIT_SECONDS )); do
+        sleep 1s
+        elapsed=$((elapsed + 1))
+        previous=$winids
+        winids=$(wc_window_ids "$1")
+    done
     if [ -z "$winids" ]; then
-        echo "WARN: no Windows found for class $1"
+        echo "WARN: no Windows found for class $1 after $WC_WAIT_SECONDS seconds"
+        logger "position_windows.sh: no windows found for class $1 after $WC_WAIT_SECONDS seconds"
         return 0
     fi
     for winid in $winids

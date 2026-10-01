@@ -1,6 +1,16 @@
 { pkgs, ... }:
 
+let
+  window-calls = pkgs.gnomeExtensions.window-calls;
+in
 {
+  # startup/position_windows.sh moves the windows over the D-Bus interface of
+  # this extension. The environment of GNOME Shell holds no ~/.nix-profile/share
+  # in XDG_DATA_DIRS. Thus home.packages is not sufficient, and the link goes
+  # to the directory of user extensions.
+  home.file.".local/share/gnome-shell/extensions/${window-calls.extensionUuid}".source =
+    "${window-calls}/share/gnome-shell/extensions/${window-calls.extensionUuid}";
+
   # This sets up the gnome environment to preferred settings, a
   #  pseudo-i3 environment with fixed desktops and shortcuts to
   #  move between them
@@ -70,7 +80,10 @@
       # remove ubuntu sidebar dock
       "org/gnome/shell" = {
         disabled-extensions = [ "ubuntu-dock@ubuntu.com" ];
-        enabled-extensions = [ "auto-move-windows@gnome-shell-extensions.gcampax.github.com" ];
+        enabled-extensions = [
+          "auto-move-windows@gnome-shell-extensions.gcampax.github.com"
+          window-calls.extensionUuid
+        ];
       };
       "org/gnome/shell/extensions/dash-to-dock" = {
         dock-fixed  = false;

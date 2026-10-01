@@ -17,8 +17,9 @@
 #      - Each program is executed in the background
 #      - Output is redirected to /dev/null
 #      - 0.1 second delay between launches
-#   4. Waits 9 seconds for applications to fully start
-#   5. Executes position_windows.sh to arrange windows on workspaces
+#   4. Waits 2 seconds
+#   5. Executes position_windows.sh, which waits for each window and then
+#      arranges the windows on workspaces
 #
 # System Profiles:
 #
@@ -90,9 +91,8 @@ do
     sleep .1s
 done
 
-# position_windows.sh holds every move and every layout. A window of a program
-# of the list above comes after the launch of that program, thus this sleep
-# gives the slowest one the time to open its window.
+# position_windows.sh holds every move and every layout. It waits for the
+# window of each program, thus this short sleep is sufficient.
 echo "Programs launched, sleeping"
 sleep 2
 echo "Sleep done, repositioning windows via $DIR/position_windows.sh"
