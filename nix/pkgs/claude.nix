@@ -791,19 +791,36 @@ let
   ];
 
   # One instruction for each line of ~/.claude/CLAUDE.md. The "sandbox" profile
-  # adds a last line.
+  # add additionl lines.
   claudeInstructions = [
-    "In replies: explain fully — what changed, why, what you ruled out, what's risky. Never compress an explanation. Cut ceremony: no preamble, no closing summary, no restating my request."
-    "In code: Avoid premature abstractions, add helper functions only when there is a clear reccurring pattern."
-    "In comments: only non-obvious why, never what. Comments should not exceed five lines unless absolutely necessary."
-    "In docs and comments: use ASD-STE100, one idea per sentence"
-    "In docs: Add a mermaid diagram for multi-component architecture or non-trivial control flow"
-    "Go packages: interface, implementing struct, mock, and tests for every method"
-    "Tests: one unit test per function, table-driven, compare whole objects, cmp.Diff for structs"
-    "Markdown: one sentence per line"
-    "Read all links you are given"
-  ] ++ lib.optional (cfg.profile == "sandbox")
-    "Local files are disposable; change them freely. Never change remote state: cloud resources, clusters, registries, git remotes, or issue trackers";
+    "Always:"
+    "- Use ASD-STE100 with one idea per sentence"
+    "In replies:"
+    "- Explain fully — what changed, why, what you ruled out, what's risky"
+    "- Cut ceremony: no preamble, no closing summary, no restating my request"
+    "In PRs:"
+    "- Do only one thing per PR — under 1000 lines is preferred"
+    "In Code:"
+    "- Add helper functions only when there is a clear recurring pattern"
+    "In comments:"
+    "- Only non-obvious why, never what"
+    "- Comments should not exceed five lines unless absolutely necessary."
+    "In docs:"
+    "- Add a mermaid diagram for multi-component architecture or non-trivial control flow"
+    "In Go packages:"
+    "- Add an interface, implementing struct, mock, and tests"
+    "In Tests:"
+    "- One unit test per function"
+    "- Use table-driven testing pattern"
+    "- Compare whole output, cmp.Diff for structs"
+    "In Markdown:"
+    "- One sentence per line"
+  ] ++ lib.optionals (cfg.profile == "sandbox") [
+    "In sandbox:"
+    "- You are in a sandbox"
+    "- Local files are disposable; change them freely"
+    "- Never change remote state: cloud resources, clusters, registries, git remotes, or issue trackers"
+  ];
 
   # Status line script: model, context usage, session cost, water estimate.
   statuslineScript = pkgs.writeShellScript "claude-statusline" ''
