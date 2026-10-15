@@ -24,24 +24,6 @@ let
     "linear"
   ];
 
-  # The list above holds only a plugin whose files sit in the marketplace. For
-  # the rest, a folder here loads as "<name>@skills-dir": no install step, and
-  # no write to the read-only settings file. It needs a plugin.json.
-  skillPlugins = {
-    mattpocock-skills = pkgs.fetchFromGitHub {
-      owner = "mattpocock";
-      repo = "skills";
-      rev = "959a8e9f1edc3adbe2f7e3054bb6fbefa6696260"; # v1.2.3
-      hash = "sha256-AbIlPEE0VWJq+NJpa56SDzhM8o7vXDBtlJHS5FCTElE=";
-    };
-    cc-skills-golang = pkgs.fetchFromGitHub {
-      owner = "samber";
-      repo = "cc-skills-golang";
-      rev = "053894c088317d7ba2038cffcbf5fd57b5494fa6"; # v2.0.0
-      hash = "sha256-d7HZ+oxuEgLIM6tXFLxT1JrXBbNsvIVMOprbqdlrOWs=";
-    };
-  };
-
   # ── Derived permissions ─────────────────────────────────────────────────────
   # One policy makes both profiles: the "tools" set below. Every tool holds four
   # lists of words, and each list gives one outcome for each machine.
@@ -800,6 +782,7 @@ let
     "- Cut ceremony: no preamble, no closing summary, no restating my request"
     "In PRs:"
     "- Do only one thing per PR — under 1000 lines is preferred"
+    "- Descriptions have three sections: what, why, and notes"
     "In Code:"
     "- Add helper functions only when there is a clear recurring pattern"
     "In comments:"
@@ -887,7 +870,7 @@ let
   # thus Nix checks the structure and there are no commas to keep in order.
   # A profile attribute set layers on top with lib.recursiveUpdate.
   baseSettings = {
-    model = "claude-opus-5-5[1m]";
+    model = "claude-sonnet-5-5[1m]";
 
     # The fullscreen renderer. Do not set CLAUDE_CODE_NO_FLICKER: that variable
     # wins over this key and over the crash check that turns the renderer off
@@ -1011,14 +994,6 @@ in
         target = "${claudeDir}/CLAUDE.md";
         text = lib.concatStringsSep "\n" claudeInstructions + "\n";
       };
-    }
-    # One link for each skill plugin, straight to its source in the store.
-    // lib.mapAttrs'
-      (name: src: lib.nameValuePair "claude_skill_${name}" {
-        enable = true;
-        target = "${claudeDir}/skills/${name}";
-        source = src;
-      })
-      skillPlugins;
+    };
   };
 }

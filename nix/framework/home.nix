@@ -8,6 +8,7 @@
     ../pkgs/cg.nix
     ../pkgs/cli.nix
     ../pkgs/claude.nix
+    ../pkgs/skills.nix
     ../pkgs/cloud.nix
     ../pkgs/codeowners.nix
     ../pkgs/containers.nix
