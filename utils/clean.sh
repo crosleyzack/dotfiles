@@ -21,6 +21,7 @@
 #   - go: remove build cache, test cache, and goimports module index
 #   - golangci-lint: remove lint cache
 #   - uv: prune unused cache entries
+#   - git: remove clean worktrees under .claude/worktrees in any repo in $HOME
 #
 #   Containers and Scanners:
 #   - docker: remove stopped containers, dangling images, unused networks
@@ -46,15 +47,6 @@
 ################################################################################
 
 CACHE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}"
-
-# nix. 10 days matches nix/update.sh, so rollback generations stay available.
-if [ -x "$(command -v home-manager)" ]; then
-    home-manager expire-generations "-10 days"
-fi
-if [ -x "$(command -v nix-collect-garbage)" ]; then
-    nix-collect-garbage --delete-older-than 10d
-    nix store optimise
-fi
 
 # apt packages
 if [ -x "$(command -v apt)" ]; then
@@ -96,6 +88,22 @@ if [ -x "$(command -v uv)" ]; then
     uv cache prune
 fi
 
+# git worktrees that Claude Code creates under <repo>/.claude/worktrees. No
+# "--force", so git keeps a worktree that has changes or a lock. Branches stay.
+if [ -x "$(command -v git)" ]; then
+    find "$HOME" -maxdepth 6 -type d -path '*/.claude/worktrees' -prune -print 2>/dev/null |
+        while read -r dir; do
+            for wt in "$dir"/*/; do
+                wt="${wt%/}"
+                [ -e "$wt/.git" ] || continue
+                common="$(git -C "$wt" rev-parse --path-format=absolute --git-common-dir)" || continue
+                git -C "${common%/.git}" worktree remove "$wt"
+            done
+            repo="${dir%/.claude/worktrees}"
+            git -C "$repo" worktree prune 2>/dev/null
+        done
+fi
+
 # docker. No "-a", so tagged images stay.
 if [ -x "$(command -v docker)" ]; then
     docker system prune --force
@@ -121,3 +129,14 @@ if [ -x "$(command -v journalctl)" ]; then
     sudo journalctl --vacuum-time=2weeks
     journalctl --user --vacuum-time=2weeks
 fi
+
+# nix. 10 days matches nix/update.sh, so rollback generations stay available.
+if [ -x "$(command -v home-manager)" ]; then
+    home-manager expire-generations "-10 days"
+fi
+if [ -x "$(command -v nix-collect-garbage)" ]; then
+    nix-collect-garbage --delete-older-than 10d
+    nix store optimise
+fi
+
+
