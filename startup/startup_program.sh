@@ -74,7 +74,7 @@ echo "NIX_SYSTEM_ID=$NIX_SYSTEM_ID"
 case $NIX_SYSTEM_ID in
     framework)
         # work
-        declare -a progs=("$NIX_BIN/zeditor" "snap run firefox" "snap run slack" "snap run proton-pass" "snap run obsidian" "ptyxis -e $NIX_BIN/zsh")
+        declare -a progs=("$NIX_BIN/zeditor" "firefox &" "snap run slack" "ptyxis -e $NIX_BIN/zsh")
     ;;
     *)
         # default

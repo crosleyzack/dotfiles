@@ -31,7 +31,7 @@ NIX_SYSTEM_ID="${NIX_SYSTEM_ID:-}"
 if [ -z "$NIX_SYSTEM_ID" ] && [ -r "$SYSTEM_ID_FILE" ]; then
     NIX_SYSTEM_ID="$(cat "$SYSTEM_ID_FILE")"
 fi
-if [ ! -d "$DIR_PATH/$NIX_SYSTEM_ID" ]; then
+if [ -z "$NIX_SYSTEM_ID" ] || [ ! -d "$DIR_PATH/$NIX_SYSTEM_ID" ]; then
     printf "Error: no configuration for system '%s'.\nRun install.sh, or set NIX_SYSTEM_ID to 'framework', 'lenovo', or 'google'.\n" "$NIX_SYSTEM_ID" >&2
     exit 1
 fi
