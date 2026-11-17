@@ -1,11 +1,16 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 let
   cfg = config.my.claude;
 
   # Override for a single session with `claude --effort <low|medium|high|xhigh|max>`
   # (or `claude -c --effort <level>` to resume the current conversation at that level).
-  defaultEffort = "high";
+  defaultEffort = "low";
 
   claudeDir = "${config.home.homeDirectory}/.claude";
 
@@ -40,14 +45,17 @@ let
   # The hook makes every denial, and the rules below make the rest. A rule holds
   # the reads of both machines and the local writes of the sandbox. Every other
   # command reaches no rule, and the default mode of the workstation asks.
-  profilePermissions = profile:
-    let sandbox = profile == "sandbox"; in
+  profilePermissions =
+    profile:
+    let
+      sandbox = profile == "sandbox";
+    in
     {
       permissions = {
         # Lock both machines out of bypassPermissions mode. That mode skips the
         # rules below, and the hook is the only check that stays.
         disableBypassPermissionsMode = "disable";
-        defaultMode = if sandbox then "acceptEdits" else "default";
+        defaultMode = if sandbox then "acceptEdits" else "auto";
 
         allow = [
           "Bash(* --version)"
@@ -59,20 +67,34 @@ let
         ]) allowTools
         ++ readRules
         # A rule of one name and no path holds for every path.
-        ++ lib.optionals sandbox ([
-          "Read"
-          "Glob"
-          "Grep"
-          "Edit"
-          "Write"
-          "NotebookEdit"
-          "WebFetch"
-          "WebSearch"
-        ] ++ writeLocalRules)
-        ++ lib.optionals (!sandbox) [
-          "Read(${config.home.homeDirectory}/**)"
-          "Read(/tmp/claude*/**)"
-        ];
+        ++ lib.optionals sandbox (
+          [
+            "Read"
+            "Glob"
+            "Grep"
+            "Edit"
+            "Write"
+            "NotebookEdit"
+            "WebFetch"
+            "WebSearch"
+          ]
+          ++ writeLocalRules
+          ++ sandboxPassRules
+        )
+        ++ lib.optionals (!sandbox) (
+          [
+            "Read(${config.home.homeDirectory}/**)"
+            "Read(/tmp/claude*/**)"
+          ]
+          # Remote writes that the workstation runs with no prompt. The hook
+          # denies only the "deny" words and verbFlags there, thus a force
+          # push stops and a normal push passes.
+          ++ verbRules "git" "push"
+          ++ [
+            "Bash(gh pr create)"
+            "Bash(gh pr create *)"
+          ]
+        );
 
         # A write word needs no rule here: the default mode of the workstation
         # asks for every command that no allow rule holds. Thus only the file
@@ -115,16 +137,11 @@ let
   # The words that the hook denies. No human watches the sandbox, thus a remote
   # write stops there with the deny words. The workstation asks for a remote
   # write instead, and its default mode holds that prompt.
-  denyWords = profile: v:
-    (v.deny or [ ]) ++ lib.optionals (profile == "sandbox") (v.writeRemote or [ ]);
+  denyWords =
+    profile: v: (v.deny or [ ]) ++ lib.optionals (profile == "sandbox") (v.writeRemote or [ ]);
 
   # The words that the sandbox runs with no prompt.
   passWords = v: (v.read or [ ]) ++ (v.writeLocal or [ ]);
-
-  # The hook denies a command of a strict tool that holds no word of its own. It
-  # stays quiet on the workstation, where the prompt of the profile answers for
-  # an unknown word. In the sandbox that prompt has nobody to answer it.
-  isStrict = profile: _: profile == "sandbox";
 
   # An allow rule puts a wildcard only at the start or the end. A wildcard
   # between the tool and the verb also matches a flag, thus the rule approves
@@ -145,6 +162,13 @@ let
     "Bash(${tool} * ${verb} *)"
   ];
 
+  # One list of rules from one field of every tool in a set.
+  listFieldRules =
+    mkRules: field: toolSet:
+    lib.concatLists (
+      lib.mapAttrsToList (name: v: lib.concatMap (mkRules name) (v.${field} or [ ])) toolSet
+    );
+
   # A rule holds the whole command as one string, and it cannot hold the order
   # of the words. Thus a tool with "argumentVerbs" gets no rule at all, and the
   # hook alone judges it. Every command of such a tool waits for a human.
@@ -154,31 +178,39 @@ let
   # also matches "<write> && <read>", and a prompt is the correct stop for that
   # command. The hook cuts a command apart and tests every piece, thus it stops
   # the write in any case.
-  readRules = lib.concatLists (lib.mapAttrsToList
-    (name: v: lib.concatMap (verbRules name) (v.read or [ ]))
-    ruleTools);
+  readRules = listFieldRules verbRules "read" ruleTools;
 
   # The sandbox alone reads this list, thus the name of the profile is fixed
   # here. A local write costs that machine nothing, and the workstation keeps
   # its prompt for the same word.
-  writeLocalRules = lib.concatLists (lib.mapAttrsToList
-    (name: v: lib.concatMap (verbRules name) (v.writeLocal or [ ]))
-    ruleTools);
+  writeLocalRules = listFieldRules verbRules "writeLocal" ruleTools;
+
+  # The sandbox alone reads this list. The hook lets these pairs through there.
+  sandboxPassRules = listFieldRules verbRules "sandboxPass" ruleTools;
 
   # The "deny" words of every gated tool, for both profiles. The hook denies
   # these words too, and this list keeps them stopped if the hook fails. A
   # tool with "argumentVerbs" is here too: a false match only stops a command.
   # The sandbox denies writeRemote in the hook alone, because four rules for
   # each such word make more than a thousand rules.
-  denyWordRules = lib.concatLists (lib.mapAttrsToList
-    (name: v: lib.concatMap (denyVerbRules name) (v.deny or [ ]))
-    gatedTools);
+  denyWordRules = listFieldRules denyVerbRules "deny" gatedTools;
 
   # Denials that the "tools" set cannot express, for both profiles.
-  extraDenyRules = [
+  # The hook holds every force flag of "git push". The generated rules keep the
+  # long flag stopped if the hook fails.
+  extraDenyRules =
+    lib.concatMap
+      (p: [
+        "Bash(${p})"
+        "Bash(* ${p})"
+      ])
+      [
+        "git push --for*"
+        "git push * --for*"
+      ]
+    ++ [
     # dangerous commands
     "Bash(* rm -rf *)"
-    "Bash(* git push --force *)"
     "Bash(* git reset --hard *)"
     "Bash(* chmod 777 *)"
     "Bash(* chown -R *)"
@@ -246,12 +278,44 @@ let
   # Commands with no safe operation for an agent, and no verb worth a test. Both
   # profiles block these, thus they carry no entry in the "tools" set below.
   blockedCommands = [
-    "sudo" "su" "doas" "pkexec" "ssh" "nc" "netcat" "socat" "nmap" "masscan"
-    "passwd" "chpasswd" "mkfs" "fdisk" "parted" "dd" "crontab" "kill" "killall"
-    "systemctl" "useradd" "usermod" "userdel" "mount" "umount" "iptables"
-    "ufw" "insmod" "rmmod" "modprobe" "ansible-playbook"
-    "pg_dump" "pg_dumpall" "pg_restore" "mysqldump" "mysqlimport"
-    "cloud-sql-proxy" "cloud_sql_proxy"
+    "sudo"
+    "su"
+    "doas"
+    "pkexec"
+    "ssh"
+    "nc"
+    "netcat"
+    "socat"
+    "nmap"
+    "masscan"
+    "passwd"
+    "chpasswd"
+    "mkfs"
+    "fdisk"
+    "parted"
+    "dd"
+    "crontab"
+    "kill"
+    "killall"
+    "systemctl"
+    "useradd"
+    "usermod"
+    "userdel"
+    "mount"
+    "umount"
+    "iptables"
+    "ufw"
+    "insmod"
+    "rmmod"
+    "modprobe"
+    "ansible-playbook"
+    "pg_dump"
+    "pg_dumpall"
+    "pg_restore"
+    "mysqldump"
+    "mysqlimport"
+    "cloud-sql-proxy"
+    "cloud_sql_proxy"
   ];
 
   # ── Tool policy ─────────────────────────────────────────────────────────────
@@ -268,6 +332,13 @@ let
   #   flags       Flags that make a read command a write, as "-X" does for
   #               "gh api". Both profiles deny these, because an allow rule
   #               already holds the read verb of the command.
+  #   verbFlags   Flags and words that both profiles deny with one verb alone,
+  #               as "--force" with "git push". A tool-wide flag cannot hold
+  #               these: "git checkout -f" is safe.
+  #   allowFlags  Flags from "flags" that both profiles pass with one
+  #               subcommand alone, as "-f" with "gh pr create".
+  #   sandboxPass Pairs of words that the sandbox runs, although the second
+  #               word is in writeRemote, as "pr create" for gh.
   #
   # A word that hands out a credential or that runs a command of its own sits in
   # writeRemote, and not in writeLocal. "git config" is the example: it names a
@@ -282,44 +353,148 @@ let
   tools = {
     gcloud = {
       read = [
-        "list" "list-*" "describe" "get" "get-*" "read" "info" "version"
-        "status" "ls" "cat" "tail"
+        "list"
+        "list-*"
+        "describe"
+        "get"
+        "get-*"
+        "read"
+        "info"
+        "version"
+        "status"
+        "ls"
+        "cat"
+        "tail"
       ];
       writeRemote = [
-        "create" "create-*" "undelete" "add" "add-*" "remove" "remove-*"
-        "update" "update-*" "patch" "set" "set-*" "unset" "deploy" "submit"
-        "import" "export" "apply" "call" "invoke" "login" "logout" "revoke"
-        "enable" "disable" "attach" "detach" "start" "stop" "restart" "reset"
-        "resize" "rollback" "promote" "migrate" "move" "mv" "rm" "cp" "rsync"
-        "scp" "sftp" "ssh" "connect" "print-*" "activate" "impersonate*"
-        "kill" "abandon" "drain" "rotate" "sign*" "decrypt" "encrypt"
+        "create"
+        "create-*"
+        "undelete"
+        "add"
+        "add-*"
+        "remove"
+        "remove-*"
+        "update"
+        "update-*"
+        "patch"
+        "set"
+        "set-*"
+        "unset"
+        "deploy"
+        "submit"
+        "import"
+        "export"
+        "apply"
+        "call"
+        "invoke"
+        "login"
+        "logout"
+        "revoke"
+        "enable"
+        "disable"
+        "attach"
+        "detach"
+        "start"
+        "stop"
+        "restart"
+        "reset"
+        "resize"
+        "rollback"
+        "promote"
+        "migrate"
+        "move"
+        "mv"
+        "rm"
+        "cp"
+        "rsync"
+        "scp"
+        "sftp"
+        "ssh"
+        "connect"
+        "print-*"
+        "activate"
+        "impersonate*"
+        "kill"
+        "abandon"
+        "drain"
+        "rotate"
+        "sign*"
+        "decrypt"
+        "encrypt"
       ];
-      deny = [ "delete" "delete-*" ];
+      deny = [
+        "delete"
+        "delete-*"
+      ];
     };
     terraform = {
       read = [
-        "plan" "show" "validate" "output" "graph" "providers" "state" "list"
-        "pull" "fmt" "init" "version" "get"
+        "plan"
+        "show"
+        "validate"
+        "output"
+        "graph"
+        "providers"
+        "state"
+        "list"
+        "pull"
+        "fmt"
+        "init"
+        "version"
+        "get"
       ];
       writeRemote = [
-        "apply" "import" "taint" "untaint" "refresh" "mv" "push"
-        "replace-provider" "lock" "unlock" "login" "logout" "new" "select"
+        "apply"
+        "import"
+        "taint"
+        "untaint"
+        "refresh"
+        "mv"
+        "push"
+        "replace-provider"
+        "lock"
+        "unlock"
+        "login"
+        "logout"
+        "new"
+        "select"
         "test"
       ];
       # "terraform state rm" holds a read word and a deny word. The hook tests
       # the deny list first, thus the command stops.
-      deny = [ "destroy" "rm" "force-unlock" "delete" ];
+      deny = [
+        "destroy"
+        "rm"
+        "force-unlock"
+        "delete"
+      ];
       # "terraform init -migrate-state" moves state to a new backend. The verb
       # reads, thus the verb check alone is not enough. Each pattern starts
       # with "*" to accept one dash or two.
-      flags = [ "*-migrate-state" "*-force-copy" "*-auto-approve" ];
+      flags = [
+        "*-migrate-state"
+        "*-force-copy"
+        "*-auto-approve"
+      ];
     };
     gh = {
       # "api" sends GET until a flag makes it something else, thus it reads
       # here and the flag list below holds the rest.
       read = [
-        "api" "view" "list" "status" "checks" "diff" "search" "read-*"
-        "checkout" "download" "verify*" "watch" "check" "item-list"
+        "api"
+        "view"
+        "list"
+        "status"
+        "checks"
+        "diff"
+        "search"
+        "read-*"
+        "checkout"
+        "download"
+        "verify*"
+        "watch"
+        "check"
+        "item-list"
         "field-list"
       ];
       # The first lines are verbs. The rest are whole namespaces that run
@@ -327,91 +502,324 @@ let
       # a read. "run" is absent on purpose, so that "gh run list" passes;
       # "workflow" covers "gh workflow run".
       writeRemote = [
-        "create" "create-*" "close" "reopen" "edit" "comment" "merge" "review"
-        "ready" "revert" "transfer" "develop" "pin" "unpin" "lock" "unlock"
-        "rename" "archive" "unarchive" "fork" "sync" "upload" "rerun" "cancel"
-        "enable" "disable" "install" "uninstall" "update" "publish" "set"
-        "set-*" "add" "remove" "import" "link" "unlink" "copy" "clone"
-        "mark-template" "restore" "item-add" "item-archive" "item-create"
-        "item-delete" "item-edit" "field-create" "field-delete"
-        "auth" "alias" "extension" "ext" "copilot" "config" "skill" "secret"
-        "variable" "gpg-key" "ssh-key" "deploy-key" "codespace" "cs"
-        "agent-task" "gist" "workflow"
+        "create"
+        "create-*"
+        "close"
+        "reopen"
+        "edit"
+        "comment"
+        "merge"
+        "review"
+        "ready"
+        "revert"
+        "transfer"
+        "develop"
+        "pin"
+        "unpin"
+        "lock"
+        "unlock"
+        "rename"
+        "archive"
+        "unarchive"
+        "fork"
+        "sync"
+        "upload"
+        "rerun"
+        "cancel"
+        "enable"
+        "disable"
+        "install"
+        "uninstall"
+        "update"
+        "publish"
+        "set"
+        "set-*"
+        "add"
+        "remove"
+        "import"
+        "link"
+        "unlink"
+        "copy"
+        "clone"
+        "mark-template"
+        "restore"
+        "item-add"
+        "item-archive"
+        "item-create"
+        "item-delete"
+        "item-edit"
+        "field-create"
+        "field-delete"
+        "auth"
+        "alias"
+        "extension"
+        "ext"
+        "copilot"
+        "config"
+        "skill"
+        "secret"
+        "variable"
+        "gpg-key"
+        "ssh-key"
+        "deploy-key"
+        "codespace"
+        "cs"
+        "agent-task"
+        "gist"
+        "workflow"
       ];
-      deny = [ "delete" "delete-*" ];
+      deny = [
+        "delete"
+        "delete-*"
+      ];
+      # writeRemote words that the sandbox runs after one exact word. Thus the
+      # sandbox opens and reviews a PR, but "gh issue create" still stops.
+      sandboxPass = [
+        "pr create"
+        "pr comment"
+        "pr review"
+      ];
+      # Flags from the list below that one subcommand needs. "-f" is "--fill"
+      # for "gh pr create". Lower case makes "-F", the "--body-file" of
+      # "gh pr review" and "gh pr comment", the same word.
+      allowFlags = {
+        "pr create" = [ "-f" ];
+        "pr review" = [ "-f" ];
+        "pr comment" = [ "-f" ];
+      };
       # "-x" and "--method" name another method than GET. A field flag changes
       # the method to POST on its own. Lower case hides the difference between
       # "-f" and "-F", and both are field flags.
-      flags = [ "-x*" "*-method*" "-f*" "*-field*" "*-input*" ];
+      flags = [
+        "-x*"
+        "*-method*"
+        "-f*"
+        "*-field*"
+        "*-input*"
+      ];
     };
     crane = {
       read = [
-        "digest" "manifest" "config" "ls" "catalog" "validate" "version"
-        "pull" "export" "blob" "layout"
+        "digest"
+        "manifest"
+        "config"
+        "ls"
+        "catalog"
+        "validate"
+        "version"
+        "pull"
+        "export"
+        "blob"
+        "layout"
       ];
       writeRemote = [
-        "push" "copy" "cp" "tag" "append" "mutate" "rebase" "flatten" "index"
-        "optimize" "edit" "registry" "auth" "login" "logout"
+        "push"
+        "copy"
+        "cp"
+        "tag"
+        "append"
+        "mutate"
+        "rebase"
+        "flatten"
+        "index"
+        "optimize"
+        "edit"
+        "registry"
+        "auth"
+        "login"
+        "logout"
       ];
       deny = [ "delete" ];
     };
     apko = {
-      read = [ "build" "show-*" "dot" "lock" "version" ];
+      read = [
+        "build"
+        "show-*"
+        "dot"
+        "lock"
+        "version"
+      ];
       writeRemote = [ "publish" ];
     };
     kubectl = {
       read = [
-        "get" "describe" "logs" "top" "explain" "api-resources"
-        "api-versions" "version" "cluster-info" "view" "can-i" "diff"
+        "get"
+        "describe"
+        "logs"
+        "top"
+        "explain"
+        "api-resources"
+        "api-versions"
+        "version"
+        "cluster-info"
+        "view"
+        "can-i"
+        "diff"
       ];
       writeRemote = [
-        "apply" "create" "edit" "patch" "replace" "scale" "autoscale"
-        "rollout" "exec" "attach" "port-forward" "proxy" "cp" "label"
-        "annotate" "set" "set-*" "expose" "run" "taint" "cordon" "uncordon"
-        "certificate" "config"
+        "apply"
+        "create"
+        "edit"
+        "patch"
+        "replace"
+        "scale"
+        "autoscale"
+        "rollout"
+        "exec"
+        "attach"
+        "port-forward"
+        "proxy"
+        "cp"
+        "label"
+        "annotate"
+        "set"
+        "set-*"
+        "expose"
+        "run"
+        "taint"
+        "cordon"
+        "uncordon"
+        "certificate"
+        "config"
       ];
-      deny = [ "delete" "drain" "evict" ];
+      deny = [
+        "delete"
+        "drain"
+        "evict"
+      ];
     };
     aws = {
-      read = [ "describe-*" "list-*" "get-*" "head-*" "ls" "version" ];
-      writeRemote = [
-        "create-*" "update-*" "modify-*" "put-*" "post-*" "start-*" "stop-*"
-        "reboot-*" "run-*" "invoke*" "attach-*" "detach-*" "associate-*"
-        "disassociate-*" "register-*" "deregister-*" "tag-*" "untag-*"
-        "enable-*" "disable-*" "import-*" "export-*" "restore-*" "copy-*"
-        "cancel-*" "reset-*" "add-*" "remove-*" "replace-*" "send-*"
-        "publish*" "cp" "mv" "sync" "configure" "login" "logout"
+      read = [
+        "describe-*"
+        "list-*"
+        "get-*"
+        "head-*"
+        "ls"
+        "version"
       ];
-      deny = [ "delete-*" "terminate-*" "purge-*" "rm" ];
+      writeRemote = [
+        "create-*"
+        "update-*"
+        "modify-*"
+        "put-*"
+        "post-*"
+        "start-*"
+        "stop-*"
+        "reboot-*"
+        "run-*"
+        "invoke*"
+        "attach-*"
+        "detach-*"
+        "associate-*"
+        "disassociate-*"
+        "register-*"
+        "deregister-*"
+        "tag-*"
+        "untag-*"
+        "enable-*"
+        "disable-*"
+        "import-*"
+        "export-*"
+        "restore-*"
+        "copy-*"
+        "cancel-*"
+        "reset-*"
+        "add-*"
+        "remove-*"
+        "replace-*"
+        "send-*"
+        "publish*"
+        "cp"
+        "mv"
+        "sync"
+        "configure"
+        "login"
+        "logout"
+      ];
+      deny = [
+        "delete-*"
+        "terminate-*"
+        "purge-*"
+        "rm"
+      ];
     };
     helm = {
       read = [
-        "list" "get" "status" "show" "history" "version" "template" "lint"
-        "search" "pull" "verify"
+        "list"
+        "get"
+        "status"
+        "show"
+        "history"
+        "version"
+        "template"
+        "lint"
+        "search"
+        "pull"
+        "verify"
       ];
       writeRemote = [
-        "install" "upgrade" "rollback" "add" "update" "push" "package"
-        "create" "registry" "login" "logout"
+        "install"
+        "upgrade"
+        "rollback"
+        "add"
+        "update"
+        "push"
+        "package"
+        "create"
+        "registry"
+        "login"
+        "logout"
       ];
-      deny = [ "uninstall" "delete" "reset" ];
+      deny = [
+        "uninstall"
+        "delete"
+        "reset"
+      ];
     };
 
     # A cluster of k3d, kind, or vagrant lives on this machine, thus the words
     # that make one are local. The words that destroy one lose the state of
     # every container in it.
     k3d = {
-      read = [ "list" "get" "version" ];
-      writeLocal = [ "create" "start" "stop" "import" ];
+      read = [
+        "list"
+        "get"
+        "version"
+      ];
+      writeLocal = [
+        "create"
+        "start"
+        "stop"
+        "import"
+      ];
       deny = [ "delete" ];
     };
     kind = {
-      read = [ "get" "version" "export" ];
-      writeLocal = [ "create" "load" ];
+      read = [
+        "get"
+        "version"
+        "export"
+      ];
+      writeLocal = [
+        "create"
+        "load"
+      ];
       deny = [ "delete" ];
     };
     vagrant = {
-      read = [ "status" "version" "ssh-config" "validate" ];
-      writeLocal = [ "up" "halt" "reload" "provision" "suspend" ];
+      read = [
+        "status"
+        "version"
+        "ssh-config"
+        "validate"
+      ];
+      writeLocal = [
+        "up"
+        "halt"
+        "reload"
+        "provision"
+        "suspend"
+      ];
       deny = [ "destroy" ];
     };
 
@@ -419,11 +827,33 @@ let
     # one waits for a human. "code" prints a one-time password, thus it hands
     # out a credential. "reset" wipes the key, and no backup brings it back.
     ykman = {
-      read = [ "list" "info" "export" "view" ];
+      read = [
+        "list"
+        "info"
+        "export"
+        "view"
+      ];
       writeRemote = [
-        "generate" "import" "delete" "add" "set-*" "change-*" "unblock"
-        "access" "config" "enable" "disable" "rename" "code" "static"
-        "chalresp" "calculate" "keygen" "write" "attest" "mode"
+        "generate"
+        "import"
+        "delete"
+        "add"
+        "set-*"
+        "change-*"
+        "unblock"
+        "access"
+        "config"
+        "enable"
+        "disable"
+        "rename"
+        "code"
+        "static"
+        "chalresp"
+        "calculate"
+        "keygen"
+        "write"
+        "attest"
+        "mode"
       ];
       deny = [ "reset" ];
     };
@@ -443,134 +873,465 @@ let
     # tests the deny words first, thus it reads such a command correctly.
     psql = {
       argumentVerbs = true;
-      read = [ "select" "show" "explain" "with" "table" "values" ];
-      writeRemote = [
-        "insert" "update" "delete" "alter" "create" "grant" "revoke" "copy"
-        "merge" "call" "do" "vacuum" "reindex" "cluster" "refresh" "lock"
-        "comment" "begin" "commit" "rollback" "set" "reset" "analyze"
+      read = [
+        "select"
+        "show"
+        "explain"
+        "with"
+        "table"
+        "values"
       ];
-      deny = [ "drop" "truncate" ];
+      writeRemote = [
+        "insert"
+        "update"
+        "delete"
+        "alter"
+        "create"
+        "grant"
+        "revoke"
+        "copy"
+        "merge"
+        "call"
+        "do"
+        "vacuum"
+        "reindex"
+        "cluster"
+        "refresh"
+        "lock"
+        "comment"
+        "begin"
+        "commit"
+        "rollback"
+        "set"
+        "reset"
+        "analyze"
+      ];
+      deny = [
+        "drop"
+        "truncate"
+      ];
     };
     mysql = {
       argumentVerbs = true;
-      read = [ "select" "show" "explain" "describe" "desc" "with" "table" ];
-      writeRemote = [
-        "insert" "update" "delete" "alter" "create" "grant" "revoke"
-        "replace" "load" "call" "set" "lock" "unlock" "flush" "rename"
-        "optimize" "repair" "analyze" "start" "commit" "rollback" "source"
+      read = [
+        "select"
+        "show"
+        "explain"
+        "describe"
+        "desc"
+        "with"
+        "table"
       ];
-      deny = [ "drop" "truncate" "shutdown" ];
+      writeRemote = [
+        "insert"
+        "update"
+        "delete"
+        "alter"
+        "create"
+        "grant"
+        "revoke"
+        "replace"
+        "load"
+        "call"
+        "set"
+        "lock"
+        "unlock"
+        "flush"
+        "rename"
+        "optimize"
+        "repair"
+        "analyze"
+        "start"
+        "commit"
+        "rollback"
+        "source"
+      ];
+      deny = [
+        "drop"
+        "truncate"
+        "shutdown"
+      ];
     };
     redis-cli = {
       argumentVerbs = true;
       read = [
-        "get" "mget" "keys" "scan" "exists" "ttl" "type" "info" "dbsize"
-        "llen" "lrange" "lindex" "smembers" "sismember" "scard" "hget"
-        "hgetall" "hkeys" "hlen" "zrange" "zcard" "zscore" "strlen"
-        "getrange" "object" "memory" "ping" "command" "latency" "slowlog"
+        "get"
+        "mget"
+        "keys"
+        "scan"
+        "exists"
+        "ttl"
+        "type"
+        "info"
+        "dbsize"
+        "llen"
+        "lrange"
+        "lindex"
+        "smembers"
+        "sismember"
+        "scard"
+        "hget"
+        "hgetall"
+        "hkeys"
+        "hlen"
+        "zrange"
+        "zcard"
+        "zscore"
+        "strlen"
+        "getrange"
+        "object"
+        "memory"
+        "ping"
+        "command"
+        "latency"
+        "slowlog"
       ];
       # "select" switches database here, and reads data for psql. One word
       # with two meanings is the reason each tool keeps its own lists.
       writeRemote = [
-        "set" "setex" "setnx" "mset" "getset" "append" "del" "unlink"
-        "expire" "persist" "rename" "lpush" "rpush" "lpop" "rpop" "sadd"
-        "srem" "hset" "hdel" "zadd" "zrem" "incr" "decr" "incrby" "decrby"
-        "eval" "evalsha" "script" "config" "save" "bgsave" "bgrewriteaof"
-        "slaveof" "replicaof" "migrate" "restore" "debug" "client" "cluster"
-        "acl" "swapdb" "select"
+        "set"
+        "setex"
+        "setnx"
+        "mset"
+        "getset"
+        "append"
+        "del"
+        "unlink"
+        "expire"
+        "persist"
+        "rename"
+        "lpush"
+        "rpush"
+        "lpop"
+        "rpop"
+        "sadd"
+        "srem"
+        "hset"
+        "hdel"
+        "zadd"
+        "zrem"
+        "incr"
+        "decr"
+        "incrby"
+        "decrby"
+        "eval"
+        "evalsha"
+        "script"
+        "config"
+        "save"
+        "bgsave"
+        "bgrewriteaof"
+        "slaveof"
+        "replicaof"
+        "migrate"
+        "restore"
+        "debug"
+        "client"
+        "cluster"
+        "acl"
+        "swapdb"
+        "select"
       ];
-      deny = [ "flushall" "flushdb" "shutdown" ];
+      deny = [
+        "flushall"
+        "flushdb"
+        "shutdown"
+      ];
     };
 
     # Every tool below holds a writeLocal list: it changes this machine, and it
     # reaches a remote with a few words alone.
     git = {
       read = [
-        "status" "diff" "log" "show" "blame" "ls-files" "ls-remote"
-        "rev-parse" "describe" "shortlog" "reflog" "cat-file" "grep"
+        "status"
+        "diff"
+        "log"
+        "show"
+        "blame"
+        "ls-files"
+        "ls-remote"
+        "rev-parse"
+        "describe"
+        "shortlog"
+        "reflog"
+        "cat-file"
+        "grep"
         "patch-id"
       ];
       writeLocal = [
-        "add" "commit" "stash" "checkout" "switch" "restore" "tag" "branch"
-        "init" "clone" "fetch" "pull" "merge" "rebase" "cherry-pick" "revert"
-        "apply" "am" "mv" "rm" "clean" "reset" "remote" "submodule" "bisect"
+        "add"
+        "commit"
+        "stash"
+        "checkout"
+        "switch"
+        "restore"
+        "tag"
+        "branch"
+        "init"
+        "clone"
+        "fetch"
+        "pull"
+        "merge"
+        "rebase"
+        "cherry-pick"
+        "revert"
+        "apply"
+        "am"
+        "mv"
+        "rm"
+        "clean"
+        "reset"
+        "remote"
+        "submodule"
+        "bisect"
         "worktree"
+        # A remote write, but the sandbox may push branches. verbFlags below
+        # stops a force push and a remote delete. Branch protection on the
+        # remote is the guard for a push to main.
+        "push"
+      ];
+      # "+ref" forces one ref, and ":ref" deletes it. "--mirror" and "--prune"
+      # delete the remote refs that this repo does not hold. The short-flag
+      # patterns also match a bundle, as in "-uf". Git accepts a unique prefix
+      # of a long flag, thus each pattern holds the shortest unique prefix:
+      # "--fo" is also "--follow-tags", and "--pr" is also "--progress".
+      verbFlags.push = [
+        "--for*"
+        "-f*"
+        "-[!-]*f*"
+        "--de*"
+        "-d*"
+        "-[!-]*d*"
+        "--mi*"
+        "--pru*"
+        "+*"
+        ":*"
       ];
       # "git config core.pager <command>" makes a later "git log" run that
       # command, and the hook sees the words of "git log" alone. Thus it waits
       # for a human, as "gh config" does.
-      writeRemote = [ "push" "config" ];
+      writeRemote = [ "config" ];
       deny = [ "yolo" ];
     };
     docker = {
       read = [
-        "ps" "logs" "inspect" "images" "version" "info" "history" "port"
-        "top" "stats" "diff" "search"
+        "ps"
+        "logs"
+        "inspect"
+        "images"
+        "version"
+        "info"
+        "history"
+        "port"
+        "top"
+        "stats"
+        "diff"
+        "search"
       ];
       writeLocal = [
-        "run" "build" "start" "stop" "restart" "kill" "exec" "cp" "commit"
-        "tag" "save" "load" "create" "update" "rename" "pause" "unpause"
-        "rm" "rmi" "compose" "pull" "network" "volume" "image" "container"
+        "run"
+        "build"
+        "start"
+        "stop"
+        "restart"
+        "kill"
+        "exec"
+        "cp"
+        "commit"
+        "tag"
+        "save"
+        "load"
+        "create"
+        "update"
+        "rename"
+        "pause"
+        "unpause"
+        "rm"
+        "rmi"
+        "compose"
+        "pull"
+        "network"
+        "volume"
+        "image"
+        "container"
       ];
-      writeRemote = [ "push" "login" "logout" ];
+      writeRemote = [
+        "push"
+        "login"
+        "logout"
+      ];
       # "docker system prune" takes every image and volume of this machine.
       deny = [ "prune" ];
     };
     npm = {
-      read = [ "ls" "list" "view" "info" "outdated" "audit" "explain" "why" ];
+      read = [
+        "ls"
+        "list"
+        "view"
+        "info"
+        "outdated"
+        "audit"
+        "explain"
+        "why"
+      ];
       writeLocal = [
-        "install" "ci" "run" "exec" "update" "uninstall" "link" "init"
-        "test" "build" "start" "rebuild" "dedupe" "prune"
+        "install"
+        "ci"
+        "run"
+        "exec"
+        "update"
+        "uninstall"
+        "link"
+        "init"
+        "test"
+        "build"
+        "start"
+        "rebuild"
+        "dedupe"
+        "prune"
       ];
       writeRemote = [
-        "publish" "deprecate" "owner" "access" "login" "logout" "token"
+        "publish"
+        "deprecate"
+        "owner"
+        "access"
+        "login"
+        "logout"
+        "token"
       ];
       # A package name stays gone for the users of it.
       deny = [ "unpublish" ];
     };
     yarn = {
-      read = [ "list" "info" "why" "outdated" "audit" ];
-      writeLocal = [ "install" "add" "remove" "run" "test" "build" "upgrade" ];
-      writeRemote = [ "publish" "login" "logout" ];
+      read = [
+        "list"
+        "info"
+        "why"
+        "outdated"
+        "audit"
+      ];
+      writeLocal = [
+        "install"
+        "add"
+        "remove"
+        "run"
+        "test"
+        "build"
+        "upgrade"
+      ];
+      writeRemote = [
+        "publish"
+        "login"
+        "logout"
+      ];
     };
     pnpm = {
-      read = [ "list" "why" "outdated" "audit" ];
-      writeLocal = [ "install" "add" "remove" "run" "test" "build" "update" ];
-      writeRemote = [ "publish" "login" "logout" ];
+      read = [
+        "list"
+        "why"
+        "outdated"
+        "audit"
+      ];
+      writeLocal = [
+        "install"
+        "add"
+        "remove"
+        "run"
+        "test"
+        "build"
+        "update"
+      ];
+      writeRemote = [
+        "publish"
+        "login"
+        "logout"
+      ];
     };
     pip = {
-      read = [ "list" "show" "freeze" "check" "index" ];
-      writeLocal = [ "install" "uninstall" "download" "wheel" ];
+      read = [
+        "list"
+        "show"
+        "freeze"
+        "check"
+        "index"
+      ];
+      writeLocal = [
+        "install"
+        "uninstall"
+        "download"
+        "wheel"
+      ];
     };
     go = {
       # "graph", "why", and "verify" are here for "go mod graph" and its two
       # neighbours: "mod" writes go.mod for "go mod tidy", thus the second
       # word of the command is the one that shows a read.
       read = [
-        "version" "env" "doc" "list" "vet" "build" "test" "fmt" "graph"
-        "why" "verify"
+        "version"
+        "env"
+        "doc"
+        "list"
+        "vet"
+        "build"
+        "test"
+        "fmt"
+        "graph"
+        "why"
+        "verify"
       ];
-      writeLocal = [ "get" "install" "generate" "run" "mod" "work" "clean" ];
+      writeLocal = [
+        "get"
+        "install"
+        "generate"
+        "run"
+        "mod"
+        "work"
+        "clean"
+      ];
     };
     cosign = {
       read = [
-        "verify*" "tree" "triangulate" "version" "download" "public-key"
+        "verify*"
+        "tree"
+        "triangulate"
+        "version"
+        "download"
+        "public-key"
       ];
       writeRemote = [
-        "sign" "sign-blob" "attest" "attest-blob" "attach" "upload" "copy"
-        "generate-key-pair" "import-key-pair" "initialize" "save" "load"
-        "login" "piv-tool"
+        "sign"
+        "sign-blob"
+        "attest"
+        "attest-blob"
+        "attach"
+        "upload"
+        "copy"
+        "generate-key-pair"
+        "import-key-pair"
+        "initialize"
+        "save"
+        "load"
+        "login"
+        "piv-tool"
       ];
       # "cosign clean" takes every signature of an image.
       deny = [ "clean" ];
     };
     skopeo = {
       read = [
-        "inspect" "list-tags" "list-repository-tags" "standalone-verify"
+        "inspect"
+        "list-tags"
+        "list-repository-tags"
+        "standalone-verify"
         "manifest-digest"
       ];
       writeRemote = [
-        "copy" "sync" "login" "logout" "standalone-sign" "layers"
+        "copy"
+        "sync"
+        "login"
+        "logout"
+        "standalone-sign"
+        "layers"
       ];
       deny = [ "delete" ];
     };
@@ -578,28 +1339,36 @@ let
 
   # One shell case arm for each gated tool of the profile, as in:
   #
-  #   gh) guard "$tool" 'api view list' 'delete delete-*' '-x* *-method*' '' ;;
+  #   gh) guard "$tool" 'api view list' 'delete delete-*' '-x* *-method*' '' '' '' ;;
   #
-  # The second list holds the words that pass, and the third holds the words
-  # that stop. Both come from the profile: the sandbox adds writeRemote to the
-  # words that stop, and it makes every tool strict.
-  #
-  # Every list of patterns packs into one shell word, which the guard function
-  # splits again with "for pattern in $reads". Thus five parameters carry three
-  # lists of any length. The separator holds the indent of the case statement.
-  gateArms = profile:
+  # The lists are the words that pass, the words that stop, the tool-wide
+  # flags, the sandbox pairs, verbFlags, and allowFlags. Each list packs into
+  # one shell word, and guard splits it again.
+  gateArms =
+    profile:
     let
       # One list of patterns as a single shell word. An empty list gives "".
       packed = patterns: lib.escapeShellArg (lib.concatStringsSep " " patterns);
 
-      arm = name: v: lib.concatStringsSep " " [
-        "${name}) guard \"$tool\""
-        (packed (passWords v))
-        (packed (denyWords profile v))
-        (packed (v.flags or [ ]))
-        (packed (lib.optional (isStrict profile v) "strict"))
-        ";;"
-      ];
+      # A key of two words holds a space, thus "+" joins them.
+      joinKey = lib.replaceStrings [ " " ] [ "+" ];
+
+      # "key=pattern", thus one list holds the patterns of every key.
+      packKeys =
+        attrs: packed (lib.concatLists (lib.mapAttrsToList (k: map (p: "${joinKey k}=${p}")) attrs));
+
+      arm =
+        name: v:
+        lib.concatStringsSep " " [
+          "${name}) guard \"$tool\""
+          (packed (passWords v))
+          (packed (denyWords profile v))
+          (packed (v.flags or [ ]))
+          (packed (lib.optionals (profile == "sandbox") (map joinKey (v.sandboxPass or [ ]))))
+          (packKeys (v.verbFlags or { }))
+          (packKeys (v.allowFlags or { }))
+          ";;"
+        ];
     in
     lib.concatStringsSep "\n      " (lib.mapAttrsToList arm gatedTools);
 
@@ -607,152 +1376,180 @@ let
   # matches the command as one string, thus it cannot tell "terraform plan" from
   # "terraform plan && terraform apply", and it cannot see the flags that make
   # "gh api" a write. This hook cuts the command apart and tests every piece.
-  #
-  # The rules in denyWordRules hold the "deny" words as a second layer. They
-  # cannot hold the flags, and the sandbox denies writeRemote here alone.
-  #
-  # The hook stays quiet for a word that a human must answer. The default mode
-  # of the workstation asks then, because no allow rule holds that command.
-  gateHook = profile: pkgs.writeShellScript "claude-gate-${profile}" ''
-    # A loop below splits a command into words. Stop pathname expansion, or a
-    # word such as "*" becomes a list of the files in the working directory.
-    set -f
+  # denyWordRules is a second layer for the "deny" words alone. The hook stays
+  # quiet for a word that a human must answer.
+  gateHook =
+    profile:
+    pkgs.writeShellScript "claude-gate-${profile}" ''
+      # A loop below splits a command into words. Stop pathname expansion, or a
+      # word such as "*" becomes a list of the files in the working directory.
+      set -f
 
-    cmd=$(${pkgs.jq}/bin/jq -r '.tool_input.command // ""')
+      # The sandbox denies a gated command that holds no word of its own. The
+      # workstation stays quiet, and its prompt answers for an unknown word.
+      strict=${lib.optionalString (profile == "sandbox") "1"}
 
-    # Print a PreToolUse deny decision, then stop.
-    deny() {
-      ${pkgs.jq}/bin/jq -cn --arg reason "$1" '{
-        hookSpecificOutput: {
-          hookEventName: "PreToolUse",
-          permissionDecision: "deny",
-          permissionDecisionReason: $reason
-        }
-      }'
-      exit 0
-    }
+      cmd=$(${pkgs.jq}/bin/jq -r '.tool_input.command // ""')
 
-    # Test one command of a gated tool, and deny it or say nothing. gateArms
-    # fills the five parameters from the lists of that tool and the profile.
-    # The caller fills the "words" and "flags" arrays from the command.
-    #
-    # Each parameter with patterns arrives as one shell word. The loops below
-    # split it again, thus a list of any length fits one parameter. "set -f"
-    # above keeps a pattern such as "*-method*" out of pathname expansion.
-    guard() {
-      local tool="$1" passes="$2" denies="$3" deny_flags="$4" strict="$5"
-      local word pattern pass_word="" deny_word=""
+      # Print a PreToolUse deny decision, then stop.
+      deny() {
+        ${pkgs.jq}/bin/jq -cn --arg reason "$1" '{
+          hookSpecificOutput: {
+            hookEventName: "PreToolUse",
+            permissionDecision: "deny",
+            permissionDecisionReason: $reason
+          }
+        }'
+        exit 0
+      }
 
-      # A flag denies on both machines. "gh api" holds a read verb, thus an
-      # allow rule already passes the command, and a prompt never comes.
-      for word in "''${flags[@]}"; do
-        for pattern in $deny_flags; do
-          if [[ "$word" == $pattern ]]; then
-            deny "This machine denies the flag \"$word\" of \"$tool\": it makes the command a write. Ask the human to run it."
+      # Test one command of a gated tool, and deny it or say nothing. gateArms
+      # fills the parameters, and the caller fills "words" and "flags". "set -f"
+      # above keeps a pattern such as "*-method*" out of pathname expansion.
+      guard() {
+        local tool="$1" passes="$2" denies="$3" deny_flags="$4" pairs="$5"
+        local verb_flags="$6" allow_flags="$7"
+        local word pattern entry sub="" pass_word="" deny_word="" i
+
+        # The two words after the tool. A later position does not count:
+        # "gh api -f x=1 pr create" must not pass "-f" for "pr create".
+        for i in "''${!words[@]}"; do
+          if [[ "''${words[i]}" == "$tool" ]]; then
+            sub="''${words[i+1]}+''${words[i+2]}"
+            break
           fi
         done
-      done
 
-      for word in "''${words[@]}"; do
-        for pattern in $denies; do
-          [[ "$word" == $pattern ]] && deny_word="$word"
+        # A flag denies on both machines. "gh api" holds a read verb, thus an
+        # allow rule already passes the command, and a prompt never comes.
+        for word in "''${flags[@]}"; do
+          for entry in $allow_flags; do
+            [[ "''${entry%%=*}" == "$sub" && "$word" == ''${entry#*=} ]] && continue 2
+          done
+          for pattern in $deny_flags; do
+            if [[ "$word" == $pattern ]]; then
+              deny "This machine denies the flag \"$word\" of \"$tool\": it makes the command a write. Ask the human to run it."
+            fi
+          done
         done
-        for pattern in $passes; do
-          [[ "$word" == $pattern ]] && pass_word="$word"
+
+        # The test holds both arrays: "+main" is a word, and "--force" a flag.
+        for entry in $verb_flags; do
+          names_tool "''${entry%%=*}" "''${words[@]}" || continue
+          for word in "''${flags[@]}" "''${words[@]}"; do
+            if [[ "$word" == ''${entry#*=} ]]; then
+              deny "This machine denies \"$word\" with \"$tool ''${entry%%=*}\": it rewrites or deletes remote data. Ask the human to run it."
+            fi
+          done
         done
-      done
 
-      # A deny word wins over a pass word: "terraform state rm" holds both.
-      if [[ -n "$deny_word" ]]; then
-        deny "This machine denies \"$tool $deny_word\". Ask the human to run it."
-      fi
-      if [[ -n "$strict" && -z "$pass_word" ]]; then
-        deny "This machine runs only these operations of \"$tool\": $passes. No human watches this machine, thus every other operation stops here."
-      fi
-      # Both tests above end in a denial, thus a quiet return needs this line:
-      # the last test leaves a false status behind.
-      return 0
-    }
+        # A sandbox pair passes its second word, as "create" of "gh pr create".
+        for word in "''${words[@]}"; do
+          for pattern in $denies; do
+            if [[ "$word" == $pattern ]]; then
+              if [[ " $pairs " == *" $sub "* && "$word" == "''${sub#*+}" ]]; then
+                pass_word="$word"
+              else
+                deny_word="$word"
+              fi
+            fi
+          done
+          for pattern in $passes; do
+            [[ "$word" == $pattern ]] && pass_word="$word"
+          done
+        done
 
-    # True when one word of the command is exactly "$1". A test for a substring
-    # gives a false match: "copyright" holds "gh".
-    names_tool() {
-      local needle="$1" word
-      shift
-      for word in "$@"; do
-        [[ "$word" == "$needle" ]] && return 0
-      done
-      return 1
-    }
-
-    # One command for each line. Every operator below starts a new command, thus
-    # "terraform plan && terraform apply" gives two commands to test. Lower case
-    # makes every word match the lower-case patterns of the policy, and it hides
-    # the difference between "-X" and "-x".
-    #
-    # A nested shell keeps a gated tool in reach: the quote comes off below, and
-    # a gated tool matches any word, thus "bash -c 'terraform destroy'" stops
-    # here. A blocked command needs the first position, thus "sh -c 'sudo ...'"
-    # passes this hook. The deny rules of the profile hold that case, because
-    # each one of them also matches a later position.
-    lower=''${cmd,,}
-    parts=''${lower//&&/$'\n'}
-    parts=''${parts//||/$'\n'}
-    parts=''${parts//|/$'\n'}
-    parts=''${parts//;/$'\n'}
-    parts=''${parts//&/$'\n'}
-    parts=''${parts//'$('/$'\n'}
-    parts=''${parts//')'/$'\n'}
-    parts=''${parts//'`'/$'\n'}
-
-    while IFS= read -r part; do
-      # A flag is not a verb, thus the two arrays stay apart. The test comes
-      # before the quotes come off: a quoted "--help" is the value of another
-      # flag, and it must stay out of the flag array.
-      words=()
-      flags=()
-      for word in $part; do
-        if [[ "$word" == -* ]]; then
-          flags+=("$word")
-        else
-          # A quoted argument holds the operation of a database client, as in
-          # psql -c "select 1". Take the quote off, or no pattern matches.
-          word=''${word#[\"\']}
-          word=''${word%[\"\']}
-          words+=("$word")
+        # A deny word wins over a pass word: "terraform state rm" holds both.
+        if [[ -n "$deny_word" ]]; then
+          deny "This machine denies \"$tool $deny_word\". Ask the human to run it."
         fi
-      done
-      (( ''${#words[@]} )) || continue
-
-      # Both flags print help and stop the tool before it acts. A test of the
-      # whole command text would also match a flag inside the value of another
-      # flag, as in: gh pr comment -b "--help". "-h" is absent because lower
-      # case makes it the same word as "-H", the header flag of "gh api".
-      for word in "''${flags[@]}"; do
-        [[ "$word" == --help || "$word" == --version ]] && continue 2
-      done
-
-      # A blocked command matches the first word alone. Such a word is also a
-      # verb of another tool, as in "docker kill", and the command is dangerous
-      # only when it runs.
-      for tool in ${lib.escapeShellArgs blockedCommands}; do
-        if [[ "''${words[0]}" == "$tool" ]]; then
-          deny "This machine denies use of \"$tool\". Continue without it or ask the human to run it."
+        if [[ -n "$strict" && -z "$pass_word" ]]; then
+          deny "This machine runs only these operations of \"$tool\": $passes. No human watches this machine, thus every other operation stops here."
         fi
-      done
+        # Both tests above end in a denial, thus a quiet return needs this line:
+        # the last test leaves a false status behind.
+        return 0
+      }
 
-      # A gated tool matches any word, and not the first word alone: "xargs
-      # gcloud projects delete" names the tool in the second position.
-      for tool in ${lib.escapeShellArgs (lib.attrNames gatedTools)}; do
-        names_tool "$tool" "''${words[@]}" || continue
-        case "$tool" in
-          ${gateArms profile}
-        esac
-      done
-    done <<< "$parts"
+      # True when one word of the command is exactly "$1". A test for a substring
+      # gives a false match: "copyright" holds "gh".
+      names_tool() {
+        local needle="$1" word
+        shift
+        for word in "$@"; do
+          [[ "$word" == "$needle" ]] && return 0
+        done
+        return 1
+      }
 
-    exit 0
-  '';
+      # One command for each line. Every operator below starts a new command, thus
+      # "terraform plan && terraform apply" gives two commands to test. Lower case
+      # makes every word match the lower-case patterns of the policy, and it hides
+      # the difference between "-X" and "-x".
+      #
+      # A nested shell keeps a gated tool in reach: the quote comes off below, and
+      # a gated tool matches any word, thus "bash -c 'terraform destroy'" stops
+      # here. A blocked command needs the first position, thus "sh -c 'sudo ...'"
+      # passes this hook. The deny rules of the profile hold that case, because
+      # each one of them also matches a later position.
+      lower=''${cmd,,}
+      parts=''${lower//&&/$'\n'}
+      parts=''${parts//||/$'\n'}
+      parts=''${parts//|/$'\n'}
+      parts=''${parts//;/$'\n'}
+      parts=''${parts//&/$'\n'}
+      parts=''${parts//'$('/$'\n'}
+      parts=''${parts//')'/$'\n'}
+      parts=''${parts//'`'/$'\n'}
+
+      while IFS= read -r part; do
+        # A flag is not a verb, thus the two arrays stay apart. The test comes
+        # before the quotes come off: a quoted "--help" is the value of another
+        # flag, and it must stay out of the flag array.
+        words=()
+        flags=()
+        for word in $part; do
+          if [[ "$word" == -* ]]; then
+            flags+=("$word")
+          else
+            # A quoted argument holds the operation of a database client, as in
+            # psql -c "select 1". Take the quote off, or no pattern matches.
+            word=''${word#[\"\']}
+            word=''${word%[\"\']}
+            words+=("$word")
+          fi
+        done
+        (( ''${#words[@]} )) || continue
+
+        # Both flags print help and stop the tool before it acts. A test of the
+        # whole command text would also match a flag inside the value of another
+        # flag, as in: gh pr comment -b "--help". "-h" is absent because lower
+        # case makes it the same word as "-H", the header flag of "gh api".
+        for word in "''${flags[@]}"; do
+          [[ "$word" == --help || "$word" == --version ]] && continue 2
+        done
+
+        # A blocked command matches the first word alone. Such a word is also a
+        # verb of another tool, as in "docker kill", and the command is dangerous
+        # only when it runs.
+        for tool in ${lib.escapeShellArgs blockedCommands}; do
+          if [[ "''${words[0]}" == "$tool" ]]; then
+            deny "This machine denies use of \"$tool\". Continue without it or ask the human to run it."
+          fi
+        done
+
+        # A gated tool matches any word, and not the first word alone: "xargs
+        # gcloud projects delete" names the tool in the second position.
+        for tool in ${lib.escapeShellArgs (lib.attrNames gatedTools)}; do
+          names_tool "$tool" "''${words[@]}" || continue
+          case "$tool" in
+            ${gateArms profile}
+          esac
+        done
+      done <<< "$parts"
+
+      exit 0
+    '';
 
   # Commands that read and nothing else. Both profiles run these with no prompt.
   # A name here must not write a file, delete data, send local data off the
@@ -762,14 +1559,110 @@ let
   # the same rules, one verb at a time. Thus "go", "gh", "crane", "cosign", and
   # "skopeo" are absent, and only the tools with no verb to test remain.
   allowTools = [
-    "cd" "ls" "tree" "pwd" "stat" "file" "du" "df" "realpath" "readlink" "basename" "dirname" "lsblk" "mountpoint"
-    "cat" "head" "tail" "nl" "tac" "rev" "wc" "grep" "egrep" "fgrep" "rg" "cut" "tr" "uniq" "comm" "join" "rg"
-    "paste" "column" "fold" "expand" "unexpand" "diff" "cmp" "diff3" "md5sum" "sha1sum" "sha256sum" "sha512sum"
-    "b2sum" "cksum" "base64" "xxd" "hexdump" "od" "strings" "jq" "yq" "uname" "hostname" "whoami" "id" "groups"
-    "printenv" "locale" "date" "cal" "uptime" "free" "nproc" "lscpu" "lsusb" "lspci" "ps" "pgrep" "pstree" "lsof"
-    "vmstat" "iostat" "journalctl" "which" "type" "whereis" "command -v" "compgen" "alias" "echo" "printf" "seq"
-    "true" "false" "test" "dig" "nslookup" "host" "whois" "ip addr" "ip route" "ip link" "ss" "netstat" "arp"
-    "gofmt -l" "gofmt -d" "golangci-lint" "staticcheck" "govulncheck" "syft" "grype" "trivy"
+    "cd"
+    "ls"
+    "tree"
+    "pwd"
+    "stat"
+    "file"
+    "du"
+    "df"
+    "realpath"
+    "readlink"
+    "basename"
+    "dirname"
+    "lsblk"
+    "mountpoint"
+    "cat"
+    "head"
+    "tail"
+    "nl"
+    "tac"
+    "rev"
+    "wc"
+    "grep"
+    "egrep"
+    "fgrep"
+    "rg"
+    "cut"
+    "tr"
+    "uniq"
+    "comm"
+    "join"
+    "rg"
+    "paste"
+    "column"
+    "fold"
+    "expand"
+    "unexpand"
+    "diff"
+    "cmp"
+    "diff3"
+    "md5sum"
+    "sha1sum"
+    "sha256sum"
+    "sha512sum"
+    "b2sum"
+    "cksum"
+    "base64"
+    "xxd"
+    "hexdump"
+    "od"
+    "strings"
+    "jq"
+    "yq"
+    "uname"
+    "hostname"
+    "whoami"
+    "id"
+    "groups"
+    "printenv"
+    "locale"
+    "date"
+    "cal"
+    "uptime"
+    "free"
+    "nproc"
+    "lscpu"
+    "lsusb"
+    "lspci"
+    "ps"
+    "pgrep"
+    "pstree"
+    "lsof"
+    "vmstat"
+    "iostat"
+    "journalctl"
+    "which"
+    "type"
+    "whereis"
+    "command -v"
+    "compgen"
+    "alias"
+    "echo"
+    "printf"
+    "seq"
+    "true"
+    "false"
+    "test"
+    "dig"
+    "nslookup"
+    "host"
+    "whois"
+    "ip addr"
+    "ip route"
+    "ip link"
+    "ss"
+    "netstat"
+    "arp"
+    "gofmt -l"
+    "gofmt -d"
+    "golangci-lint"
+    "staticcheck"
+    "govulncheck"
+    "syft"
+    "grype"
+    "trivy"
   ];
 
   # One instruction for each line of ~/.claude/CLAUDE.md. The "sandbox" profile
@@ -778,34 +1671,42 @@ let
     "Always:"
     "- Use ASD-STE100 with one idea per sentence"
     "In replies:"
-    "- Explain fully — what changed, why, what you ruled out, what's risky"
+    "- When you change something, explain what changed, why, what you ruled out, and what is risky"
     "- Cut ceremony: no preamble, no closing summary, no restating my request"
+    "- Prefix 🤖 to indicate bot reply"
+    "In reviews:"
+    "- Always use conventional comments standard"
+    "- Prefix 🤖 to indicate bot comment"
     "In commits:"
-    "- Always use conventional commits format, including issue ID"
+    "- Always use conventional commits format, include issue ID"
     "In PRs:"
     "- Do only one thing per PR — under 1000 lines is preferred"
     "- Descriptions have three sections: what, why, and notes"
     "In code:"
     "- Add helper functions only when there is a clear recurring pattern"
-    "- Datastore interfaces should always have Create, Update, and List methods"
+    "- Start all function names with a verb: Get, Create, List, etc"
     "In comments:"
-    "- Only non-obvious why, never what"
-    "- Comments should not exceed five lines unless absolutely necessary."
+    "- Only say what the code cannot: the why, or the what of opaque code"
+    "- Comments should not exceed five lines unless absolutely necessary"
     "In docs:"
     "- Add a mermaid diagram for multi-component architecture or non-trivial control flow"
-    "In Go packages:"
-    "- Add an interface, implementing struct, mock, and tests"
-    "In Tests:"
+    "In packages:"
+    "- Add an interface only when multiple implementers exist"
+    "- Add a mock in the package only when needed for tests"
+    "In tests:"
     "- One unit test per function"
     "- Use table-driven testing pattern"
-    "- Compare whole output, cmp.Diff for structs"
-    "In Markdown:"
-    "- One sentence per line"
-  ] ++ lib.optionals (cfg.profile == "sandbox") [
+    "- Compare whole output"
+    "In markdown:"
+    "- Follow semantic line breaks"
+  ]
+  ++ lib.optionals (cfg.profile == "sandbox") [
     "In sandbox:"
     "- You are in a sandbox"
     "- Local files are disposable; change them freely"
-    "- Never change remote state: cloud resources, clusters, registries, git remotes, or issue trackers"
+    "- Never change remote state: cloud resources, clusters, registries, or issue trackers"
+    "- You can push branches, open PRs, and comment on or review PRs"
+    "- Never force push or delete a remote branch"
   ];
 
   # Status line script: model, context usage, session cost, water estimate.
@@ -815,12 +1716,32 @@ let
 
     input=$(cat)
 
-    model=$(${pkgs.jq}/bin/jq -r '.model.display_name // "unknown"' <<<"$input")
-    model_id=$(${pkgs.jq}/bin/jq -r '.model.id // ""' <<<"$input")
-    used_pct=$(${pkgs.jq}/bin/jq -r '.context_window.used_percentage // empty' <<<"$input")
-    total_in=$(${pkgs.jq}/bin/jq -r '.context_window.total_input_tokens // 0' <<<"$input")
-    total_out=$(${pkgs.jq}/bin/jq -r '.context_window.total_output_tokens // 0' <<<"$input")
-    authoritative_cost=$(${pkgs.jq}/bin/jq -r '.cost.total_cost_usd // empty' <<<"$input")
+    # One jq for every field. The separator is not whitespace, thus "read"
+    # keeps an empty field in its place.
+    IFS=$'\x1f' read -r model used_pct authoritative_cost cwd < <(
+      ${pkgs.jq}/bin/jq -r '[
+        .model.display_name // "unknown", .context_window.used_percentage // "",
+        .cost.total_cost_usd // "", .workspace.current_dir // .cwd // ""
+      ] | map(tostring) | join("\u001f")' <<<"$input")
+
+    # The status line runs while Claude also runs git, thus no optional locks.
+    # The common dir names the repo for every linked worktree. A bare repo's
+    # common dir is the repo itself, not a .git child. Worktrees laid out as
+    # <name>/<repo> take the parent's name.
+    worktree=""
+    if [ -n "$cwd" ] && mapfile -t paths < <(${pkgs.git}/bin/git --no-optional-locks -C "$cwd" \
+      rev-parse --path-format=absolute --show-toplevel --git-common-dir 2>/dev/null) \
+      && [ "''${#paths[@]}" -eq 2 ]; then
+      toplevel=''${paths[0]}
+      repo_dir=''${paths[1]%/.git}
+      repo=''${repo_dir##*/}; repo=''${repo%.git}
+      worktree=$repo
+      if [ "$toplevel" != "$repo_dir" ]; then
+        name=''${toplevel##*/}
+        if [ "$name" = "$repo" ]; then parent=''${toplevel%/*}; name=''${parent##*/}; fi
+        worktree="$repo:$name"
+      fi
+    fi
 
     # An empty .cost.total_cost_usd reads as 0 in awk
     read -r cost_raw cost_display < <(${pkgs.gawk}/bin/awk -v c="$authoritative_cost" 'BEGIN{
@@ -852,6 +1773,7 @@ let
     }
 
     parts=("$model")
+    [ -n "$worktree" ] && parts+=("$(printf "\033[35m⎇ %s\033[0m" "$worktree")")
     if [ -n "$used_pct" ]; then
       used_int=$(printf "%.0f" "$used_pct")
       if   [ "$used_int" -ge 90 ]; then color="\033[91m"
@@ -869,11 +1791,114 @@ let
     printf "\n"
   '';
 
+  # Signs in to each remote MCP server that is not connected. A connected
+  # server keeps its stored token, thus a run with no expired token opens no
+  # tab. The parse matches the text of "claude mcp list", which is not a
+  # stable API: a change in that text makes the script match no lines.
+  mcpLoginScript = pkgs.writeShellApplication {
+    name = "claude-mcp-login";
+    runtimeInputs = [
+      pkgs.unstable.claude-code
+      pkgs.gnused
+      pkgs.libnotify
+    ];
+    text = ''
+      claude mcp list 2>/dev/null |
+        sed -nE 's/^(.+): https?:\/\/[^ ]+ \((HTTP|SSE)\) - (.*)$/\1\t\3/p' |
+        while IFS=$'\t' read -r name status; do
+          [[ $status == *Connected* ]] && continue
+          echo "Signing in to $name ($status)"
+          # Without the redirect, login reads the next line of the pipe.
+          if ! claude mcp login "$name" </dev/null; then
+            echo "Sign-in failed: $name" >&2
+            notify-send "Claude MCP" "Sign-in failed: $name" || true
+          fi
+        done
+    '';
+  };
+
+  # Stop hook: one line for each turn, appended to log.jsonl. The last line of
+  # a session holds its current state, thus a session that dies loses one turn
+  # at most. The issue ID comes from the commit subjects, because each commit
+  # holds one. The hook must never block a stop, thus every failure ends in
+  # exit 0.
+  workLogScript = pkgs.writeShellApplication {
+    name = "claude-work-log";
+    runtimeInputs = [
+      pkgs.jq
+      pkgs.git
+      pkgs.util-linux
+      pkgs.coreutils
+      pkgs.gnugrep
+    ];
+    text = ''
+      log=${claudeDir}/log.jsonl
+
+      record() {
+        local id="" cwd="" transcript="" now first started="" prompt=""
+        local repo="" branch="" commits="" issue="" top email entry
+        # The separator is not whitespace, thus "read" keeps an empty field.
+        IFS=$'\x1f' read -r id cwd transcript < <(jq -r \
+          '[.session_id // "", .cwd // "", .transcript_path // ""] | join("\u001f")') || true
+        [[ -n $id ]] || return 0
+        now=$(date -Iseconds)
+
+        # The first line of the session holds its start and its first prompt.
+        # grep finds that line, thus jq parses one line and not the whole log.
+        touch "$log"
+        first=$(grep -F -m 1 "\"session_id\":\"$id\"" "$log" || true)
+        if [[ -n $first ]]; then
+          IFS=$'\x1f' read -r started prompt < <(jq -r \
+            'try ([.started // "", .prompt // ""] | join("\u001f")) catch ""' <<<"$first") || true
+        fi
+        started=''${started:-$now}
+
+        if top=$(git -C "$cwd" rev-parse --show-toplevel 2>/dev/null); then
+          repo=''${top##*/}
+          branch=$(git -C "$cwd" branch --show-current)
+          email=$(git -C "$cwd" config user.email || true)
+          commits=$(git -C "$cwd" log --since="$started" --author="$email" \
+            --format=%s -n 20 || true)
+          # The last commit is the fallback when the session made none.
+          issue=$({ printf '%s\n' "$commits"; git -C "$cwd" log -1 --format=%s 2>/dev/null; } |
+            grep -oE -m 1 '[A-Z][A-Z0-9]+-[0-9]+' | head -n 1 || true)
+        fi
+
+        # The first prompt names the task. A tool result is a user message too,
+        # thus only a text block counts.
+        if [[ -z $prompt && -f $transcript ]]; then
+          prompt=$(jq -rR 'try (fromjson
+              | select(.type == "user" and (.isMeta | not))
+              | .message.content
+              | if type == "string" then . else (map(select(.type == "text") | .text) | join(" ")) end
+              | select(length > 0 and (startswith("<") | not)))
+            catch empty' "$transcript" | head -n 1 | cut -c 1-300)
+        fi
+
+        entry=$(jq -cn \
+          --arg session_id "$id" --arg started "$started" --arg updated "$now" \
+          --arg cwd "$cwd" --arg repo "$repo" --arg branch "$branch" \
+          --arg issue "$issue" --arg prompt "$prompt" --arg commits "$commits" \
+          '{session_id: $session_id, started: $started, updated: $updated,
+            cwd: $cwd, repo: $repo, branch: $branch, issue: $issue,
+            prompt: $prompt, commits: ($commits | split("\n") | map(select(length > 0)))}')
+
+        # The lock holds the append alone. "record || true" turns off "set -e"
+        # in here, thus the test is explicit.
+        exec 9>>"$log.lock"
+        flock -w 5 9 || return 0
+        [[ -n $entry ]] && printf '%s\n' "$entry" >>"$log"
+      }
+
+      record || true
+    '';
+  };
+
   # Settings that both profiles share. builtins.toJSON serializes this below,
   # thus Nix checks the structure and there are no commas to keep in order.
   # A profile attribute set layers on top with lib.recursiveUpdate.
   baseSettings = {
-    model = "claude-sonnet-5-5[1m]";
+    model = "claude-opus-5-5[1m]";
 
     # The fullscreen renderer. Do not set CLAUDE_CODE_NO_FLICKER: that variable
     # wins over this key and over the crash check that turns the renderer off
@@ -887,8 +1912,9 @@ let
       repo = "anthropics/claude-plugins-official";
     };
 
-    enabledPlugins = lib.listToAttrs
-      (map (name: lib.nameValuePair "${name}@${marketplace}" true) plugins);
+    enabledPlugins = lib.listToAttrs (
+      map (name: lib.nameValuePair "${name}@${marketplace}" true) plugins
+    );
 
     # /effort writes this key. Do not set CLAUDE_CODE_EFFORT_LEVEL: the
     # environment variable overrides the session and makes /effort a no-op.
@@ -942,6 +1968,17 @@ let
           ];
         }
       ];
+      Stop = [
+        {
+          hooks = [
+            {
+              type = "command";
+              command = "${workLogScript}/bin/claude-work-log";
+              timeout = 10;
+            }
+          ];
+        }
+      ];
     };
 
     respectGitignore = true;
@@ -963,7 +2000,10 @@ in
 {
   options.my.claude = {
     profile = lib.mkOption {
-      type = lib.types.enum [ "workstation" "sandbox" ];
+      type = lib.types.enum [
+        "workstation"
+        "sandbox"
+      ];
       default = "workstation";
       description = ''
         Permission posture for Claude Code on this device.
@@ -981,7 +2021,22 @@ in
       # The release lags the CLI by weeks, thus unstable holds it. zed.nix
       # points its ACP agent at the same copy.
       pkgs.unstable.claude-code
+      mcpLoginScript
     ];
+
+    # The sandbox has no person to approve a sign-in in the browser.
+    xdg.configFile."autostart/claude-mcp-login.desktop" = lib.mkIf (cfg.profile == "workstation") {
+      text = ''
+        [Desktop Entry]
+        Type=Application
+        Name=Claude MCP sign-in
+        Comment=Sign in to each Claude Code MCP server that is not connected
+        Exec=${lib.getExe mcpLoginScript}
+        Terminal=false
+        NoDisplay=true
+        X-GNOME-Autostart-Delay=10
+      '';
+    };
 
     home.file = {
       # config file
