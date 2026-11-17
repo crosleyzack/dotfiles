@@ -123,6 +123,16 @@ in {
                   # create a new branch upstream and push to it
                   upstream = "push -u origin HEAD";
                   wash = "clean -fdx";
+                  # remove clean linked worktrees, prune refs and branches with a gone upstream, then gc
+                  # dirty or locked worktrees and unmerged branches are kept because no step forces removal
+                  scrub = "!f() { " + lib.concatStringsSep "; " [
+                    "top=$(git rev-parse --show-toplevel)"
+                    "git worktree list --porcelain | awk '/^worktree /{print substr($0, 10)}' | tail -n +2 | while read -r wt; do [ \"$wt\" = \"$top\" ] && continue; git worktree remove \"$wt\" || echo \"kept worktree: $wt\"; done"
+                    "git worktree prune --verbose"
+                    "git fetch --all --prune"
+                    "git for-each-ref --format='%(refname:short) %(upstream:track)' refs/heads | awk '$2 == \"[gone]\" {print $1}' | xargs -r git branch -d"
+                    "git gc --aggressive"
+                  ] + "; }; f";
                   # get last N commits, defaults to 1
                   last = "!git log -\${@-1} HEAD #";
                   # show all changes from main
