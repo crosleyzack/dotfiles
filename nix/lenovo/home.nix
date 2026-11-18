@@ -4,6 +4,7 @@
   imports = [
     ../pkgs/atuin.nix
     ../pkgs/bash.nix
+    ../pkgs/cad.nix
     ../pkgs/code.nix
     ../pkgs/cli.nix
     # ../pkgs/cg.nix
