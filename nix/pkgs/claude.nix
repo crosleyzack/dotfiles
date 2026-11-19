@@ -66,6 +66,7 @@ let
           "Bash(* ${tool} *)"
         ]) allowTools
         ++ readRules
+        ++ [ "Bash(gh-review-thread list *)" ]
         # A rule of one name and no path holds for every path.
         ++ lib.optionals sandbox (
           [
@@ -80,6 +81,8 @@ let
           ]
           ++ writeLocalRules
           ++ sandboxPassRules
+          ++ [ "Bash(gh-review-thread *)" ]
+          ++ linearRules
         )
         ++ lib.optionals (!sandbox) (
           [
@@ -178,12 +181,37 @@ let
   # also matches "<write> && <read>", and a prompt is the correct stop for that
   # command. The hook cuts a command apart and tests every piece, thus it stops
   # the write in any case.
-  readRules = listFieldRules verbRules "read" ruleTools;
+  readRules =
+    listFieldRules verbRules "read" ruleTools ++ listFieldRules verbRules "readPairs" ruleTools;
 
   # The sandbox alone reads this list, thus the name of the profile is fixed
   # here. A local write costs that machine nothing, and the workstation keeps
   # its prompt for the same word.
   writeLocalRules = listFieldRules verbRules "writeLocal" ruleTools;
+
+  # The Linear tools that the sandbox runs with no prompt: every read that an
+  # issue needs, and "save_issue" for its agent notes. The server holds one
+  # name from the plugin and another from a direct connection.
+  linearRules =
+    lib.concatMap
+      (
+        tool:
+        map (server: "mcp__${server}__${tool}") [
+          "linear"
+          "plugin_linear_linear"
+        ]
+      )
+      [
+        "get_issue"
+        "list_issues"
+        "list_comments"
+        "extract_images"
+        "get_attachment"
+        "get_document"
+        "list_documents"
+        "get_project"
+        "save_issue"
+      ];
 
   # The sandbox alone reads this list. The hook lets these pairs through there.
   sandboxPassRules = listFieldRules verbRules "sandboxPass" ruleTools;
@@ -339,6 +367,10 @@ let
   #               subcommand alone, as "-f" with "gh pr create".
   #   sandboxPass Pairs of words that the sandbox runs, although the second
   #               word is in writeRemote, as "pr create" for gh.
+  #   readPairs   Pairs of words that read, as "pr view" for gh. A rule of one
+  #               verb does not match a command with a word before that verb,
+  #               thus each pair gets a rule of its own. The hook needs no
+  #               pair: the verb is in "read" already.
   #
   # A word that hands out a credential or that runs a command of its own sits in
   # writeRemote, and not in writeLocal. "git config" is the example: it names a
@@ -578,6 +610,15 @@ let
         "pr create"
         "pr comment"
         "pr review"
+        # The agent notes of an issue, for the bot-implement skill.
+        "issue edit"
+      ];
+      readPairs = [
+        "issue view"
+        "pr view"
+        "pr checks"
+        "run view"
+        "repo view"
       ];
       # Flags from the list below that one subcommand needs. "-f" is "--fill"
       # for "gh pr create". Lower case makes "-F", the "--body-file" of
@@ -1704,8 +1745,10 @@ let
     "In sandbox:"
     "- You are in a sandbox"
     "- Local files are disposable; change them freely"
-    "- Never change remote state: cloud resources, clusters, registries, or issue trackers"
+    "- Never change remote state: cloud resources, clusters, or registries"
+    "- In an issue tracker, change only the agent notes in the description of an issue"
     "- You can push branches, open PRs, and comment on or review PRs"
+    "- You can reply to and resolve review threads with gh-review-thread"
     "- Never force push or delete a remote branch"
   ];
 
@@ -1814,6 +1857,42 @@ let
             notify-send "Claude MCP" "Sign-in failed: $name" || true
           fi
         done
+    '';
+  };
+
+  # The hook denies the field flags of "gh api", thus no GraphQL call passes
+  # it. This command holds the three calls that a PR review loop needs, and no
+  # other: it cannot merge, close, or delete. The store keeps it read-only.
+  reviewThreadScript = pkgs.writeShellApplication {
+    name = "gh-review-thread";
+    runtimeInputs = [ pkgs.gh ];
+    # A GraphQL variable in single quotes is not a shell variable.
+    excludeShellChecks = [ "SC2016" ];
+    text = ''
+      usage() {
+        echo "usage: gh-review-thread list <pr-url> | reply <thread-id> <body-file> | resolve <thread-id>" >&2
+        exit 2
+      }
+
+      case "''${1:-}" in
+        list)
+          [[ $# -eq 2 && $2 =~ ^https://github\.com/([^/]+)/([^/]+)/pull/([0-9]+) ]] || usage
+          gh api graphql \
+            -f owner="''${BASH_REMATCH[1]}" -f repo="''${BASH_REMATCH[2]}" -F pr="''${BASH_REMATCH[3]}" \
+            -f query='query($owner:String!,$repo:String!,$pr:Int!){repository(owner:$owner,name:$repo){pullRequest(number:$pr){reviewThreads(first:100){nodes{id isResolved path line comments(first:50){nodes{author{login} body createdAt}}}}}}}'
+          ;;
+        reply)
+          [[ $# -eq 3 && -f $3 ]] || usage
+          gh api graphql -f id="$2" -F body=@"$3" \
+            -f query='mutation($id:ID!,$body:String!){addPullRequestReviewThreadReply(input:{pullRequestReviewThreadId:$id,body:$body}){comment{url}}}'
+          ;;
+        resolve)
+          [[ $# -eq 2 ]] || usage
+          gh api graphql -f id="$2" \
+            -f query='mutation($id:ID!){resolveReviewThread(input:{threadId:$id}){thread{isResolved}}}'
+          ;;
+        *) usage ;;
+      esac
     '';
   };
 
@@ -2022,6 +2101,7 @@ in
       # points its ACP agent at the same copy.
       pkgs.unstable.claude-code
       mcpLoginScript
+      reviewThreadScript
     ];
 
     # The sandbox has no person to approve a sign-in in the browser.
