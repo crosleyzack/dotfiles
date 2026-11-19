@@ -32,8 +32,8 @@
   };
 
   # Disposable VM: a new root disk arrives at every start, thus only the
-  # checkout is worth protecting. Claude runs every tool without a prompt, and
-  # `git push` fails.
+  # checkout is worth protecting. Claude runs local tools without a prompt, and
+  # a remote write fails, apart from the few that claude.nix names.
   my.claude.profile = "sandbox";
 
   # This VM runs no build in a cgroup, unlike the other machines.
