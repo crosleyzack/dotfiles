@@ -113,6 +113,11 @@ in
         download-updates = false;
         download-updates-notify = false;
       };
+      # never suspend on AC; ac-idle-inhibit covers the lock
+      "org/gnome/settings-daemon/plugins/power" = {
+        sleep-inactive-ac-type    = "nothing";
+        sleep-inactive-ac-timeout = 0;
+      };
       # screen lock settings
       "org/gnome/desktop/session" = {
         idle-delay = 300;
