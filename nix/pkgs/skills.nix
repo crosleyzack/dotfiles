@@ -19,6 +19,18 @@ let
       hash = "sha256-d7HZ+oxuEgLIM6tXFLxT1JrXBbNsvIVMOprbqdlrOWs=";
     };
   };
+
+  crosleyzackSkills = pkgs.fetchFromGitHub {
+    owner = "crosleyzack";
+    repo = "skills";
+    rev = "71a94095f189a54a6f09db52e784fa7bde1f54b0"; # main, PR #1 merge
+    hash = "sha256-jTh3pJkOh/1uwEi50i2yJu0Tn6RNbVrmEBOr8q+yBnM=";
+  };
+
+  # This repo has no plugin.json, so each skill folder gets its own link.
+  skills = {
+    bot-implement = "${crosleyzackSkills}/skills/bot-implement";
+  };
 in
 {
   home.file = lib.mapAttrs'
@@ -27,5 +39,5 @@ in
       target = "${config.home.homeDirectory}/.claude/skills/${name}";
       source = src;
     })
-    skillPlugins;
+    (skillPlugins // skills);
 }
