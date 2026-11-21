@@ -16,7 +16,7 @@ let
 
   # ── Extensions ──────────────────────────────────────────────────────────────
   # A name here installs the plugin and turns it on. The "/plugin" menu cannot:
-  # it writes to settings.json, and that file is a read-only link to the store.
+  # it writes to settings.json, and the next switch overwrites that change.
   #
   # An LSP plugin installs no binary. gopls comes from go.nix.
   #
@@ -55,7 +55,7 @@ let
         # Lock both machines out of bypassPermissions mode. That mode skips the
         # rules below, and the hook is the only check that stays.
         disableBypassPermissionsMode = "disable";
-        defaultMode = if sandbox then "acceptEdits" else "auto";
+        defaultMode = "auto";
 
         allow = [
           "Bash(* --version)"
@@ -1711,13 +1711,12 @@ let
   claudeInstructions = [
     "Always:"
     "- Use ASD-STE100 with one idea per sentence"
+    "- Prefix 🤖 on all external comments (GitHub, Linear, Slack, etc)"
     "In replies:"
     "- When you change something, explain what changed, why, what you ruled out, and what is risky"
     "- Cut ceremony: no preamble, no closing summary, no restating my request"
-    "- Prefix 🤖 to indicate bot reply"
     "In reviews:"
     "- Always use conventional comments standard"
-    "- Prefix 🤖 to indicate bot comment"
     "In commits:"
     "- Always use conventional commits format, include issue ID"
     "In PRs:"
