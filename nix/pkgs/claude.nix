@@ -365,6 +365,9 @@ let
   #               these: "git checkout -f" is safe.
   #   allowFlags  Flags from "flags" that both profiles pass with one
   #               subcommand alone, as "-f" with "gh pr create".
+  #   flagArgs    Arguments that pass every flag from "flags" with one verb
+  #               alone, as a review endpoint with "gh api". The argument
+  #               follows the verb directly, and the pattern is extglob.
   #   sandboxPass Pairs of words that the sandbox runs, although the second
   #               word is in writeRemote, as "pr create" for gh.
   #   readPairs   Pairs of words that read, as "pr view" for gh. A rule of one
@@ -536,11 +539,9 @@ let
       writeRemote = [
         "create"
         "create-*"
-        "close"
         "reopen"
         "edit"
         "comment"
-        "merge"
         "review"
         "ready"
         "revert"
@@ -600,18 +601,51 @@ let
         "gist"
         "workflow"
       ];
+      # A merge and a close lose no data, but the agent must do neither on any
+      # machine: the human merges and closes.
       deny = [
         "delete"
         "delete-*"
+        "merge"
+        "close"
       ];
+      # The human approves a PR, and the agent reviews with a comment alone.
+      # "--delete-last" removes a comment that a reviewer can have read.
+      verbFlags = {
+        review = [
+          "--approve*"
+          "-a"
+          "-[!-]*a*"
+        ];
+        comment = [ "--delete-last*" ];
+      };
       # writeRemote words that the sandbox runs after one exact word. Thus the
       # sandbox opens and reviews a PR, but "gh issue create" still stops.
       sandboxPass = [
         "pr create"
         "pr comment"
         "pr review"
+        "pr edit"
+        # A re-run repeats a job that already ran, and changes no code.
+        "run rerun"
         # The agent notes of an issue, for the bot-implement skill.
         "issue edit"
+      ];
+      # Each endpoint posts a review, posts a comment, or re-runs a check, thus
+      # none of them merges, closes, or deletes. "+([0-9])" stops a query
+      # string such as "pulls/1/merge?/reviews". GraphQL is absent: its
+      # mutation can hide in a file, and gh-review-thread holds the thread
+      # mutations.
+      flagArgs.api = map (path: "?(/)repos/+([!/])/+([!/])/${path}") [
+        "pulls/+([0-9])/reviews"
+        "pulls/+([0-9])/comments"
+        "pulls/+([0-9])/comments/+([0-9])/replies"
+        "issues/+([0-9])/comments"
+        "actions/runs/+([0-9])/rerun"
+        "actions/runs/+([0-9])/rerun-failed-jobs"
+        "actions/jobs/+([0-9])/rerun"
+        "check-runs/+([0-9])/rerequest"
+        "check-suites/+([0-9])/rerequest"
       ];
       readPairs = [
         "issue view"
@@ -1098,6 +1132,12 @@ let
         "cat-file"
         "grep"
         "patch-id"
+        "show-ref"
+        "for-each-ref"
+        "merge-base"
+        "rev-list"
+        "ls-tree"
+        "name-rev"
       ];
       writeLocal = [
         "add"
@@ -1380,10 +1420,10 @@ let
 
   # One shell case arm for each gated tool of the profile, as in:
   #
-  #   gh) guard "$tool" 'api view list' 'delete delete-*' '-x* *-method*' '' '' '' ;;
+  #   gh) guard "$tool" 'api view list' 'delete delete-*' '-x* *-method*' '' '' '' '' ;;
   #
-  # The lists are the words that pass, the words that stop, the tool-wide
-  # flags, the sandbox pairs, verbFlags, and allowFlags. Each list packs into
+  # The lists are the words that pass, the words that stop, the tool-wide flags,
+  # the sandbox pairs, verbFlags, allowFlags, and flagArgs. Each list packs into
   # one shell word, and guard splits it again.
   gateArms =
     profile:
@@ -1408,6 +1448,7 @@ let
           (packed (lib.optionals (profile == "sandbox") (map joinKey (v.sandboxPass or [ ]))))
           (packKeys (v.verbFlags or { }))
           (packKeys (v.allowFlags or { }))
+          (packKeys (v.flagArgs or { }))
           ";;"
         ];
     in
@@ -1445,12 +1486,13 @@ let
       }
 
       # Test one command of a gated tool, and deny it or say nothing. gateArms
-      # fills the parameters, and the caller fills "words" and "flags". "set -f"
-      # above keeps a pattern such as "*-method*" out of pathname expansion.
+      # fills the parameters, and the caller fills "part", "words", and "flags".
+      # "set -f" above keeps a pattern such as "*-method*" out of pathname
+      # expansion.
       guard() {
         local tool="$1" passes="$2" denies="$3" deny_flags="$4" pairs="$5"
-        local verb_flags="$6" allow_flags="$7"
-        local word pattern entry sub="" pass_word="" deny_word="" i
+        local verb_flags="$6" allow_flags="$7" flag_args="$8"
+        local word pattern entry sub="" pass_word="" deny_word="" flags_ok="" i
 
         # The two words after the tool. A later position does not count:
         # "gh api -f x=1 pr create" must not pass "-f" for "pr create".
@@ -1462,17 +1504,26 @@ let
         done
 
         # A flag denies on both machines. "gh api" holds a read verb, thus an
-        # allow rule already passes the command, and a prompt never comes.
-        for word in "''${flags[@]}"; do
-          for entry in $allow_flags; do
-            [[ "''${entry%%=*}" == "$sub" && "$word" == ''${entry#*=} ]] && continue 2
-          done
-          for pattern in $deny_flags; do
-            if [[ "$word" == $pattern ]]; then
-              deny "This machine denies the flag \"$word\" of \"$tool\": it makes the command a write. Ask the human to run it."
-            fi
-          done
+        # allow rule already passes the command, and a prompt never comes. An
+        # argument from flagArgs passes every flag, but it must follow the verb
+        # in the raw text. A later word can be the value of a flag, as in:
+        # gh api gists --jq repos/o/r/issues/1/comments
+        for entry in $flag_args; do
+          [[ "$sub" == "''${entry%%=*}+"* && "''${sub#*+}" == ''${entry#*=} ]] || continue
+          [[ " $part " == *" $tool ''${sub/+/ } "* ]] && flags_ok=1
         done
+        if [[ -z "$flags_ok" ]]; then
+          for word in "''${flags[@]}"; do
+            for entry in $allow_flags; do
+              [[ "''${entry%%=*}" == "$sub" && "$word" == ''${entry#*=} ]] && continue 2
+            done
+            for pattern in $deny_flags; do
+              if [[ "$word" == $pattern ]]; then
+                deny "This machine denies the flag \"$word\" of \"$tool\": it makes the command a write. Ask the human to run it."
+              fi
+            done
+          done
+        fi
 
         # The test holds both arrays: "+main" is a word, and "--force" a flag.
         for entry in $verb_flags; do
@@ -1561,6 +1612,10 @@ let
           fi
         done
         (( ''${#words[@]} )) || continue
+
+        # "/usr/bin/gh" is "gh". Only the first word loses its directory: a
+        # later word such as "cmd/go" is a path, and not a tool.
+        words[0]=''${words[0]##*/}
 
         # Both flags print help and stop the tool before it acts. A test of the
         # whole command text would also match a flag inside the value of another
