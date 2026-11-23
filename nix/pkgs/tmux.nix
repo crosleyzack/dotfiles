@@ -45,6 +45,9 @@
           extraConfig = ''
             bind -T copy-mode-vi v send -X begin-selection
             bind-key -T copy-mode-vi y send -X copy-selection-and-cancel
+            # same as the yank plugin's y and Y, but join lines, for pasting wrapped output as one line
+            bind-key -T copy-mode-vi c send -X copy-pipe-and-cancel "tr -d '\r\n' | ${pkgs.xsel}/bin/xsel -i --clipboard"
+            bind-key -T copy-mode-vi C send -X copy-pipe-and-cancel "tr -d '\r\n' | tmux load-buffer - ; tmux paste-buffer -p"
           '';
         }
         {
