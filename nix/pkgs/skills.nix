@@ -23,8 +23,8 @@ let
   crosleyzackSkills = pkgs.fetchFromGitHub {
     owner = "crosleyzack";
     repo = "skills";
-    rev = "dc5aa4c67c7d4a3bd6de0eb29701d0704cfb943e"; # main, improve skills
-    hash = "sha256-pfNWt5hlYTbCATMiN8O+2nZRj1IyteHogetI3Vll/hI=";
+    rev = "dfd28ae3a72c979c8b882b22ee8315c41beea915"; # main, bots cannot merge code
+    hash = "sha256-NTnz6rl/eTUpE77NaXh0g92NK+jmzd77MFjXOP86uyE=";
   };
 
   # This repo has no plugin.json, so each skill folder gets its own link.
