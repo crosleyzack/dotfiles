@@ -2,6 +2,8 @@
 
 let
   cfg = config.my.git.identity;
+  # The google VM makes no commit or tag signature. The DCO sign-off stays.
+  sign = config.home.sessionVariables.NIX_SYSTEM_ID != "google";
 
   # DCO sign-off hook, written as a plain #!/bin/sh script with no /nix/store
   # references. It is installed into git's init.templateDir (see below) as a
@@ -81,15 +83,14 @@ in {
                       insteadOf = "https://github.com";
                   };
               };
-              # always sign
               commit = {
-                gpgsign = true;
+                gpgsign = sign;
                 signoff = true;
                 status = true;
               };
               tag = {
-                gpgsign = true;
-                forceSignAnnotated = true;
+                gpgsign = sign;
+                forceSignAnnotated = sign;
               };
               gitsign.connectorID = "https://accounts.google.com";
               gpg = {
