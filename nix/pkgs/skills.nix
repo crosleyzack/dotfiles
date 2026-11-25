@@ -23,13 +23,14 @@ let
   crosleyzackSkills = pkgs.fetchFromGitHub {
     owner = "crosleyzack";
     repo = "skills";
-    rev = "f7160488ac0c6535e41570eac75dcafafd2c020c"; # main, bots cannot merge code
-    hash = "sha256-m+awCYVNIyJtfPZrCge4zmCrQ+yv0qRBzNyZvUvoEoY=";
+    rev = "838493963717e167a84c0d3373e388bb1558aeb1"; # main, bots cannot merge code
+    hash = "sha256-u/T77AhcPoLsB4iucEobZNkdJRZBqbY2476TiYf8/5Q=";
   };
 
   # This repo has no plugin.json, so each skill folder gets its own link.
   skills = {
     bot-implement = "${crosleyzackSkills}/skills/bot-implement";
+    bot-plan = "${crosleyzackSkills}/skills/bot-plan";
     bot-review = "${crosleyzackSkills}/skills/bot-review";
     golang-deslop = "${crosleyzackSkills}/skills/golang-deslop";
     progressive-implement = "${crosleyzackSkills}/skills/progressive-implement";
