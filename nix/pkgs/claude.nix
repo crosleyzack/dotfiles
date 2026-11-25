@@ -42,9 +42,9 @@ let
   # still passes, because that machine holds no work that a person cannot
   # replace.
   #
-  # The hook makes every denial, and the rules below make the rest. A rule holds
-  # the reads of both machines and the local writes of the sandbox. Every other
-  # command reaches no rule, and the default mode of the workstation asks.
+  # The gate hook makes every denial, and every prompt of the workstation for a
+  # gated tool. The rules below make the rest. A rule holds the reads and
+  # "write" words of both machines, and the local writes of the sandbox.
   profilePermissions =
     profile:
     let
@@ -66,7 +66,9 @@ let
           "Bash(* ${tool} *)"
         ]) allowTools
         ++ readRules
-        ++ [ "Bash(gh-review-thread list *)" ]
+        # It runs three fixed queries, and none of them merges or deletes.
+        ++ [ "Bash(gh-review-thread *)" ]
+        ++ linearRules
         # A rule of one name and no path holds for every path.
         ++ lib.optionals sandbox (
           [
@@ -80,31 +82,20 @@ let
             "WebSearch"
           ]
           ++ writeLocalRules
-          ++ sandboxPassRules
-          ++ [ "Bash(gh-review-thread *)" ]
-          ++ linearRules
         )
-        ++ lib.optionals (!sandbox) (
-          [
-            "Read(${config.home.homeDirectory}/**)"
-            "Read(/tmp/claude*/**)"
-          ]
-          # Remote writes that the workstation runs with no prompt. The hook
-          # denies only the "deny" words and verbFlags there, thus a force
-          # push stops and a normal push passes.
-          ++ verbRules "git" "push"
-          ++ [
-            "Bash(gh pr create)"
-            "Bash(gh pr create *)"
-          ]
-        );
+        ++ writeRules
+        # In user settings, "/path" starts at ~/.claude. Thus "//" starts an
+        # absolute path. An "Edit" rule holds Write and NotebookEdit too.
+        ++ lib.optionals (!sandbox) [
+          "Read(~/**)"
+          "Read(//tmp/**)"
+          "Edit(//tmp/**)"
+        ];
 
-        # A write word needs no rule here: the default mode of the workstation
-        # asks for every command that no allow rule holds. Thus only the file
-        # paths and the web tools need a line.
+        # The gate hook asks for a write word, and the file hook asks for an
+        # edit outside /tmp. An ask rule wins over an allow rule, thus a rule
+        # cannot hold "every edit but /tmp".
         ask = lib.optionals (!sandbox) [
-          "Edit(${config.home.homeDirectory}/**)"
-          "Edit(/tmp/claude*/**)"
           "WebFetch"
           "WebSearch"
         ];
@@ -119,6 +110,17 @@ let
             {
               type = "command";
               command = "${gateHook profile}";
+            }
+          ];
+        }
+      ]
+      ++ lib.optionals (!sandbox) [
+        {
+          matcher = "Edit|Write|NotebookEdit";
+          hooks = [
+            {
+              type = "command";
+              command = "${fileGateHook}";
             }
           ];
         }
@@ -138,22 +140,36 @@ let
   gatedTools = lib.filterAttrs (name: _: !(lib.elem name blockedCommands)) tools;
 
   # The words that the hook denies. No human watches the sandbox, thus a remote
-  # write stops there with the deny words. The workstation asks for a remote
-  # write instead, and its default mode holds that prompt.
+  # write stops there with the deny words. The workstation hook asks for a
+  # remote write instead.
   denyWords =
     profile: v: (v.deny or [ ]) ++ lib.optionals (profile == "sandbox") (v.writeRemote or [ ]);
 
-  # The words that the sandbox runs with no prompt.
-  passWords = v: (v.read or [ ]) ++ (v.writeLocal or [ ]);
+  # The words that a profile runs with no prompt.
+  passWords =
+    profile: v:
+    (v.read or [ ])
+    ++ (v.write or [ ])
+    ++ lib.optionals (profile == "sandbox") (v.writeLocal or [ ]);
+
+  # The words that the workstation hook asks a human about. In auto mode, a
+  # rule miss goes to the classifier, and a hook "ask" goes to the human. The
+  # sandbox hook never asks, thus it does not read this list.
+  askWords = v: (v.writeLocal or [ ]) ++ (v.writeRemote or [ ]);
 
   # An allow rule puts a wildcard only at the start or the end. A wildcard
   # between the tool and the verb also matches a flag, thus the rule approves
   # that flag with no prompt. Thus "gcloud compute instances list" and
-  # "git -C dir status" find no allow rule, and they wait for a human.
-  verbRules = tool: verb: [
-    "Bash(${tool} ${verb})"
-    "Bash(${tool} ${verb} *)"
-  ];
+  # "kubectl -n ns get" find no allow rule, and auto mode decides them.
+  verbRules =
+    tool: verb:
+    if verb == "*" then
+      [ "Bash(${tool} *)" ]
+    else
+      [
+        "Bash(${tool} ${verb})"
+        "Bash(${tool} ${verb} *)"
+      ];
 
   # A deny rule puts the wildcard between the tool and the verb, as in "yarn *
   # remove". There it matches a flag or a resource group, and a false match
@@ -181,15 +197,19 @@ let
   # also matches "<write> && <read>", and a prompt is the correct stop for that
   # command. The hook cuts a command apart and tests every piece, thus it stops
   # the write in any case.
-  readRules =
-    listFieldRules verbRules "read" ruleTools ++ listFieldRules verbRules "readPairs" ruleTools;
+  readRules = listFieldRules verbRules "read" ruleTools;
+
+  # Both profiles run these words with no prompt. A "*" word makes "Bash(git *)",
+  # thus a flag before the verb passes too, as in "git -C dir commit". The hook
+  # still denies the "deny" words and verbFlags.
+  writeRules = listFieldRules verbRules "write" ruleTools;
 
   # The sandbox alone reads this list, thus the name of the profile is fixed
   # here. A local write costs that machine nothing, and the workstation keeps
   # its prompt for the same word.
   writeLocalRules = listFieldRules verbRules "writeLocal" ruleTools;
 
-  # The Linear tools that the sandbox runs with no prompt: every read that an
+  # The Linear tools that both profiles run with no prompt: every read that an
   # issue needs, and "save_issue" for its agent notes. The server holds one
   # name from the plugin and another from a direct connection.
   linearRules =
@@ -213,9 +233,6 @@ let
         "save_issue"
       ];
 
-  # The sandbox alone reads this list. The hook lets these pairs through there.
-  sandboxPassRules = listFieldRules verbRules "sandboxPass" ruleTools;
-
   # The "deny" words of every gated tool, for both profiles. The hook denies
   # these words too, and this list keeps them stopped if the hook fails. A
   # tool with "argumentVerbs" is here too: a false match only stops a command.
@@ -224,22 +241,16 @@ let
   denyWordRules = listFieldRules denyVerbRules "deny" gatedTools;
 
   # Denials that the "tools" set cannot express, for both profiles.
-  # The hook holds every force flag of "git push". The generated rules keep the
-  # long flag stopped if the hook fails.
+  # The hook holds every force flag of "git push". The generated rules keep
+  # "--force" stopped if the hook fails. "--force-with-lease" passes both.
   extraDenyRules =
-    lib.concatMap
-      (p: [
-        "Bash(${p})"
-        "Bash(* ${p})"
-      ])
-      [
-        "git push --for*"
-        "git push * --for*"
-      ]
+    lib.concatMap (rule: [
+      rule
+      (lib.replaceStrings [ "Bash(" ] [ "Bash(* " ] rule)
+    ]) (denyVerbRules "git push" "--force")
     ++ [
     # dangerous commands
     "Bash(* rm -rf *)"
-    "Bash(* git reset --hard *)"
     "Bash(* chmod 777 *)"
     "Bash(* chown -R *)"
     "Bash(* >/dev/sd *)"
@@ -260,7 +271,7 @@ let
     "Read(**/*password*)"
     "Read(**/*secret*)"
     "Read(**/*token*)"
-    "Read(${config.home.homeDirectory}/.ssh/**)"
+    "Read(~/.ssh/**)"
     "Read(id_rsa*)"
     "Read(id_dsa*)"
     "Read(id_ecdsa*)"
@@ -273,14 +284,14 @@ let
     "Read(*.p12)"
     "Read(*.pfx)"
     "Read(*.ovpn)"
-    "Read(${config.home.homeDirectory}/.aws/**)"
-    "Read(${config.home.homeDirectory}/.config/gcloud/**)"
-    "Read(${config.home.homeDirectory}/.config/gh/**)"
-    "Read(${config.home.homeDirectory}/.azure/**)"
-    "Read(${config.home.homeDirectory}/.kube/config)"
-    "Read(${config.home.homeDirectory}/.docker/config.json)"
-    "Read(${config.home.homeDirectory}/.gnupg/**)"
-    "Read(${config.home.homeDirectory}/.password-store/**)"
+    "Read(~/.aws/**)"
+    "Read(~/.config/gcloud/**)"
+    "Read(~/.config/gh/**)"
+    "Read(~/.azure/**)"
+    "Read(~/.kube/config)"
+    "Read(~/.docker/config.json)"
+    "Read(~/.gnupg/**)"
+    "Read(~/.password-store/**)"
     "Edit(*.pem)"
     "Edit(*.key)"
     "Edit(id_rsa*)"
@@ -290,17 +301,24 @@ let
     "Edit(**/*password*)"
     "Edit(**/*secret*)"
     "Edit(**/*token*)"
-    "Edit(${config.home.homeDirectory}/.ssh/**)"
+    "Edit(~/.ssh/**)"
     "Edit(*.keystore)"
     "Edit(*.jks)"
     "Edit(*.p12)"
     "Edit(*.pfx)"
-    "Edit(${config.home.homeDirectory}/.aws/**)"
-    "Edit(${config.home.homeDirectory}/.config/gcloud/**)"
-    "Edit(${config.home.homeDirectory}/.config/gh/**)"
-    "Edit(${config.home.homeDirectory}/.kube/config)"
-    "Edit(${config.home.homeDirectory}/.gnupg/**)"
-    "Edit(${config.home.homeDirectory}/.password-store/**)"
+    "Edit(~/.aws/**)"
+    "Edit(~/.config/gcloud/**)"
+    "Edit(~/.config/gh/**)"
+    "Edit(~/.kube/config)"
+    "Edit(~/.gnupg/**)"
+    "Edit(~/.password-store/**)"
+  ];
+
+  # The agent never pushes to these branches. Branch protection on the remote is
+  # the real guard, and the hook is a second layer.
+  protectedBranches = [
+    "main"
+    "master"
   ];
 
   # Commands with no safe operation for an agent, and no verb worth a test. Both
@@ -352,37 +370,34 @@ let
   # permission rules above and the hook below come from this set.
   #
   #   read        Words that only read.
+  #   write       Words that both profiles run with no prompt. "*" passes every
+  #               word, thus only "deny" and verbFlags stop the tool.
   #   writeLocal  Words that change this machine alone. A download belongs here:
   #               "git fetch" and "npm install" read a remote and write a file.
   #   writeRemote Words that change state off this machine.
   #   deny        Words that lose data, as "terraform destroy" and "psql drop"
-  #               do. A backup is the only way back from one of these.
+  #               do. A backup is the only way back from one of these. A pair
+  #               such as "issue create" must be the two words after the tool.
   #   flags       Flags that make a read command a write, as "-X" does for
   #               "gh api". Both profiles deny these, because an allow rule
-  #               already holds the read verb of the command.
+  #               already holds the read verb of the command. A list holds
+  #               the whole tool, and a set holds one word, as "flags.api".
   #   verbFlags   Flags and words that both profiles deny with one verb alone,
   #               as "--force" with "git push". A tool-wide flag cannot hold
   #               these: "git checkout -f" is safe.
-  #   allowFlags  Flags from "flags" that both profiles pass with one
-  #               subcommand alone, as "-f" with "gh pr create".
   #   flagArgs    Arguments that pass every flag from "flags" with one verb
   #               alone, as a review endpoint with "gh api". The argument
   #               follows the verb directly, and the pattern is extglob.
-  #   sandboxPass Pairs of words that the sandbox runs, although the second
-  #               word is in writeRemote, as "pr create" for gh.
-  #   readPairs   Pairs of words that read, as "pr view" for gh. A rule of one
-  #               verb does not match a command with a word before that verb,
-  #               thus each pair gets a rule of its own. The hook needs no
-  #               pair: the verb is in "read" already.
   #
   # A word that hands out a credential or that runs a command of its own sits in
-  # writeRemote, and not in writeLocal. "git config" is the example: it names a
-  # pager, and a later "git log" runs that pager. The hook sees the words of
-  # "git log" alone, thus a human decides that one.
+  # writeRemote, and not in writeLocal. "kubectl config" is the example: it
+  # names a credential command, and a later "kubectl get" runs that command.
+  # The hook sees the words of "kubectl get" alone, thus a human decides that
+  # one.
   #
   # The lists are per tool because one word has two meanings across tools:
   # "export" reads an image for crane but writes a bucket for gcloud, "config"
-  # reads for crane but writes for gh, and "kill" ends a process for docker but
+  # reads for crane but writes for kubectl, and "kill" ends a process for docker but
   # a Dataflow job for gcloud. A pattern matches one whole word, thus "get-*"
   # matches "get-iam-policy" but not "widget-x".
   tools = {
@@ -513,104 +528,26 @@ let
       ];
     };
     gh = {
-      # "api" sends GET until a flag makes it something else, thus it reads
-      # here and the flag list below holds the rest.
-      read = [
-        "api"
-        "view"
-        "list"
-        "status"
-        "checks"
-        "diff"
-        "search"
-        "read-*"
-        "checkout"
-        "download"
-        "verify*"
-        "watch"
-        "check"
-        "item-list"
-        "field-list"
-      ];
-      # The first lines are verbs. The rest are whole namespaces that run
-      # code, move credentials, or start remote compute: no verb of theirs is
-      # a read. "run" is absent on purpose, so that "gh run list" passes;
-      # "workflow" covers "gh workflow run".
-      writeRemote = [
-        "create"
-        "create-*"
-        "reopen"
-        "edit"
-        "comment"
-        "review"
-        "ready"
-        "revert"
-        "transfer"
-        "develop"
-        "pin"
-        "unpin"
-        "lock"
-        "unlock"
-        "rename"
-        "archive"
-        "unarchive"
-        "fork"
-        "sync"
-        "upload"
-        "rerun"
-        "cancel"
-        "enable"
-        "disable"
-        "install"
-        "uninstall"
-        "update"
-        "publish"
-        "set"
-        "set-*"
-        "add"
-        "remove"
-        "import"
-        "link"
-        "unlink"
-        "copy"
-        "clone"
-        "mark-template"
-        "restore"
-        "item-add"
-        "item-archive"
-        "item-create"
-        "item-delete"
-        "item-edit"
-        "field-create"
-        "field-delete"
-        "auth"
-        "alias"
-        "extension"
-        "ext"
-        "copilot"
-        "config"
-        "skill"
-        "secret"
-        "variable"
-        "gpg-key"
-        "ssh-key"
-        "deploy-key"
-        "codespace"
-        "cs"
-        "agent-task"
-        "gist"
-        "workflow"
-      ];
-      # A merge and a close lose no data, but the agent must do neither on any
-      # machine: the human merges and closes.
+      # Every word passes, and only the words and flags below stop. "api" sends
+      # GET until a flag makes it something else, thus the flag list holds it.
+      write = [ "*" ];
+      # The human merges, because a merge changes main. The human also opens
+      # and closes issues and publishes releases. An alias hides a denied
+      # word, as "gh alias set m 'pr merge'" then "gh m" does.
       deny = [
         "delete"
         "delete-*"
         "merge"
-        "close"
+        "alias"
+        "issue create"
+        "issue close"
+        "release create"
+        "release edit"
+        "release upload"
       ];
       # The human approves a PR, and the agent reviews with a comment alone.
-      # "--delete-last" removes a comment that a reviewer can have read.
+      # "--delete-last" removes a comment that a reviewer can have read. The
+      # reviews endpoint of "gh api" approves with "event=APPROVE".
       verbFlags = {
         review = [
           "--approve*"
@@ -618,24 +555,12 @@ let
           "-[!-]*a*"
         ];
         comment = [ "--delete-last*" ];
+        api = [ "*event=approve*" ];
       };
-      # writeRemote words that the sandbox runs after one exact word. Thus the
-      # sandbox opens and reviews a PR, but "gh issue create" still stops.
-      sandboxPass = [
-        "pr create"
-        "pr comment"
-        "pr review"
-        "pr edit"
-        # A re-run repeats a job that already ran, and changes no code.
-        "run rerun"
-        # The agent notes of an issue, for the bot-implement skill.
-        "issue edit"
-      ];
       # Each endpoint posts a review, posts a comment, or re-runs a check, thus
-      # none of them merges, closes, or deletes. "+([0-9])" stops a query
-      # string such as "pulls/1/merge?/reviews". GraphQL is absent: its
-      # mutation can hide in a file, and gh-review-thread holds the thread
-      # mutations.
+      # none of them merges or deletes. "+([0-9])" stops a query string such as
+      # "pulls/1/merge?/reviews". GraphQL is absent: its mutation can hide in a
+      # file, and gh-review-thread holds the thread mutations.
       flagArgs.api = map (path: "?(/)repos/+([!/])/+([!/])/${path}") [
         "pulls/+([0-9])/reviews"
         "pulls/+([0-9])/comments"
@@ -647,25 +572,11 @@ let
         "check-runs/+([0-9])/rerequest"
         "check-suites/+([0-9])/rerequest"
       ];
-      readPairs = [
-        "issue view"
-        "pr view"
-        "pr checks"
-        "run view"
-        "repo view"
-      ];
-      # Flags from the list below that one subcommand needs. "-f" is "--fill"
-      # for "gh pr create". Lower case makes "-F", the "--body-file" of
-      # "gh pr review" and "gh pr comment", the same word.
-      allowFlags = {
-        "pr create" = [ "-f" ];
-        "pr review" = [ "-f" ];
-        "pr comment" = [ "-f" ];
-      };
       # "-x" and "--method" name another method than GET. A field flag changes
       # the method to POST on its own. Lower case hides the difference between
-      # "-f" and "-F", and both are field flags.
-      flags = [
+      # "-f" and "-F", and both are field flags. Only "api" stops with them:
+      # "-f" is "--fill" for "gh pr create".
+      flags.api = [
         "-x*"
         "*-method*"
         "-f*"
@@ -1114,70 +1025,19 @@ let
       ];
     };
 
-    # Every tool below holds a writeLocal list: it changes this machine, and it
-    # reaches a remote with a few words alone.
     git = {
-      read = [
-        "status"
-        "diff"
-        "log"
-        "show"
-        "blame"
-        "ls-files"
-        "ls-remote"
-        "rev-parse"
-        "describe"
-        "shortlog"
-        "reflog"
-        "cat-file"
-        "grep"
-        "patch-id"
-        "show-ref"
-        "for-each-ref"
-        "merge-base"
-        "rev-list"
-        "ls-tree"
-        "name-rev"
-      ];
-      writeLocal = [
-        "add"
-        "commit"
-        "stash"
-        "checkout"
-        "switch"
-        "restore"
-        "tag"
-        "branch"
-        "init"
-        "clone"
-        "fetch"
-        "pull"
-        "merge"
-        "rebase"
-        "cherry-pick"
-        "revert"
-        "apply"
-        "am"
-        "mv"
-        "rm"
-        "clean"
-        "reset"
-        "remote"
-        "submodule"
-        "bisect"
-        "worktree"
-        # A remote write, but the sandbox may push branches. verbFlags below
-        # stops a force push and a remote delete. Branch protection on the
-        # remote is the guard for a push to main.
-        "push"
-      ];
+      # Every word passes, because a local change is not a loss: the reflog
+      # holds a commit after "reset --hard". Only a push reaches the remote.
+      write = [ "*" ];
       # "+ref" forces one ref, and ":ref" deletes it. "--mirror" and "--prune"
-      # delete the remote refs that this repo does not hold. The short-flag
-      # patterns also match a bundle, as in "-uf". Git accepts a unique prefix
-      # of a long flag, thus each pattern holds the shortest unique prefix:
-      # "--fo" is also "--follow-tags", and "--pr" is also "--progress".
+      # delete the remote refs that this repo does not hold, and "--all"
+      # pushes main. The short-flag patterns also match a bundle, as in "-uf".
+      # Git accepts a unique prefix of a long flag, thus "--for" and "--forc"
+      # stop too, and "--force-with-lease" passes. "--fo" is also
+      # "--follow-tags", and "--pr" is also "--progress". The hook also stops
+      # a push with no branch name from a protected branch.
       verbFlags.push = [
-        "--for*"
+        "--for?(c?(e))"
         "-f*"
         "-[!-]*f*"
         "--de*"
@@ -1185,15 +1045,21 @@ let
         "-[!-]*d*"
         "--mi*"
         "--pru*"
+        "--al*"
         "+*"
         ":*"
-      ];
-      # "git config core.pager <command>" makes a later "git log" run that
-      # command, and the hook sees the words of "git log" alone. Thus it waits
-      # for a human, as "gh config" does.
-      writeRemote = [ "config" ];
-      deny = [ "yolo" ];
+      ]
+      ++ lib.concatMap (b: [
+        b
+        "*:${b}"
+        "*/heads/${b}"
+      ]) protectedBranches;
+      # An alias hides a denied flag, as "git -c alias.p='push -f' p" does.
+      deny = [ "alias.*" ];
     };
+
+    # Every tool below holds a writeLocal list: it changes this machine, and it
+    # reaches a remote with a few words alone.
     docker = {
       read = [
         "ps"
@@ -1420,11 +1286,11 @@ let
 
   # One shell case arm for each gated tool of the profile, as in:
   #
-  #   gh) guard "$tool" 'api view list' 'delete delete-*' '-x* *-method*' '' '' '' '' ;;
+  #   gh) guard "$tool" '*' 'delete issue+create' '' 'api=-x*' '' '' ;;
   #
-  # The lists are the words that pass, the words that stop, the tool-wide flags,
-  # the sandbox pairs, verbFlags, allowFlags, and flagArgs. Each list packs into
-  # one shell word, and guard splits it again.
+  # The lists are the words that pass, the words that stop, the words that ask,
+  # flags, verbFlags, and flagArgs. Each list packs into one shell word, and
+  # guard splits it again.
   gateArms =
     profile:
     let
@@ -1442,24 +1308,36 @@ let
         name: v:
         lib.concatStringsSep " " [
           "${name}) guard \"$tool\""
-          (packed (passWords v))
-          (packed (denyWords profile v))
-          (packed (v.flags or [ ]))
-          (packed (lib.optionals (profile == "sandbox") (map joinKey (v.sandboxPass or [ ]))))
+          (packed (passWords profile v))
+          (packed (map joinKey (denyWords profile v)))
+          (packed (askWords v))
+          (if lib.isAttrs (v.flags or [ ]) then packKeys v.flags else packed (v.flags or [ ]))
           (packKeys (v.verbFlags or { }))
-          (packKeys (v.allowFlags or { }))
           (packKeys (v.flagArgs or { }))
           ";;"
         ];
     in
     lib.concatStringsSep "\n      " (lib.mapAttrsToList arm gatedTools);
 
+  # Print one PreToolUse decision, "deny" or "ask", with its reason.
+  decideFn = ''
+    decide() {
+      ${pkgs.jq}/bin/jq -cn --arg decision "$1" --arg reason "$2" '{
+        hookSpecificOutput: {
+          hookEventName: "PreToolUse",
+          permissionDecision: $decision,
+          permissionDecisionReason: $reason
+        }
+      }'
+    }
+  '';
+
   # PreToolUse/Bash guard, and the only layer that denies a gated word. A rule
   # matches the command as one string, thus it cannot tell "terraform plan" from
   # "terraform plan && terraform apply", and it cannot see the flags that make
   # "gh api" a write. This hook cuts the command apart and tests every piece.
-  # denyWordRules is a second layer for the "deny" words alone. The hook stays
-  # quiet for a word that a human must answer.
+  # denyWordRules is a second layer for the "deny" words alone. On the
+  # workstation, the hook asks the human about a write word or an unknown word.
   gateHook =
     profile:
     pkgs.writeShellScript "claude-gate-${profile}" ''
@@ -1468,31 +1346,30 @@ let
       set -f
 
       # The sandbox denies a gated command that holds no word of its own. The
-      # workstation stays quiet, and its prompt answers for an unknown word.
+      # workstation asks the human about that command.
       strict=${lib.optionalString (profile == "sandbox") "1"}
 
-      cmd=$(${pkgs.jq}/bin/jq -r '.tool_input.command // ""')
+      # One jq for both fields. A NUL ends each field, because a command can
+      # hold a newline.
+      { IFS= read -r -d "" cmd; IFS= read -r -d "" cwd; } < <(${pkgs.jq}/bin/jq -j '
+        (.tool_input.command // ""), "\u0000", (.cwd // ""), "\u0000"')
 
-      # Print a PreToolUse deny decision, then stop.
+      ${decideFn}
+      # A denial ends the hook: no later piece can change it.
       deny() {
-        ${pkgs.jq}/bin/jq -cn --arg reason "$1" '{
-          hookSpecificOutput: {
-            hookEventName: "PreToolUse",
-            permissionDecision: "deny",
-            permissionDecisionReason: $reason
-          }
-        }'
+        decide deny "$1"
         exit 0
       }
 
-      # Test one command of a gated tool, and deny it or say nothing. gateArms
+      # Test one command of a gated tool: deny it, ask, or say nothing. gateArms
       # fills the parameters, and the caller fills "part", "words", and "flags".
       # "set -f" above keeps a pattern such as "*-method*" out of pathname
       # expansion.
       guard() {
-        local tool="$1" passes="$2" denies="$3" deny_flags="$4" pairs="$5"
-        local verb_flags="$6" allow_flags="$7" flag_args="$8"
-        local word pattern entry sub="" pass_word="" deny_word="" flags_ok="" i
+        local tool="$1" passes="$2" denies="$3" asks="$4" deny_flags="$5"
+        local verb_flags="$6" flag_args="$7"
+        local word pattern entry sub="" pass_word="" deny_word="" ask_word="" flags_ok="" i
+        local -a args
 
         # The two words after the tool. A later position does not count:
         # "gh api -f x=1 pr create" must not pass "-f" for "pr create".
@@ -1514,10 +1391,12 @@ let
         done
         if [[ -z "$flags_ok" ]]; then
           for word in "''${flags[@]}"; do
-            for entry in $allow_flags; do
-              [[ "''${entry%%=*}" == "$sub" && "$word" == ''${entry#*=} ]] && continue 2
-            done
             for pattern in $deny_flags; do
+              # "api=-x*" holds only for a command with the word "api".
+              if [[ "$pattern" == *=* ]]; then
+                names_tool "''${pattern%%=*}" "''${words[@]}" || continue
+                pattern=''${pattern#*=}
+              fi
               if [[ "$word" == $pattern ]]; then
                 deny "This machine denies the flag \"$word\" of \"$tool\": it makes the command a write. Ask the human to run it."
               fi
@@ -1535,19 +1414,34 @@ let
           done
         done
 
-        # A sandbox pair passes its second word, as "create" of "gh pr create".
+        # "git push" with one word or less after the verb, or with "HEAD", pushes
+        # the current branch. Thus it stops on a protected branch. The verb
+        # follows "git" or the value of "-C". The branch is the one of the
+        # session directory, and not of "git -C dir" or "cd dir".
+        if [[ "$tool" == git && ( "$sub" == push+* || "$sub" == *+push ) ]]; then
+          args=("''${words[@]:i+2}")
+          [[ "$sub" == push+* ]] || args=("''${args[@]:1}")
+          if (( ''${#args[@]} <= 1 )) || names_tool head "''${args[@]}"; then
+            [[ -n "$branch" ]] || branch=$(${pkgs.git}/bin/git -C "$cwd" branch --show-current 2>/dev/null)
+            if names_tool "$branch" ${lib.escapeShellArgs protectedBranches}; then
+              deny "This machine denies \"git push\" from \"$branch\": it changes a protected branch of the remote. Ask the human to run it."
+            fi
+          fi
+        fi
+
+        # A deny pair, as "issue+create", matches the two words after the tool.
+        for pattern in $denies; do
+          [[ "$sub" == "$pattern" ]] && deny_word="''${sub/+/ }"
+        done
         for word in "''${words[@]}"; do
           for pattern in $denies; do
-            if [[ "$word" == $pattern ]]; then
-              if [[ " $pairs " == *" $sub "* && "$word" == "''${sub#*+}" ]]; then
-                pass_word="$word"
-              else
-                deny_word="$word"
-              fi
-            fi
+            [[ "$word" == $pattern ]] && deny_word="$word"
           done
           for pattern in $passes; do
             [[ "$word" == $pattern ]] && pass_word="$word"
+          done
+          for pattern in $asks; do
+            [[ "$word" == $pattern ]] && ask_word="$word"
           done
         done
 
@@ -1555,11 +1449,14 @@ let
         if [[ -n "$deny_word" ]]; then
           deny "This machine denies \"$tool $deny_word\". Ask the human to run it."
         fi
-        if [[ -n "$strict" && -z "$pass_word" ]]; then
-          deny "This machine runs only these operations of \"$tool\": $passes. No human watches this machine, thus every other operation stops here."
+        if [[ -n "$strict" ]]; then
+          [[ -n "$pass_word" ]] || deny "This machine runs only these operations of \"$tool\": $passes. No human watches this machine, thus every other operation stops here."
+        elif [[ -z "$pass_word" || -n "$ask_word" ]]; then
+          # A later piece can still deny, thus the ask waits for the end.
+          ask_reason="\"$tool ''${ask_word:-''${sub/+/ }}\" changes state or is not a known read."
         fi
-        # Both tests above end in a denial, thus a quiet return needs this line:
-        # the last test leaves a false status behind.
+        # The tests above can leave a false status behind, thus a quiet return
+        # needs this line.
         return 0
       }
 
@@ -1644,15 +1541,29 @@ let
         done
       done <<< "$parts"
 
+      [[ -z "$ask_reason" ]] || decide ask "$ask_reason"
       exit 0
     '';
+
+  # PreToolUse/Edit|Write|NotebookEdit guard of the workstation. It asks for
+  # every path outside /tmp, and for a /tmp link that leads out of /tmp. The
+  # memory and plan files of Claude Code pass, as they do with no hook.
+  fileGateHook = pkgs.writeShellScript "claude-file-gate" ''
+    ${decideFn}
+    path=$(${pkgs.jq}/bin/jq -r '.tool_input.file_path // .tool_input.notebook_path // ""')
+    real=$(${pkgs.coreutils}/bin/realpath -m -- "$path")
+    case "$real" in
+      /tmp/* | ${claudeDir}/projects/*/memory/* | ${claudeDir}/plans/*) exit 0 ;;
+    esac
+    decide ask "This machine asks before a change outside /tmp: $real"
+  '';
 
   # Commands that read and nothing else. Both profiles run these with no prompt.
   # A name here must not write a file, delete data, send local data off the
   # machine, or run a command that it receives as an argument.
   #
-  # A tool from the "tools" set belongs here for no reason: its read list makes
-  # the same rules, one verb at a time. Thus "go", "gh", "crane", "cosign", and
+  # A tool from the "tools" set belongs here for no reason: its entry makes
+  # the rules for its words. Thus "go", "gh", "crane", "cosign", and
   # "skopeo" are absent, and only the tools with no verb to test remain.
   allowTools = [
     "cd"
@@ -1803,7 +1714,7 @@ let
     "- In an issue tracker, change only the agent notes in the description of an issue"
     "- You can push branches, open PRs, and comment on or review PRs"
     "- You can reply to and resolve review threads with gh-review-thread"
-    "- Never force push or delete a remote branch"
+    "- Never push to main, force push without --force-with-lease, or delete a remote branch"
   ];
 
   # Status line script: model, context usage, session cost, water estimate.
@@ -2141,10 +2052,15 @@ in
       description = ''
         Permission posture for Claude Code on this device.
 
-        "workstation" asks before a mutating action, and is correct for a
-        machine that holds work you cannot replace.
+        "workstation" asks before a write of a gated tool and before an edit
+        outside /tmp. It is correct for a machine that holds work you cannot
+        replace.
 
-        "sandbox" has different restrictions for a disposable VM.
+        "sandbox" runs local writes and denies remote writes with no prompt,
+        for a disposable VM that no human watches.
+
+        Both run git and gh, but not a merge, a delete, a force push, or a
+        push to a protected branch.
       '';
     };
   };
